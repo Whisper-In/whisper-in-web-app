@@ -8,7 +8,9 @@ export default function MobileRootLayout({
 }) {
   return (
     <div className='flex flex-col h-full'>
-      {children}
+      <div className="h-full overflow-auto">
+        {children}
+      </div>
 
       <BottomNavigation links={[
         { label: "Recommended", icon: faHome, href: "/" },

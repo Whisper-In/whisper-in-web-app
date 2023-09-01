@@ -1,3 +1,5 @@
+export type PostType = "PHOTO" | "VIDEO";
+
 export interface ICreatorProfileDto {
     _id: string;
     userName: string;
@@ -9,7 +11,7 @@ export interface IPostDto {
     _id: string;
     postURL: string;
     thumbnailURL?: string;
-    postType: string;
+    postType: PostType;
     description: string;
     creator: ICreatorProfileDto;
     creatorModel: string;

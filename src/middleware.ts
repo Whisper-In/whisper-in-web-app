@@ -52,10 +52,14 @@ function CheckBrowser(pathName: string, request: NextRequest) {
             pathName = pathName.replace(/^\/+/g, '');
             pathName = `/${mobilePathName}/${pathName}`;
         }
-    } else if (firstPath == mobilePathName) {
-        const newPathName = pathName.replace(`/${mobilePathName}`, "");
-        pathName = `${newPathName}`;
+    } 
+    else {
+        pathName ="/"
     }
+    // else if (firstPath == mobilePathName) {
+    //     const newPathName = pathName.replace(`/${mobilePathName}`, "");
+    //     pathName = `${newPathName}`;
+    // }
 
     return pathName;
 }

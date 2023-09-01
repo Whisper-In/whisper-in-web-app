@@ -1,17 +1,17 @@
-import { NextRequest } from "next/server";
-import * as postExternalService from "@/external-services/content/post.external-service"
+import { NextRequest, NextResponse } from "next/server";
+import * as postExternalService from "@/server-services/content/post.server-service"
 
 export async function GET(request: NextRequest) {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(request.url);    
 
     const filterPostIds = searchParams.get("filterPostIds")?.split(",");
     const showFollowingOnly = searchParams.get("showFollowingOnly") == "true";
-    const size = parseInt(searchParams.get("size") ?? "0");
-
+    const size = parseInt(searchParams.get("size") ?? "0");    
+    
     try {
         const results = await postExternalService.getRecommendedPosts(size, filterPostIds, showFollowingOnly);
 
-        return results;
+        return NextResponse.json(results);
     } catch (error) {
         throw error;
     }

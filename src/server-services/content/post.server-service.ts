@@ -1,5 +1,5 @@
-import { IPostDto } from "@/external-dtos/content/post.external-dtos";
-import axiosInstance from "@/external-services/axios";
+import { IPostDto } from "@/server-dtos/content/post.server-dtos";
+import axiosInstance from "@/server-services/axios";
 
 export async function getRecommendedPosts(size: number, filterPostIds?: string[], showFollowingOnly?: boolean) {
     try {
@@ -12,6 +12,16 @@ export async function getRecommendedPosts(size: number, filterPostIds?: string[]
         });
 
         return results.data as IPostDto[];
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function likePost(postId: string) {
+    try {
+        const result = await axiosInstance.post("/content/posts/like", { postId });
+
+        return result.data as { isLiked: boolean, likeCount: number }
     } catch (error) {
         throw error;
     }
