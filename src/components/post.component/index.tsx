@@ -2,7 +2,7 @@
 
 import { useIsInViewport } from "@/hooks/viewport.hook";
 import classNames from "classnames"
-import { useRef, useEffect, useState } from "react"
+import { useRef, useEffect, useState, useContext } from "react"
 import InfoGroup from "./info-group.component";
 import ButtonGroup from "./button-group.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +11,8 @@ import LikePrompt, { LikePromptType } from "./like-prompt.component";
 import { IPostDto } from "@/server-dtos/content/post.server-dtos";
 import * as postService from "@/app/_client-services/content/post.service";
 import VideoPlayer from "./video-player.component";
+import { useRouter } from "next/navigation";
+import { ShareModalContext, useShareModal } from "@/app/mobile/_components/share-modal.component";
 
 export default function Post({ className, post }
     : { className?: string, post: IPostDto }) {
@@ -18,6 +20,8 @@ export default function Post({ className, post }
     const likePromptRef = useRef<LikePromptType>(null);
     const [clickCount, setClickCount] = useState(0);
     const [showLike, setShowLike] = useState(false);
+    const { setShowShareModal } = useShareModal();
+    const router = useRouter();
 
     const clickInterval = 250;
     let clickTimeout: NodeJS.Timeout;
@@ -54,8 +58,6 @@ export default function Post({ className, post }
         const newClickCount = clickCount + 1;
         setClickCount(newClickCount);
 
-        console.log(newClickCount)
-
         switch (newClickCount) {
             case 1:
                 break;
@@ -65,20 +67,30 @@ export default function Post({ className, post }
         }
     }
 
+    const onProfileClick = (profileId: string) => {
+        router.push(`/mobile/profile/${profileId}`);
+    }
+
+    const onShareClick = () => {        
+        setShowShareModal(true);
+    }
+
     return (
-        <div className="w-full h-full relative" onClick={onClick}>
-            {
-                _post.postType == "PHOTO" ?
-                    <img className={classNames(
-                        "w-full h-full object-cover",
-                        className
-                    )}
-                        src={_post.postURL} />
-                    :
-                    <VideoPlayer className="w-full h-full object-cover"
-                        src={_post.postURL}
-                        poster={_post.thumbnailURL} />
-            }
+        <div className="w-full h-full relative">
+            <div className="absolute top-0 left-0 w-full h-full" onClick={onClick}>
+                {
+                    _post.postType == "PHOTO" ?
+                        <img className={classNames(
+                            "w-full h-full object-cover",
+                            className
+                        )}
+                            src={_post.postURL} />
+                        :
+                        <VideoPlayer className="w-full h-full object-cover"
+                            src={_post.postURL}
+                            poster={_post.thumbnailURL} />
+                }
+            </div>
 
             <div className="absolute w-full bottom-0 left-0 h-[200px] bg-gradient-to-t from-black/80 to-black/0s"></div>
 
@@ -86,7 +98,11 @@ export default function Post({ className, post }
 
             <div className="absolute w-full left-0 bottom-0 px-3 pb-4 flex items-end">
                 <InfoGroup post={_post} className="grow" />
-                <ButtonGroup post={_post} onLikeClick={onLikeClick} />
+                <ButtonGroup post={_post}
+                    onLikeClick={onLikeClick}
+                    onProfileClick={onProfileClick}
+                    onShareClick={onShareClick}
+                />
             </div>
         </div>
     )

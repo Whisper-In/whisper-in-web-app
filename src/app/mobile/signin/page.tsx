@@ -3,13 +3,12 @@
 import Image from "next/image"
 import GoogleSignInButton from "./_components/google-signin-button.component"
 import AppleSignInButton from "./_components/apple-signIn-button.component copy"
-import { useRouter } from "next/navigation"
+import * as authService from "@/app/_client-services/auth/auth.service"
 
-export default function SignIn() {
-    const router = useRouter();
 
-    const googleSignIn = async () => {        
-        router.push("/api/auth/google/login");
+export default function SignIn() {    
+    const googleSignIn = async () => {
+        authService.googleLogin();
     }
 
     return (

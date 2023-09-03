@@ -8,7 +8,7 @@ export default function RecommendedTypesNav({ className, currentRecommendedType,
     }) {
     return (
         <div className={classNames(
-            "flex gap-10 text-white text-xl underline-offset-4 whitespace-nowrap",
+            "flex gap-10 text-white text-xl underline-offset-4 whitespace-nowrap drop-shadow",
             className
         )}>
             <button onClick={() => onRecommendTypeChange && onRecommendTypeChange("FOLLOWING")}
@@ -17,14 +17,19 @@ export default function RecommendedTypesNav({ className, currentRecommendedType,
                     {
                         "underline": currentRecommendedType == "FOLLOWING"
                     }
-                )}>Following</button>
+                )}>
+                Following
+            </button>
+
             <button onClick={() => onRecommendTypeChange && onRecommendTypeChange("FORYOU")}
                 className={classNames(
                     "italic",
                     {
                         "underline": currentRecommendedType == "FORYOU"
                     }
-                )}>For You</button>
+                )}>
+                For You
+            </button>
         </div>
     );
 }

@@ -1,7 +1,7 @@
 import BottomNavigation from '@/components/bottom-navigation.component'
 import { faCog, faComment, faHome, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 
-export default function MobileRootLayout({
+export default function MobileHomeLayout({
   children,
 }: {
   children: React.ReactNode

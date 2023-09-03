@@ -15,7 +15,7 @@ export default function VideoPlayer({ className, src, poster }
     useEffect(() => {
         if (ref.current) {
             if (isInViewPort) {
-                ref.current.play();
+                ref.current.play().catch(() => {});
             } else {
                 ref.current.currentTime = 0;
                 ref.current.pause();

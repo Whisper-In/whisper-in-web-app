@@ -1,3 +1,5 @@
+import { useAppDispath } from "@/store/hooks";
+import { setUser } from "@/store/slices/user.slice";
 import { NextRequest, NextResponse, userAgent } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -5,12 +7,14 @@ export async function GET(request: NextRequest) {
         const url = new URL(request.url);
         const searchParams = url.searchParams;
         const token = searchParams.get("token");
+        const userString = searchParams.get("user");
+        const user = userString ? JSON.parse(userString) : null;
 
         if (!token) {
             return;
         }
 
-        const response = NextResponse.redirect(request.nextUrl.origin);
+        const response = new NextResponse();
 
         response.cookies.set("token", token);
 

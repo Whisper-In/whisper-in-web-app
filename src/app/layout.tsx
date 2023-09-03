@@ -31,7 +31,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" style={{ height: "100%" }}>
-      <body className={inter.className} style={{ height: "100%" }}>
+      <body className={inter.className} style={{ height: "100%", overflow: "hidden" }}>
         <Providers>
           {children}
         </Providers>
