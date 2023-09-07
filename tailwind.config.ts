@@ -13,7 +13,7 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
-      colors: {        
+      colors: {
         primary: "#3B96EB",
         onPrimary: "#FFF",
         primaryContainer: "#004a75",
@@ -33,7 +33,7 @@ const config: Config = {
         background: "#E5E7E8",
         onBackground: "#1B1D1F",
         surface: "#FFF",
-        onSurface: "#8d9499",
+        onSurface: "#1B1D1F",
         surfaceVariant: "#dee3eb",
         onSurfaceVariant: "#888",
         outline: "#72777f",
@@ -46,7 +46,7 @@ const config: Config = {
         surfaceDisabled: "#96ccff",
         onSurfaceDisabled: "#96ccff",
         backdrop: "#96ccff",
-  
+
         primaryDark: "#3B96EB",
         onPrimaryDark: "#DDD",
         primaryContainerDark: "#004a75",
@@ -82,10 +82,10 @@ const config: Config = {
         white: "#FFF",
         black: "#000"
       },
-    },    
-    dropShadow: {
-      DEFAULT: '0 2px 2px rgba(0, 0, 0, 0.5)'
-    }
+      dropShadow: {
+        DEFAULT: '0 2px 2px rgba(0, 0, 0, 0.5)'
+      }
+    },
   },
   plugins: [],
 }

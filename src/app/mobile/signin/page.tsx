@@ -4,11 +4,15 @@ import Image from "next/image"
 import GoogleSignInButton from "./_components/google-signin-button.component"
 import AppleSignInButton from "./_components/apple-signIn-button.component copy"
 import * as authService from "@/app/_client-services/auth/auth.service"
+import { Alert } from "@mui/material"
 
-
-export default function SignIn() {    
+export default function SignIn() {
     const googleSignIn = async () => {
-        authService.googleLogin();
+        authService.googleLogin().then((cookies) => {
+            if (cookies.token) {
+                location.reload();
+            }
+        }).catch((error) => { console.log("error:", error) });
     }
 
     return (

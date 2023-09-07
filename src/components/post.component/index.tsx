@@ -8,14 +8,14 @@ import ButtonGroup from "./button-group.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import LikePrompt, { LikePromptType } from "./like-prompt.component";
-import { IPostDto } from "@/server-dtos/content/post.server-dtos";
+import { IPostDto, PostType } from "@/server-dtos/content/post.server-dtos";
 import * as postService from "@/app/_client-services/content/post.service";
 import VideoPlayer from "./video-player.component";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ShareModalContext, useShareModal } from "@/app/mobile/_components/share-modal.component";
 
-export default function Post({ className, post }
-    : { className?: string, post: IPostDto }) {
+export default function Post({ className, post, hideAvatar }
+    : { className?: string, post: IPostDto, hideAvatar?: boolean }) {
     const [_post, setPost] = useState<IPostDto>(post);
     const likePromptRef = useRef<LikePromptType>(null);
     const [clickCount, setClickCount] = useState(0);
@@ -68,18 +68,18 @@ export default function Post({ className, post }
     }
 
     const onProfileClick = (profileId: string) => {
-        router.push(`/mobile/profile/${profileId}`);
+        router.push(`/mobile/profile/${profileId}?isAI=true`);
     }
 
-    const onShareClick = () => {        
-        setShowShareModal(true);
+    const onShareClick = () => {
+        setShowShareModal(true, `${origin}/mobile/post/${post._id}?showAvatar=true`);
     }
 
     return (
         <div className="w-full h-full relative">
             <div className="absolute top-0 left-0 w-full h-full" onClick={onClick}>
                 {
-                    _post.postType == "PHOTO" ?
+                    _post.postType == PostType[PostType.PHOTO] ?
                         <img className={classNames(
                             "w-full h-full object-cover",
                             className
@@ -102,6 +102,7 @@ export default function Post({ className, post }
                     onLikeClick={onLikeClick}
                     onProfileClick={onProfileClick}
                     onShareClick={onShareClick}
+                    hideAvatar={hideAvatar}
                 />
             </div>
         </div>

@@ -1,9 +1,11 @@
-import { IPostDto } from "@/server-dtos/content/post.server-dtos";
+import { IPostDto, IPostResultsDto } from "@/server-dtos/content/post.server-dtos";
 import axiosInstance from "@/server-services/axios";
+
+const route = "/content/posts";
 
 export async function getRecommendedPosts(size: number, filterPostIds?: string[], showFollowingOnly?: boolean) {
     try {
-        const results = await axiosInstance.get("/content/posts/recommended", {
+        const results = await axiosInstance.get(`${route}/recommended`, {
             params: {
                 size,
                 filterPostIds,
@@ -19,9 +21,29 @@ export async function getRecommendedPosts(size: number, filterPostIds?: string[]
 
 export async function likePost(postId: string) {
     try {
-        const result = await axiosInstance.post("/content/posts/like", { postId });
+        const result = await axiosInstance.post(`${route}/like`, { postId });
 
         return result.data as { isLiked: boolean, likeCount: number }
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function getPosts(profileId: string, postType: string, pageIndex: number, itemsPerLoad: number) {
+    try {
+        const results = await axiosInstance.get(`${route}`, { params: { profileId, pageIndex, itemsPerLoad, postType } });
+
+        return results.data as IPostResultsDto
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const getPostDetails = async (postId: string) => {
+    try {        
+        const result = await axiosInstance.get(`${route}/details/${postId}`);
+
+        return result.data as IPostDto;
     } catch (error) {
         throw error;
     }

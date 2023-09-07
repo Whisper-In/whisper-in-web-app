@@ -1,77 +1,81 @@
 "use client"
 
 import { PropsWithChildren, createContext, useContext, useEffect, useRef, useState } from "react";
-import MobileModal, { MobileModalType } from "./modal.component";
 import { EmailIcon, EmailShareButton, FacebookIcon, FacebookShareButton, InstapaperIcon, InstapaperShareButton, TelegramIcon, TelegramShareButton, TwitterIcon, TwitterShareButton, WhatsappIcon, WhatsappShareButton } from "react-share";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { Drawer } from "@mui/material";
+import { data } from "autoprefixer";
 
 export const ShareModalContext = createContext<{
     showShareModal: boolean,
-    setShowShareModal: (isShowing: boolean) => void
+    url: string,
+    setShowShareModal: (isShowing: boolean, data: string) => void
 }>({
     showShareModal: false,
+    url: "",
     setShowShareModal: () => { }
 });
 
 export const ShareModalProvider = ({ children }: PropsWithChildren) => {
-    const [showShareModal, setShowShareModal] = useState(false);
+    const [isShowing, setIsShowing] = useState(false);
+    const [url, setURL] = useState("");
+
+    const setShowShareModal = (isShowing: boolean, data: string) => {
+        setIsShowing(isShowing);
+        setURL(data);
+    }
 
     return (
         <ShareModalContext.Provider value={{
-            showShareModal,
+            showShareModal: isShowing,
+            url: url,
             setShowShareModal
         }}>
             {children}
-            <ShareModal />
+            <ShareModal url={url} />
         </ShareModalContext.Provider>
     )
 }
 
 export const useShareModal = () => useContext(ShareModalContext);
 
-export default function ShareModal() {
+export default function ShareModal({ url }: { url: string }) {
     const { showShareModal, setShowShareModal } = useShareModal();
 
-    const modalRef = useRef<MobileModalType>(null);
     const iconSize = 50;
-    const url = "";
 
-    useEffect(() => {
-        if (modalRef.current) {
-            if (showShareModal) {
-                modalRef.current?.prompt();
-            } else {
-                modalRef.current?.close();
-            }
-        }
-    }, [showShareModal, modalRef.current]);
+    const close = () => {
+        setShowShareModal(false, url)
+    }
 
     return (
-        <MobileModal ref={modalRef} onChange={(isShowing) => setShowShareModal(isShowing)}>
-            <div className="flex mb-2">
-                <label className="text-onSurface text-lg font-bold grow">Share</label>
-                <button onClick={() => modalRef.current?.close()}>
-                    <FontAwesomeIcon className="text-onSurface" icon={faClose} fontSize={20} />
-                </button>
+        <Drawer open={showShareModal} anchor="bottom" onClose={close}>
+            <div className="p-3">
+                <div className="flex mb-2">
+                    <label className="text-onSurface text-lg font-bold grow">Share</label>
+                    <button onClick={close}>
+                        <FontAwesomeIcon className="text-onSurface" icon={faClose} fontSize={20} />
+                    </button>
+                </div>
+                <div className="flex justify-center gap-5">
+                    <WhatsappShareButton url={url}>
+                        <WhatsappIcon size={iconSize} round />
+                    </WhatsappShareButton>
+                    <FacebookShareButton url={url}>
+                        <FacebookIcon size={iconSize} round />
+                    </FacebookShareButton>
+                    <TwitterShareButton url={url}>
+                        <TwitterIcon size={iconSize} round />
+                    </TwitterShareButton>
+                    <EmailShareButton url={url}>
+                        <EmailIcon size={iconSize} round />
+                    </EmailShareButton>
+                    <TelegramShareButton url={url}>
+                        <TelegramIcon size={iconSize} round />
+                    </TelegramShareButton>
+                </div>
             </div>
-            <div className="flex justify-center gap-5">
-                <WhatsappShareButton url={url}>
-                    <WhatsappIcon size={iconSize} round />
-                </WhatsappShareButton>
-                <FacebookShareButton url={url}>
-                    <FacebookIcon size={iconSize} round />
-                </FacebookShareButton>
-                <TwitterShareButton url={url}>
-                    <TwitterIcon size={iconSize} round />
-                </TwitterShareButton>
-                <EmailShareButton url={url}>
-                    <EmailIcon size={iconSize} round />
-                </EmailShareButton>
-                <TelegramShareButton url={url}>
-                    <TelegramIcon size={iconSize} round />
-                </TelegramShareButton>
-            </div>
-        </MobileModal>
+        </Drawer>
     );
 }

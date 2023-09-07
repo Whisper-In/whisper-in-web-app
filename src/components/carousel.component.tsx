@@ -1,5 +1,6 @@
 "use client"
 
+import { isScrollEnded } from "@/utils/component.util";
 import classNames from "classnames";
 import { PropsWithChildren, useState } from "react";
 
@@ -13,9 +14,8 @@ export default function Carousel<T>({ className, direction = "x", children, onSr
         children: React.ReactElement[], onSrollEnd?: () => void
     }) {
     const onSroll = (event: React.UIEvent<HTMLDivElement>) => {
-        if (onSrollEnd) {   
-            const currentScroll = Math.round(event.currentTarget.scrollTop + event.currentTarget.clientHeight);         
-            if (currentScroll >= event.currentTarget.scrollHeight) {
+        if (onSrollEnd) {
+            if (isScrollEnded(event)) {
                 onSrollEnd();
             }
         }

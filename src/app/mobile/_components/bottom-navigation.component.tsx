@@ -38,8 +38,8 @@ export default function BottomNavigation({ className, links, hideLabels }
                             className={classNames(
                                 "mb-2",
                                 {
-                                    "text-onSurface": pathName != link.href,
-                                    "text-onBackground": pathName == link.href
+                                    "text-onSurface/50": pathName != link.href,
+                                    "text-onSurface": pathName == link.href
                                 }
                             )}
                             fontSize={20} />

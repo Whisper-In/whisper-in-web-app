@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as postExternalService from "@/server-services/content/post.server-service"
+import * as postServerService from "@/server-services/content/post.server-service"
 
 export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);    
@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const size = parseInt(searchParams.get("size") ?? "0");    
     
     try {
-        const results = await postExternalService.getRecommendedPosts(size, filterPostIds, showFollowingOnly);
+        const results = await postServerService.getRecommendedPosts(size, filterPostIds, showFollowingOnly);
 
         return NextResponse.json(results);
     } catch (error) {
