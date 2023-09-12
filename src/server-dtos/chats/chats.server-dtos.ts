@@ -16,7 +16,7 @@ export interface IUserChatDto {
     profiles: IUserChatProfileDto[]
 }
 
-export interface IUserChatMessagesDto {
+export interface IUserChatMessageDto {
     message: string;
     sender: string;
     createdAt?: Date;

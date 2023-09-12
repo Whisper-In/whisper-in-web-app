@@ -4,7 +4,8 @@ import { faCog, faComment, faHome, faMagnifyingGlass } from '@fortawesome/free-s
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { BottomNavigation, BottomNavigationAction, Paper, Tab } from '@mui/material'
 import classNames from 'classnames'
-import { useState, PropsWithChildren } from "react"
+import { useParams, useRouter } from 'next/navigation'
+import { useState, PropsWithChildren, useEffect } from "react"
 
 function TabScreen({ children, hidden }: PropsWithChildren & { hidden?: boolean }) {
   return (
@@ -24,7 +25,7 @@ export default function MobileHomeLayout(props: {
   explore: React.ReactNode,
   chats: React.ReactNode,
   settings: React.ReactNode
-}) {
+}) {  
   const [tab, setTab] = useState<"feed" | "explore" | "chats" | "settings">("feed");
 
   return (

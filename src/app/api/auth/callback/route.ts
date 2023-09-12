@@ -1,5 +1,3 @@
-import { useAppDispath } from "@/store/hooks";
-import { setUser } from "@/store/slices/user.slice";
 import { NextRequest, NextResponse, userAgent } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -9,19 +7,20 @@ export async function GET(request: NextRequest) {
         const token = searchParams.get("token");
         const user = searchParams.get("user");
 
-        if (!token || !user) {
-            return;
+        const newURL = new URL('/callback', url.origin);
+
+        if (user) {
+            newURL.searchParams.append("user", user);
         }
 
-        const response = new NextResponse();
+        if(token) {
+            newURL.searchParams.append("token", token);
+        }
 
-        response.cookies.set("token", token);
-        response.cookies.set("user", user);
+        const response = NextResponse.redirect(newURL);
 
-        if (request.cookies.has("callback")) {
-            const callback = JSON.parse(request.cookies.get("callback")!.value);
-            callback.status = "completed"
-            response.cookies.set("callback", JSON.stringify(callback));
+        if (token) {
+            response.cookies.set("token", token);
         }
 
         return response;

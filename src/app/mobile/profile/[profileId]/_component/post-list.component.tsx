@@ -26,8 +26,8 @@ export default function PostList({ className, posts, postWidth, postHeight, onSc
                         <div className="grid grid-cols-3 gap-[2px]">
                             {
                                 posts.map((post, index) =>
-                                    <Link href={`/mobile/post/${post._id}`}>
-                                        <img key={index} className="object-cover w-full" style={{ height: postHeight }}
+                                    <Link key={index} href={`/mobile/post/${post._id}`}>
+                                        <img className="object-cover w-full" style={{ height: postHeight }}
                                             src={post.thumbnailURL ?? post.postURL}
                                         />
                                     </Link>

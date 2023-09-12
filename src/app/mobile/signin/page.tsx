@@ -5,15 +5,35 @@ import GoogleSignInButton from "./_components/google-signin-button.component"
 import AppleSignInButton from "./_components/apple-signIn-button.component copy"
 import * as authService from "@/app/_client-services/auth/auth.service"
 import { Alert } from "@mui/material"
+import { useAppDispath, useAppSelector } from "@/store/hooks"
+import { UserProfile, setUser } from "@/store/slices/user.slice"
+import { useEffect } from "react"
 
 export default function SignIn() {
+    const me = useAppSelector((state) => state.user.me);
+    const dispatch = useAppDispath();
+
     const googleSignIn = async () => {
-        authService.googleLogin().then((cookies) => {
-            if (cookies.token) {
-                location.reload();
+        authService.googleLogin().then(({ user }) => {
+            if (user) {
+                console.log(user);
+                dispatch(setUser({
+                    me: user
+                }));
+            } else {
+                throw "No user found.";
             }
-        }).catch((error) => { console.log("error:", error) });
+        }).catch((error) => {
+            authService.logout(dispatch);
+            Alert(error)
+        });
     }
+
+    useEffect(() => {
+        if (me) {
+            location.reload();
+        }
+    }, [me]);
 
     return (
         <main className="flex flex-col items-center w-screen h-screen py-48">

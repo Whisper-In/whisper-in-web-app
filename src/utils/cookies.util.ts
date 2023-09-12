@@ -1,3 +1,4 @@
+import { UserProfile } from "@/store/slices/user.slice";
 import { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies"
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { NextResponse } from "next/server";
@@ -18,13 +19,7 @@ export const getCookieCallback = (cookies: RequestCookies): Callback => {
     return {};
 }
 
-export const getUser = (cookies: RequestCookies | ReadonlyRequestCookies): {
-    _id: string,
-    name: string,
-    email: string,
-    avatar: string,
-    isAgreeTnC: boolean
-} | null => {
+export const getUser = (cookies: RequestCookies | ReadonlyRequestCookies): UserProfile | null => {
     if (cookies.has("user")) {
         const user = JSON.parse(cookies.get("user")!.value);
 
@@ -40,8 +35,15 @@ export const convertClientCookieToObject = (cookies: string) => {
 
     cookiesArray.forEach((cookie) => {
         const split = cookie.split("=");
-        const key = split[0];
-        const value = split[1];
+        const key = split[0].trim();
+        let value = split[1].trim();
+
+        try {
+            const decode = decodeURIComponent(value);            
+            value = JSON.parse(decode);
+        } catch (error) {
+
+        }
 
         cookiesObject[key] = value;
     });
