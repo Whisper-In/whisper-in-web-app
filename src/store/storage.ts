@@ -1,5 +1,6 @@
 // @ts-ignore
 import idbStorage from "redux-persist-indexeddb-storage";
+import { IDB_NAME, REDUX_IDB_NAME } from "./constants";
 
 const createNoopStorage = () => ({
     getItem(_key: any) {
@@ -13,6 +14,6 @@ const createNoopStorage = () => ({
     }
 });
 
-const storage = typeof window !== "undefined" ? idbStorage('whisperin_db') : createNoopStorage();
+const storage = typeof window !== "undefined" ? idbStorage(REDUX_IDB_NAME) : createNoopStorage();
 
 export default storage;

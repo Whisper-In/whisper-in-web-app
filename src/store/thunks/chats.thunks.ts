@@ -5,17 +5,19 @@ import {
   LoadChatsProfile,
 } from "../types/chats.types";
 import * as chatGPTService from "@/app/_client-services/chat/chat-gpt.client-service";
-//import * as elevenLabsService from "../../services/elevenLabsService";
+import * as elevenLabsService from "@/app/_client-services/chat/eleven-labs.client-service";
 import * as chatService from "@/app/_client-services/chat/chat.client-service";
 import OpenAI from "openai";
 import { RootState } from "@/store/store";
+import { ChatFeature } from "../states/chats.states";
+import { idb } from "../indexedDB";
 
 export const fetchChats = createAsyncThunk<LoadChatsActionPayload[] | any, string>(
   "chats/fetchChats",
   async (userId: string) => {
     let payload: LoadChatsActionPayload[] = [];
 
-    try {      
+    try {
       const userChats = await chatService.getUserChats(userId);
       payload = userChats.map((userChat) => ({
         chatId: userChat.chatId,
@@ -50,7 +52,6 @@ export const fetchChatCompletion = createAsyncThunk<
       chatId: props.chatId,
       senderId: props.contactId,
       message: "",
-      audioUrl: "",
       createdAt: "",
       updatedAt: "",
     };
@@ -71,21 +72,28 @@ export const fetchChatCompletion = createAsyncThunk<
           }))
       );
 
-      // let textToSpeechResult;
-      // if (chat?.features?.includes(ChatFeature.AUDIO) && !chat?.isAudioRepliesOff) {
-      //   textToSpeechResult = await elevenLabsService.getTextToSpeech(
-      //     props.contactId,
-      //     chatGPTResult.message
-      //   );
-      // }
-
       const createdAt = new Date().toString();
+
+      const isAudio = chat?.features?.includes(ChatFeature.AUDIO) && !chat?.isAudioRepliesOff;
+
+      let audioId: number | undefined;
+
+      if (isAudio) {
+        const arrayBuffer = await elevenLabsService.getTextToSpeech(props.contactId, chatGPTResult.message);
+
+        const id = await idb.audios.add({
+          arrayBuffer
+        });
+
+        audioId = parseInt(id.toString());
+      }
 
       payload = {
         chatId: props.chatId,
         senderId: props.contactId,
         message: chatGPTResult.message,
-        //audioUrl: textToSpeechResult?.data,
+        audioId,
+        isAudio,
         createdAt,
         updatedAt: createdAt,
       };

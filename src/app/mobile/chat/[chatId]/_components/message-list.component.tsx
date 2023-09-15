@@ -1,6 +1,6 @@
 import { IUserChatMessageDto } from "@/server-dtos/chats/chats.server-dtos";
 import classNames from "classnames";
-import MessageBubble, { MessageBubbleTyping } from "./message-bubble.component";
+import MessageBubble, { MessageBubbleAudio, MessageBubbleTyping } from "./message-bubble.component";
 import { useEffect, useRef, useState } from "react";
 import { ChatMessage } from "@/store/states/chats.states";
 
@@ -31,9 +31,15 @@ export default function MessageList({ className, messageList, userId, isTyping }
                         <MessageBubbleTyping />
                     }
                     {
-                        messageList.map((message, idx) =>
-                            <MessageBubble key={idx} className="max-w-[80%]"
-                                message={message} isUser={message.senderId == userId} />)
+                        messageList.map((message, idx) => {
+                            if (!message.isAudio) {
+                                return <MessageBubble key={idx}
+                                    message={message} isUser={message.senderId == userId} />
+                            } else {
+                                return <MessageBubbleAudio key={idx}
+                                    message={message} isUser={message.senderId == userId} />
+                            }
+                        })
                     }
                 </ div>
             </div>

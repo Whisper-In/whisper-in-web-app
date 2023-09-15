@@ -1,6 +1,6 @@
 "use client"
 
-import { IUserChatDto } from "@/server-dtos/chats/chats.server-dtos";
+import { IUserChatRawDto } from "@/server-dtos/chats/chats.server-dtos";
 import { useAppSelector } from "@/store/hooks";
 import { Chat } from "@/store/states/chats.states";
 import { Avatar } from "@mui/material";

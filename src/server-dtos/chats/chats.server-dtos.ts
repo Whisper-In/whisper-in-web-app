@@ -10,12 +10,17 @@ export interface IUserChatProfileDto {
     isBlocked?: boolean;
 }
 
-export interface IUserChatDto {
+export interface IUserChatRawDto {
     chatId: string;
     features: string[],
     profiles: IUserChatProfileDto[]
 }
 
+export interface IUserChatDto {
+    chatId: string;
+    features: ChatFeature[],
+    profiles: IUserChatProfileDto[]
+}
 export interface IUserChatMessageDto {
     message: string;
     sender: string;

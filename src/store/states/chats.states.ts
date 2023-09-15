@@ -1,7 +1,8 @@
 export type ChatMessage = {
     senderId: string;
     message: string;
-    audioUrl?: string;
+    isAudio?: boolean;
+    audioId?: number;
     createdAt?: string;
     updatedAt?: string;
 };

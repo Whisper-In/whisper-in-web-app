@@ -6,7 +6,7 @@ import SearchInput from "./_components/search-input.component";
 import SearchList from "./_components/search-list.component";
 import React, { useState } from "react";
 import { IProfileDto, IProfileSearchDto } from "@/server-dtos/profile/profile.server-dtos";
-import { searchProfiles } from "@/app/_client-services/profile/profile.service";
+import { searchProfiles } from "@/app/_client-services/profile/profile.client-service";
 import Header from "@/app/mobile/_components/header.component";
 
 export default function Explore() {

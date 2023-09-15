@@ -3,7 +3,7 @@
 import Image from "next/image"
 import GoogleSignInButton from "./_components/google-signin-button.component"
 import AppleSignInButton from "./_components/apple-signIn-button.component copy"
-import * as authService from "@/app/_client-services/auth/auth.service"
+import * as authClientService from "@/app/_client-services/auth/auth.service"
 import { Alert } from "@mui/material"
 import { useAppDispath, useAppSelector } from "@/store/hooks"
 import { UserProfile, setUser } from "@/store/slices/user.slice"
@@ -14,26 +14,21 @@ export default function SignIn() {
     const dispatch = useAppDispath();
 
     const googleSignIn = async () => {
-        authService.googleLogin().then(({ user }) => {
+        authClientService.googleLogin().then(({ user }) => {
             if (user) {
-                console.log(user);
                 dispatch(setUser({
                     me: user
                 }));
+
+                location.reload();
             } else {
                 throw "No user found.";
             }
         }).catch((error) => {
-            authService.logout(dispatch);
+            authClientService.logout(dispatch);
             Alert(error)
         });
     }
-
-    useEffect(() => {
-        if (me) {
-            location.reload();
-        }
-    }, [me]);
 
     return (
         <main className="flex flex-col items-center w-screen h-screen py-48">

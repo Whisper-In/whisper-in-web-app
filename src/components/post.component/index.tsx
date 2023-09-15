@@ -68,7 +68,7 @@ export default function Post({ className, post, hideAvatar }
     }
 
     const onProfileClick = (profileId: string) => {
-        router.push(`/mobile/profile/${profileId}?isAI=true`);
+        router.push(`/mobile/profile/${profileId}`);
     }
 
     const onShareClick = () => {

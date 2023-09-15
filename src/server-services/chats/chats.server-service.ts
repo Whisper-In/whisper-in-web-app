@@ -1,12 +1,12 @@
 import { IProfileDto, IProfileSearchDto } from "@/server-dtos/profile/profile.server-dtos";
 import axiosInstance from "../axios";
-import { ChatFeature, IUserChatDto } from "@/server-dtos/chats/chats.server-dtos";
+import { ChatFeature, IUserChatRawDto, IUserChatDto } from "@/server-dtos/chats/chats.server-dtos";
 
 const route = "chats";
 
 export const getUserChats = async (userId: string) => {
   try {
-    const result = await axiosInstance.get<IUserChatDto[]>(
+    const result = await axiosInstance.get<IUserChatRawDto[]>(
       `${route}/user-chats/${userId}`
     );
 
@@ -26,14 +26,14 @@ export const createNewChat = async (userId: string, aiProfileId: string) => {
   }
 }
 
-export const getChat = async (chatId: string) => {
+export const getChat = async (chatId: string): Promise<IUserChatDto> => {
   try {
-    const result = await axiosInstance.get<IUserChatDto>(`${route}/${chatId}`);    
-    
+    const result = await axiosInstance.get<IUserChatRawDto>(`${route}/${chatId}`);
+
     return {
       chatId: result.data.chatId,
       profiles: result.data.profiles,
-      features: result.data.features
+      features: result.data.features.map((feature) => ChatFeature[feature as keyof typeof ChatFeature])
     };
   } catch (error) {
     throw error;
