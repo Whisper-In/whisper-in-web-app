@@ -4,13 +4,19 @@ import { FLUSH, PAUSE, PERSIST, PURGE, PersistConfig, REGISTER, REHYDRATE, persi
 import storage from "./storage";
 import chatReducer, { chatSlice } from "./slices/chats.slice";
 import { ChatsState } from "./states/chats.states";
+import appReducer, { AppState, appSlice } from "./slices/app.slice";
 
-const rootPersistConfig: PersistConfig<{ user: UserState, chats: ChatsState }> = {
+const rootPersistConfig: PersistConfig<{
+    app: AppState,
+    user: UserState,
+    chats: ChatsState
+}> = {
     key: "root",
     storage
 }
 
 const rootReducer = combineReducers({
+    [appSlice.name]: appReducer,
     [userSlice.name]: userReducer,
     [chatSlice.name]: chatReducer
 });

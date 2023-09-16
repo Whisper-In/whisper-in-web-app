@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useMemo, useState } from "react";
 import { ShareModalProvider } from "./_components/share-modal.component";
 import { AlertPromptProvider } from "@/components/alert-prompt.component";
 import { SpinnerProvider } from "@/components/spinner.component";
@@ -8,7 +8,7 @@ export default function MobileRootLayout(props
     return (
         <AlertPromptProvider>
             <SpinnerProvider>
-                <ShareModalProvider>
+                <ShareModalProvider>                    
                     {props.modal}
                     {props.children}
                 </ShareModalProvider>

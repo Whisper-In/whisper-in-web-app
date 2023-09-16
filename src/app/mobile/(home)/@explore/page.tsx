@@ -12,8 +12,11 @@ import Header from "@/app/mobile/_components/header.component";
 export default function Explore() {
     const [searchResults, setSearchResults] = useState<IProfileSearchDto[]>();
 
-    const onSearchInput = (event: React.FormEvent<HTMLInputElement>) => {
+    const onSearchInput = (event: React.SyntheticEvent<HTMLInputElement>) => {
         const query = event.currentTarget.value;
+
+        console.log(event.target)
+        console.log(query)
 
         searchProfiles(query).then((results) => {
             setSearchResults(results);

@@ -8,11 +8,15 @@ import { faInfoCircle, faMoon, faRightFromBracket } from "@fortawesome/free-soli
 import React from "react";
 import * as authClientService from "@/app/_client-services/auth/auth.service";
 import { useRouter } from "next/navigation";
+import { setDarkMode } from "@/store/slices/app.slice";
+import { useSpinner } from "@/components/spinner.component";
 
 export default function Settings() {
     const router = useRouter();
     const me = useAppSelector((state) => state.user.me)!;
+    const isDarkMode = useAppSelector((state) => state.app.darkMode);
     const dispatch = useAppDispath();
+    const { showSpinner } = useSpinner();
 
     const avatarSize = 80;
 
@@ -20,10 +24,32 @@ export default function Settings() {
         return null;
     }
 
+    const settings = [
+        {
+            label: "Dark Mode",
+            icon: faMoon,
+            leftComponent: <Switch checked={isDarkMode} />,
+            onClick: () => dispatch(setDarkMode(!isDarkMode))
+        },
+        {
+            label: "About",
+            icon: faInfoCircle,
+            onClick: () => window.open("https://www.whisperin.com", "_blank")
+        },
+        {
+            label: "Log Out",
+            icon: faRightFromBracket,
+            onClick: () => logout()
+        }
+    ]
+
     const logout = () => {
-        authClientService.logout(dispatch).then(() => {
-            router.refresh();
-        });
+        showSpinner(true);
+        authClientService.logout(dispatch)
+            .then(() => {
+                router.refresh();
+            })
+            .finally(() => showSpinner(false));
     }
 
     return (
@@ -45,35 +71,24 @@ export default function Settings() {
             </div>
 
             <List>
-                <ListItem disablePadding>
-                    <ListItemButton sx={{ padding: 3 }}>
-                        <ListItemIcon>
-                            <FontAwesomeIcon icon={faMoon} fontSize={30} />
-                        </ListItemIcon>
-                        <ListItemText primary="Dark Mode" />
-                        <ListItemIcon>
-                            <Switch checked={false} />
-                        </ListItemIcon>
-                    </ListItemButton>
-                </ListItem>
-
-                <ListItem disablePadding>
-                    <ListItemButton sx={{ padding: 3 }}>
-                        <ListItemIcon>
-                            <FontAwesomeIcon icon={faInfoCircle} fontSize={30} />
-                        </ListItemIcon>
-                        <ListItemText primary="About" />
-                    </ListItemButton>
-                </ListItem>
-
-                <ListItem disablePadding>
-                    <ListItemButton sx={{ padding: 3 }} onClick={logout}>
-                        <ListItemIcon>
-                            <FontAwesomeIcon icon={faRightFromBracket} fontSize={30} />
-                        </ListItemIcon>
-                        <ListItemText primary="Log Out" />
-                    </ListItemButton>
-                </ListItem>
+                {
+                    settings.map((setting) =>
+                        <ListItem disablePadding>
+                            <ListItemButton sx={{ padding: 3 }} onClick={setting.onClick}>
+                                <ListItemIcon>
+                                    <FontAwesomeIcon icon={setting.icon} fontSize={30} />
+                                </ListItemIcon>
+                                <ListItemText primary={setting.label} />
+                                {
+                                    setting.leftComponent &&
+                                    <ListItemIcon>
+                                        {setting.leftComponent}
+                                    </ListItemIcon>
+                                }
+                            </ListItemButton>
+                        </ListItem>
+                    )
+                }
             </List>
         </main>
     )

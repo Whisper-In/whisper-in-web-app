@@ -8,27 +8,49 @@ import { Alert } from "@mui/material"
 import { useAppDispath, useAppSelector } from "@/store/hooks"
 import { UserProfile, setUser } from "@/store/slices/user.slice"
 import { useEffect } from "react"
+import { useAlertPrompt } from "@/components/alert-prompt.component"
+import { useRouter } from "next/navigation"
+import { convertClientCookieToObject } from "@/utils/cookies.util"
+import { useSpinner } from "@/components/spinner.component"
 
 export default function SignIn() {
     const me = useAppSelector((state) => state.user.me);
     const dispatch = useAppDispath();
+    const { promptAlert } = useAlertPrompt();
+    const router = useRouter();
+    const { showSpinner } = useSpinner();
 
     const googleSignIn = async () => {
+        showSpinner(true);
         authClientService.googleLogin().then(({ user }) => {
             if (user) {
                 dispatch(setUser({
                     me: user
                 }));
-
-                location.reload();
             } else {
                 throw "No user found.";
             }
         }).catch((error) => {
             authClientService.logout(dispatch);
-            Alert(error)
+                        
+            promptAlert({
+                title: "Login Failed",
+                message: "Opps, login failed. Please try again."
+            });
+        }).finally(() => {
+            showSpinner(false);
         });
     }
+
+    useEffect(() => {
+        if (me) {
+            const cookie = convertClientCookieToObject(document.cookie);
+
+            if (cookie["token"] != null) {
+                router.refresh();
+            }
+        }
+    }, [me])
 
     return (
         <main className="flex flex-col items-center w-screen h-screen py-48">

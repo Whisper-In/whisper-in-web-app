@@ -13,7 +13,7 @@ export default function BackButton({ className }
 
     return (
         <button className={classNames(
-            "text-onSurface w-fit absolute top-5 left-5 drop-shadow-md",
+            "w-fit absolute top-5 left-5 drop-shadow-md",
             className
         )} onClick={() => router.back()}>
             <FontAwesomeIcon icon={faArrowLeft} fontSize={25} />

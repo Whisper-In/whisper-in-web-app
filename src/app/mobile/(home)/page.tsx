@@ -6,7 +6,6 @@ import { IPostDto } from "@/server-dtos/content/post.server-dtos";
 import RecommendedTypesNav from "./_components/recommended-types.component";
 import classNames from "classnames";
 import PostFeed from "./_components/post-feed.component";
-import Link from "next/link";
 
 export type RecommendedTypes = "FOLLOWING" | "FORYOU";
 

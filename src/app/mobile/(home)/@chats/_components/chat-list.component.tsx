@@ -6,10 +6,11 @@ import { IUserChatRawDto } from "@/server-dtos/chats/chats.server-dtos";
 import { useAppDispath, useAppSelector } from "@/store/hooks";
 import { fetchChats } from "@/store/thunks/chats.thunks";
 import { useEffect, useRef } from "react";
+import { List } from "@mui/material";
 
 export default function ChatList({ className }
     : { className?: string }) {
-    const me = useAppSelector((state) => state.user.me)!;    
+    const me = useAppSelector((state) => state.user.me)!;
 
     const chatList = useAppSelector((state) => state.chats.chats);
 
@@ -23,14 +24,11 @@ export default function ChatList({ className }
     }, [me]);
 
     return (
-        <div className={classNames(
-            "overflow-y-auto",
-            className
-        )}>
+        <List disablePadding>
             {
                 chatList.map((chat, idx) =>
                     <Chat key={idx} chat={chat} />)
             }
-        </div>
+        </List>
     )
 }

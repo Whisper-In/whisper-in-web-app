@@ -1,14 +1,12 @@
 import { IProfileDto, IProfileSearchDto } from "@/server-dtos/profile/profile.server-dtos";
 import classNames from "classnames";
 import SearchListItem from "./search-list-item.component";
+import { List } from "@mui/material";
 
 export default function SearchList({ className, searchResults }
     : { className?: string, searchResults?: IProfileSearchDto[] }) {
     return (
-        <div className={classNames(
-            "overflow-y-auto pt-2",
-            className
-        )}>
+        <List>
             {
                 searchResults?.length ?
                     searchResults.map((result) =>
@@ -19,6 +17,6 @@ export default function SearchList({ className, searchResults }
                         No results found.
                     </div>
             }
-        </div>
+        </List>
     )
 }

@@ -3,7 +3,7 @@
 import { IUserChatRawDto } from "@/server-dtos/chats/chats.server-dtos";
 import { useAppSelector } from "@/store/hooks";
 import { Chat } from "@/store/states/chats.states";
-import { Avatar } from "@mui/material";
+import { Avatar, ListItem, ListItemButton } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -16,26 +16,28 @@ export default function Chat({ chat }
     const lastMessage: string | undefined = undefined;
     const messageDateTime: string | undefined = undefined;
 
-    const openProfile = () => {        
-        router.push(`/mobile/profile/${profile?.id}?isAI=${profile?.isAI}`);
-    }
-
     return (
-        <Link href={`/mobile/chat/${chat.chatId}`} className="flex items-center gap-5 p-5 transition active:bg-black/10">
-            <button onClick={openProfile}>
-                <Avatar src={profile?.avatar} sx={{ width: 50, height: 50 }} />
-            </button>
+        <ListItem disablePadding>
+            <ListItemButton sx={{
+                display: "flex",
+                gap: 2,
+                padding: 2
+            }}>
+                <Link href={`/profile/${profile?.id}`}>
+                    <Avatar src={profile?.avatar} sx={{ width: 50, height: 50 }} />
+                </Link>
 
-            <div className="grow">
-                <div className="flex items-center">
-                    <label className="grow font-bold text-lg">{profile?.name}</label>
-                    <label className="text-sm">{messageDateTime}</label>
-                </div>
-                {
-                    lastMessage &&
-                    <div>{lastMessage}</div>
-                }
-            </div>
-        </Link>
+                <Link href={`/mobile/chat/${chat.chatId}`} className="grow">
+                    <div className="flex items-center">
+                        <label className="grow font-bold text-lg">{profile?.name}</label>
+                        <label className="text-sm">{messageDateTime}</label>
+                    </div>
+                    {
+                        lastMessage &&
+                        <div>{lastMessage}</div>
+                    }
+                </Link>
+            </ListItemButton>
+        </ListItem>
     );
 }

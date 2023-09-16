@@ -1,8 +1,25 @@
+"use client"
+
+import { AppBar, Toolbar, Typography, useTheme } from "@mui/material";
+
 export default function Header({ children, title }: { title?: string } & React.PropsWithChildren) {
+    const theme = useTheme();
+
     return (
-        <div className="min-h-[88px] shadow-md flex flex-col justify-end px-4 pb-2 bg-surface">
-            <label className="font-bold text-xl text-onSurface">{title}</label>
+        <AppBar position="static" sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            minHeight: 88,
+            paddingBottom: 1,
+            paddingRight: 2,
+            paddingLeft: 2
+        }}>
+            <label className="text-2xl">
+                {title}
+            </label>
+
             {children}
-        </div>
+        </AppBar>
     );
 }

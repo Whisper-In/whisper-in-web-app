@@ -1,11 +1,14 @@
 "use client"
 
+import { useAppTheme } from '@/app/theme-provider'
+import { useAppSelector } from '@/store/hooks'
+import { setDarkMode } from '@/store/slices/app.slice'
 import { faCog, faComment, faHome, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { BottomNavigation, BottomNavigationAction, Paper, Tab } from '@mui/material'
+import { BottomNavigation, BottomNavigationAction, Paper, Tab, useTheme } from '@mui/material'
 import classNames from 'classnames'
-import { useParams, useRouter } from 'next/navigation'
 import { useState, PropsWithChildren, useEffect } from "react"
+import { useDispatch } from 'react-redux'
 
 function TabScreen({ children, hidden }: PropsWithChildren & { hidden?: boolean }) {
   return (
@@ -20,13 +23,33 @@ function TabScreen({ children, hidden }: PropsWithChildren & { hidden?: boolean 
   )
 }
 
+type TabType = "feed" | "explore" | "chats" | "settings";
+
 export default function MobileHomeLayout(props: {
   children: React.ReactNode,
   explore: React.ReactNode,
   chats: React.ReactNode,
   settings: React.ReactNode
-}) {  
-  const [tab, setTab] = useState<"feed" | "explore" | "chats" | "settings">("feed");
+}) {
+  const settingsDarkMode = useAppSelector((state) => state.app.darkMode);
+  const { setDarkMode } = useAppTheme();
+  const [tab, setTab] = useState<TabType>("feed");
+
+  const onTabChange = (event: React.SyntheticEvent, newValue: TabType) => {
+    setTab(newValue);
+  }
+
+  const checkTabDarkMode = () => {
+    if (tab == "feed") {
+      setDarkMode(true);
+    } else {
+      setDarkMode(settingsDarkMode);
+    }
+  }
+
+  useEffect(() => {
+    checkTabDarkMode();
+  }, [tab]);
 
   return (
     <div className='flex flex-col h-full'>
@@ -46,20 +69,13 @@ export default function MobileHomeLayout(props: {
       </div>
 
       <Paper sx={{ bottom: 0 }} elevation={5}>
-        <BottomNavigation value={tab} onChange={(event, newValue) => setTab(newValue)}>
+        <BottomNavigation value={tab} onChange={onTabChange} >
           <BottomNavigationAction value="feed" icon={<FontAwesomeIcon icon={faHome} fontSize={20} />} />
           <BottomNavigationAction value="explore" icon={<FontAwesomeIcon icon={faMagnifyingGlass} fontSize={20} />} />
           <BottomNavigationAction value="chats" icon={<FontAwesomeIcon icon={faComment} fontSize={20} />} />
           <BottomNavigationAction value="settings" icon={<FontAwesomeIcon icon={faCog} fontSize={20} />} />
         </BottomNavigation>
       </Paper>
-
-      {/* <BottomNavigation links={[
-        { label: "Recommended", icon: faHome, href: "/" },
-        { label: "Explore", icon: faMagnifyingGlass, href: "/explore" },
-        { label: "Chats", icon: faComment, href: "/chats" },
-        { label: "Settings", icon: faCog, href: "/settings" }
-      ]} hideLabels={true} /> */}
     </div>
   )
 }

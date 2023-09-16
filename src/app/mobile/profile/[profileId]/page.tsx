@@ -18,11 +18,7 @@ export default async function Profile({ params, searchParams }
 
     if (!profile) {
         return notFound();
-    }
-
-    const price = profile.priceTiers?.length > 0 ? profile.priceTiers[0].price : 0;
-
-    
+    }    
 
     return (
         <main className="h-screen flex flex-col">

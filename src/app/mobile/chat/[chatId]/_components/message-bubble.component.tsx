@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPauseCircle, faPlay, faPlayCircle, faStopCircle } from "@fortawesome/free-solid-svg-icons";
 import { idb } from "@/store/indexedDB";
 import { useLiveQuery } from "dexie-react-hooks";
+import { Paper, useTheme } from "@mui/material";
 
 const convertTime = (time: Date | string) => {
     time = typeof time == "string" ? new Date(time) : time;
@@ -19,17 +20,22 @@ const convertTime = (time: Date | string) => {
 }
 
 function MessageBubbleWrapper({ className, isPrimary, children }: { className?: string, isPrimary?: boolean } & PropsWithChildren) {
+    const theme = useTheme();
+
     return (
-        <div className={classNames(
+        <Paper className={classNames(
             "p-2 w-fit",
             className,
             {
-                "bg-primary text-onPrimary rounded-tr-2xl rounded-l-2xl self-end": isPrimary,
-                "bg-secondary text-onSecondary rounded-bl-2xl rounded-r-2xl": !isPrimary
+                "rounded-tr-2xl rounded-l-2xl self-end": isPrimary,
+                "rounded-bl-2xl rounded-r-2xl": !isPrimary
             }
-        )}>
+        )} sx={{
+            backgroundColor: isPrimary ? theme.palette.primary.main : theme.palette.container.main,
+            color: isPrimary ? theme.palette.primary.contrastText : theme.palette.container.contrastText
+        }}>
             {children}
-        </div>
+        </Paper>
     );
 }
 
@@ -65,6 +71,7 @@ const MAX_PROGRESS = 100;
 
 export function MessageBubbleAudio({ className, message, isUser }
     : { className?: string, message: ChatMessage, isUser?: boolean }) {
+    const theme = useTheme();
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const audioRef = useRef<HTMLAudioElement>(null);
@@ -129,7 +136,7 @@ export function MessageBubbleAudio({ className, message, isUser }
         }
         context.clip();
 
-        context.fillStyle = "#aaa";
+        context.fillStyle = theme.palette.container.contrastText;
         context.translate(0, -WAVEFORM_HEIGHT / 2);
         context.fillRect(0, 0, WAVEFORM_WIDTH, WAVEFORM_HEIGHT);
     }

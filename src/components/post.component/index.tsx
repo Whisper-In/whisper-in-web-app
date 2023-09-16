@@ -99,8 +99,7 @@ export default function Post({ className, post, hideAvatar }
             <div className="absolute w-full left-0 bottom-0 px-3 pb-4 flex items-end">
                 <InfoGroup post={_post} className="grow" />
                 <ButtonGroup post={_post}
-                    onLikeClick={onLikeClick}
-                    onProfileClick={onProfileClick}
+                    onLikeClick={onLikeClick}                    
                     onShareClick={onShareClick}
                     hideAvatar={hideAvatar}
                 />

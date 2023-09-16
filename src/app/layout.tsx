@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import { config } from "@fortawesome/fontawesome-svg-core"
 import "@fortawesome/fontawesome-svg-core/styles.css"
 import { Providers } from '@/store/provider'
+import AppThemeProvider from './theme-provider'
 
 config.autoAddCss = false;
 
@@ -33,7 +34,9 @@ export default function RootLayout({
     <html lang="en" style={{ height: "100%" }}>
       <body className={inter.className} style={{ height: "100%", overflow: "hidden" }}>
         <Providers>
-          {children}
+          <AppThemeProvider>
+            {children}
+          </AppThemeProvider>
         </Providers>
       </body>
     </html>
