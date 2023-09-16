@@ -56,11 +56,12 @@ export default function MessageBubble({ className, message, isUser }
     );
 }
 
-const WAVEFORM_BARS = 50;
+const WAVEFORM_BARS = 65;
 const WAVEFORM_WIDTH = 200;
 const WAVEFORM_HEIGHT = 50;
 const WAVEFORM_GAP = 1;
 const WAVEFORM_AMPLIFICATION = 2;
+const MAX_PROGRESS = 100;
 
 export function MessageBubbleAudio({ className, message, isUser }
     : { className?: string, message: ChatMessage, isUser?: boolean }) {
@@ -70,9 +71,10 @@ export function MessageBubbleAudio({ className, message, isUser }
 
     const [audioURL, setAudioURL] = useState<string | undefined>();
     const [isPlaying, setIsPlaying] = useState(false);
+    const [audioTime, setAudioTime] = useState(0);
     const audioSeekerValue = useSpringValue(0);
 
-    const time = convertTime(message.updatedAt!);
+    const messageTime = convertTime(message.updatedAt!);
 
     const audio = useLiveQuery(async () =>
         await idb.audios.where('id').equals(message.audioId!).first(),
@@ -82,21 +84,33 @@ export function MessageBubbleAudio({ className, message, isUser }
     const audioContext = new AudioContext();
 
     const getWaveformChannelData = async (arrayBuffer: ArrayBuffer) => {
-        const buffer = await audioContext.decodeAudioData(arrayBuffer);
+        try {
+            const buffer = await audioContext.decodeAudioData(arrayBuffer);
 
-        const rawChannelData = buffer.getChannelData(0);
-        const channelData: number[] = [];
+            const rawChannelData = buffer.getChannelData(0);
+            const channelData: number[] = [];
 
-        const channelSkipCount = Math.round((rawChannelData.length - 1) / WAVEFORM_BARS);
+            const channelSkipCount = Math.round((rawChannelData.length - 1) / WAVEFORM_BARS);
 
-        for (let i = 0; i < WAVEFORM_BARS; i++) {
-            channelData.push(rawChannelData[i * channelSkipCount]);
+            for (let i = 0; i < WAVEFORM_BARS; i++) {
+                const idx = i * channelSkipCount
+                const total = rawChannelData.slice(idx, idx + channelSkipCount)
+                    .reduce((prev, curr) => prev + Math.abs(curr), 0);
+
+                channelData.push(total / channelSkipCount);
+            }
+
+            return channelData;
+        } catch (error) {
+            throw error;
         }
-
-        return channelData;
     }
 
     const generateWaveform = async (arrayBuffer: ArrayBuffer) => {
+        if (!audioContext) {
+            return;
+        }
+
         const channelData = await getWaveformChannelData(arrayBuffer);
         const context = canvasRef.current!.getContext("2d")!;
 
@@ -127,10 +141,11 @@ export function MessageBubbleAudio({ className, message, isUser }
         context.fillRect(0, 0, WAVEFORM_WIDTH, WAVEFORM_HEIGHT);
     }
 
+
     const updateAudioSeeker = () => {
         const context = canvasRef.current!.getContext("2d")!;
 
-        const progress = audioSeekerValue.get() / 100;
+        const progress = audioSeekerValue.get() / MAX_PROGRESS;
 
         context.fillStyle = "#FFF";
         context.fillRect(0, 0, WAVEFORM_WIDTH * progress, WAVEFORM_HEIGHT);
@@ -146,7 +161,7 @@ export function MessageBubbleAudio({ className, message, isUser }
     }, [audio]);
 
     useEffect(() => {
-        if (audio && canvasRef.current) {
+        if (audio && audioContext && canvasRef.current) {
             generateWaveform(audio.arrayBuffer);
         }
     }, [audio, canvasRef.current]);
@@ -161,7 +176,7 @@ export function MessageBubbleAudio({ className, message, isUser }
 
                 audioSeekerValue.start({
                     from: 0,
-                    to: 100,
+                    to: MAX_PROGRESS,
                     config: {
                         duration: audioRef.current.duration * 1000
                     },
@@ -176,6 +191,35 @@ export function MessageBubbleAudio({ className, message, isUser }
         }
     }
 
+    const onTimeUpdate = () => {
+        _setAudioTime(audioRef.current?.currentTime);
+    }
+
+    const onPlay = () => {
+        setIsPlaying(true);
+    }
+
+    const onPause = () => {
+        setIsPlaying(false);
+    }
+
+    const onStop = () => {
+        setIsPlaying(false);
+        _setAudioTime(audioRef.current?.duration);
+    }
+
+    const onLoadedData = () => {
+        _setAudioTime(audioRef.current?.duration);
+    }
+
+    const _setAudioTime = (time?: number) => {
+        if (!time || isNaN(time)) {
+            time = 0;
+        }
+
+        setAudioTime(time / 60);
+    }
+
     return (
         <MessageBubbleWrapper className={classNames(
             className
@@ -185,17 +229,27 @@ export function MessageBubbleAudio({ className, message, isUser }
                     <FontAwesomeIcon icon={!isPlaying ? faPlayCircle : faStopCircle} fontSize={35} />
                 </button>
 
-                <canvas ref={canvasRef} width={WAVEFORM_WIDTH} height={WAVEFORM_HEIGHT}></canvas>
-            </div>
+                <div>
+                    <canvas ref={canvasRef} width={WAVEFORM_WIDTH} height={WAVEFORM_HEIGHT}></canvas>
 
-            <div className="flex justify-end text-xs mr-2">
-                {time}
+                    <div className="flex text-xs items-center">
+                        <span className="grow">
+                            {audioTime.toFixed(2)}
+                        </span>
+
+                        <span>
+                            {messageTime}
+                        </span>
+                    </div>
+                </div>
             </div>
 
             <audio ref={audioRef} src={audioURL}
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-                onEnded={() => setIsPlaying(false)}
+                onTimeUpdate={onTimeUpdate}
+                onPlay={onPlay}
+                onPause={onPause}
+                onEnded={onStop}
+                onLoadedData={onLoadedData}
             />
         </MessageBubbleWrapper>
     );
