@@ -7,21 +7,21 @@ export function middleware(request: NextRequest) {
     let initialPathName = request.nextUrl.pathname;
 
     if (!initialPathName.startsWith("/api")) {
-        //request.nextUrl.pathname = CheckTokenURL(request.nextUrl.pathname, token);
+        request.nextUrl.pathname = CheckTokenURL(request.nextUrl.pathname, token);
 
         request.nextUrl.pathname = CheckBrowser(request);
     }
 
     let response = NextResponse.next();
 
-    if (request.nextUrl.pathname != initialPathName) {
-        const newURL = new URL(request.nextUrl.pathname, request.nextUrl.origin)
-        searchParams.forEach((value, key) => {
-            newURL.searchParams.append(key, value);
-        });
+    // if (request.nextUrl.pathname != initialPathName) {
+    //     const newURL = new URL(request.nextUrl.pathname, request.nextUrl.origin)
+    //     searchParams.forEach((value, key) => {
+    //         newURL.searchParams.append(key, value);
+    //     });
 
-        response = NextResponse.redirect(newURL);
-    }
+    //     response = NextResponse.redirect(newURL);
+    // }
 
     if (token) {
         response.headers.append("Authorization", `Bearer ${token}`);
