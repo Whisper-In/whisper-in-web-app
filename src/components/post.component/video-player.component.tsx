@@ -51,6 +51,7 @@ export default function VideoPlayer({ className, src, poster }
 
             <video ref={ref}
                 controls={false}
+                playsInline={true}
                 className="w-full h-full object-cover"
                 loop={true}
                 src={src}
