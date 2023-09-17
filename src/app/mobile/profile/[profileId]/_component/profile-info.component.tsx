@@ -145,7 +145,7 @@ export default function ProfileInfo({ profile }: { profile: IProfileDto }) {
             currency: "usd",
             setup_future_usage: "off_session"
         }}>
-            <div className="flex flex-col items-center gap-3 pt-10 px-5 mb-3">
+            <div className="flex flex-col items-center gap-3 pt-14 px-5 mb-3">
                 <div className="rounded-full w-[96px] h-[96px] overflow-hidden">
                     <img className="object-cover bg-secondary w-full h-full" src={_profile.avatar} />
                 </div>

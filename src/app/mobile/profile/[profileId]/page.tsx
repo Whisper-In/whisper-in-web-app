@@ -22,7 +22,7 @@ export default async function Profile({ params, searchParams }
 
     return (
         <main className="h-screen flex flex-col">
-            <BackButton className="absolute top-10 left-5"/>
+            <BackButton className="absolute top-14 left-5"/>
 
             <ProfileInfo profile={profile} />
 
