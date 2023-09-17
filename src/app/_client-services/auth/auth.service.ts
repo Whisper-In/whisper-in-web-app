@@ -14,10 +14,11 @@ export async function login(loginUrl:string) {
                     if (newWindow.closed) {
                         reject("Login window was closed.");
                     }
-                }, 500);
+                }, 1000);
 
                 window.addEventListener("message", (event) => {
                     if (event.origin == window.location.origin) {
+                        console.log(event.data)
                         if (event.data?.signin_status == "SUCCESS") {
                             newWindow.close();
                             const user = event.data.user;

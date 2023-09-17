@@ -56,12 +56,10 @@ function CheckBrowser(request: NextRequest) {
         }
     }
     else {
-        pathName = pathName.replaceAll("/mobile", "");
+        if (firstPath == mobilePathName) {
+            pathName = pathName.replaceAll(`/${mobilePathName}`, "");
+        }
     }
-    // else if (firstPath == mobilePathName) {
-    //     const newPathName = pathName.replace(`/${mobilePathName}`, "");
-    //     pathName = `${newPathName}`;
-    // }
 
     return pathName;
 }
