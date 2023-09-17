@@ -29,17 +29,22 @@ export const getUser = (cookies: RequestCookies | ReadonlyRequestCookies): UserP
     return null;
 }
 
-export const convertClientCookieToObject = (cookies: string) => {
-    const cookiesArray = cookies.split(";");
+export const convertClientCookieToObject = (cookies?: string) => {
+    const cookiesArray = cookies?.split(";");    
     const cookiesObject: { [key: string]: string } = {}
 
-    cookiesArray.forEach((cookie) => {
+    cookiesArray?.forEach((cookie) => {
+        if(!cookie.length) {
+            return;
+        }
+
         const split = cookie.split("=");
+
         const key = split[0].trim();
         let value = split[1].trim();
 
         try {
-            const decode = decodeURIComponent(value);            
+            const decode = decodeURIComponent(value);
             value = JSON.parse(decode);
         } catch (error) {
 
