@@ -23,14 +23,14 @@ function MessageBubbleWrapper({ className, isPrimary, children }: { className?: 
     const theme = useTheme();
 
     return (
-        <Paper className={classNames(
-            "p-2 w-fit",
+        <Paper className={classNames(            
             className,
-            {
-                "rounded-tr-2xl rounded-l-2xl self-end": isPrimary,
-                "rounded-bl-2xl rounded-r-2xl": !isPrimary
-            }
         )} sx={{
+            padding: 1,
+            borderRadius: 5,
+            borderTopLeftRadius: !isPrimary ? 0 : undefined,
+            borderBottomRightRadius: isPrimary ? 0 :undefined,
+            alignSelf: isPrimary ? "flex-end" : "flex-start",
             backgroundColor: isPrimary ? theme.palette.primary.main : theme.palette.container.main,
             color: isPrimary ? theme.palette.primary.contrastText : theme.palette.container.contrastText
         }}>
