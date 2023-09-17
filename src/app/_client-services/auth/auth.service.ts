@@ -10,14 +10,22 @@ export async function googleLogin() {
             const newWindow = window.open(`${route}/google/login`, "_blank", "toolbar=0,menu=0,location=0");
 
             if (newWindow) {
+                const closedCheck = setInterval(() => {
+                    if (newWindow.closed) {
+                        reject("Login window was closed.");
+                    }
+                }, 500);
+
                 window.addEventListener("message", (event) => {
                     if (event.origin == window.location.origin) {
                         if (event.data?.signin_status == "SUCCESS") {
                             newWindow.close();
                             const user = event.data.user;
 
+                            clearInterval(closedCheck)
                             resolve({ user });
                         } else {
+                            clearInterval(closedCheck)
                             reject("Failed to login.");
                         }
                     }
@@ -33,6 +41,6 @@ export async function googleLogin() {
 
 export async function logout(dispatch: AppDispatch) {
     dispatch(userLogout());
-    
+
     await axios.get(`${route}/logout`);
 }
