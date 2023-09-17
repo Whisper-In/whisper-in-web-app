@@ -53,7 +53,7 @@ export const darkTheme = createTheme({
         MuiAppBar: {
             styleOverrides: {
                 colorPrimary: {
-                    backgroundColor: "#121212",
+                    backgroundColor: "#000",
                     color: "#fff"
                 }
             }
