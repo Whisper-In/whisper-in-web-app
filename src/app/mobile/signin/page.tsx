@@ -20,9 +20,9 @@ export default function SignIn() {
     const router = useRouter();
     const { showSpinner } = useSpinner();
 
-    const googleSignIn = async () => {
+    const login = async (loginUrl:string) => {
         showSpinner(true);
-        authClientService.googleLogin().then(({ user }) => {
+        authClientService.login(loginUrl).then(({ user }) => {
             if (user) {
                 dispatch(setUser({
                     me: user
@@ -59,9 +59,9 @@ export default function SignIn() {
             </div>
 
             <div className="flex flex-col gap-5">
-                <GoogleSignInButton onClick={() => googleSignIn()} />
+                <GoogleSignInButton onClick={() => login("/google/login")} />
 
-                <AppleSignInButton />
+                <AppleSignInButton onClick={() => login("/apple/login")}/>
             </div>
         </main>
     )

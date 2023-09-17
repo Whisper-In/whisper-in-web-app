@@ -4,10 +4,10 @@ import axios from "axios";
 
 const route = "/api/auth"
 
-export async function googleLogin() {
+export async function login(loginUrl:string) {
     return new Promise<{ user: UserProfile }>((resolve, reject) => {
         try {
-            const newWindow = window.open(`${route}/google/login`, "_blank", "toolbar=0,menu=0,location=0");
+            const newWindow = window.open(`${route}${loginUrl}`, "_blank", "toolbar=0,menu=0,location=0");
 
             if (newWindow) {
                 const closedCheck = setInterval(() => {

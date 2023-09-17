@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
             response.cookies.set("token", token);
         }
 
-        return response;
+        //return response;
     } catch (error) {
         throw error;
     }
