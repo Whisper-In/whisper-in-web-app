@@ -151,12 +151,7 @@ export default function ProfileInfo({ profile }: { profile: IProfileDto }) {
                 </div>
 
                 <div className="text-lg italic">
-                    {
-                        _profile.userName ?
-                            `@${_profile.userName}`
-                            :
-                            _profile.email
-                    }
+                    @{_profile.userName}
                 </div>
                 <div className="flex justify-center gap-12 mb-3">
                     <StatItem label="Posts" value={_profile.postCount ?? 0} />

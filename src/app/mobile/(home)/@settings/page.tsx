@@ -18,6 +18,8 @@ export default function Settings() {
     const dispatch = useAppDispath();
     const { showSpinner } = useSpinner();
 
+    const name = me.name ?? me.email?.split("@")[0];
+
     const avatarSize = 80;
 
     if (!me) {
@@ -66,7 +68,7 @@ export default function Settings() {
                 />
 
                 <label className="font-bold text-xl">
-                    {me.name}
+                    {name}
                 </label>
             </div>
 
