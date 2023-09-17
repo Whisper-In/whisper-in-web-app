@@ -13,6 +13,7 @@ import { fetchChatCompletion } from "@/store/thunks/chats.thunks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
 import { ChatFeature } from "@/store/states/chats.states";
+import BackButton from "@/app/mobile/_components/back-button.component";
 
 export default function ChatSection({ className, chat }
     : { className?: string, chat: IUserChatDto }) {
@@ -84,7 +85,8 @@ export default function ChatSection({ className, chat }
             <Header>
                 <div className="flex gap-5 items-center">
                     <div className="flex grow items-center gap-5">
-                        <Avatar src={aiProfile.avatar} sx={{ width: 50, height: 50 }} />
+                        <BackButton/>
+                        <Avatar src={aiProfile.avatar} sx={{ width: 40, height: 40 }} />
                         <label className="font-bold text-lg">{aiProfile.name}</label>
                     </div>
 

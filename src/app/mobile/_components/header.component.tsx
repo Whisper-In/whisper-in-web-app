@@ -11,7 +11,7 @@ export default function Header({ children, title }: { title?: string } & React.P
             flexDirection: "column",
             justifyContent: "flex-end",
             minHeight: 88,
-            paddingBottom: 1,
+            paddingBottom: 2,
             paddingRight: 2,
             paddingLeft: 2
         }}>

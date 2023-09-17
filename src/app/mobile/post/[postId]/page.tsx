@@ -16,7 +16,7 @@ export default async function PostPage({ params, searchParams }
         <main className="w-full h-full bg-black">
             <Post post={post} hideAvatar={!showAvatar} />
 
-            <BackButton />
+            <BackButton className="absolute top-5 left-5"/>
         </main>
     );
 }
