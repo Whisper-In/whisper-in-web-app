@@ -72,8 +72,8 @@ export default function Settings() {
 
             <List>
                 {
-                    settings.map((setting) =>
-                        <ListItem disablePadding>
+                    settings.map((setting, idx) =>
+                        <ListItem key={idx} disablePadding>
                             <ListItemButton sx={{ padding: 3 }} onClick={setting.onClick}>
                                 <ListItemIcon>
                                     <FontAwesomeIcon icon={setting.icon} fontSize={30} />

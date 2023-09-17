@@ -1,11 +1,11 @@
 import React, { useRef, useEffect, useMemo, useState } from "react";
 
 export function useIsInViewport(ref: React.MutableRefObject<any>) {
+    const [isIntersecting, setIsIntersecting] = useState(false);
+
     if (!window?.IntersectionObserver) {
         return;
     }
-
-    const [isIntersecting, setIsIntersecting] = useState(false);
 
     const observer = useMemo(
         () =>

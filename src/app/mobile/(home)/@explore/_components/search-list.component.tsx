@@ -9,8 +9,8 @@ export default function SearchList({ className, searchResults }
         <List>
             {
                 searchResults?.length ?
-                    searchResults.map((result) =>
-                        <SearchListItem profile={result} />
+                    searchResults.map((result, idx) =>
+                        <SearchListItem key={idx} profile={result} />
                     )
                     :
                     <div className="mt-3 text-center">

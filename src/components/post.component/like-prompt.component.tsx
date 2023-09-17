@@ -37,4 +37,6 @@ const LikePrompt = forwardRef(({ className, size = 120 }
     );
 });
 
+LikePrompt.displayName = "LikePrompt"
+
 export default LikePrompt;
