@@ -14,14 +14,14 @@ export function middleware(request: NextRequest) {
 
     let response = NextResponse.next();
 
-    // if (request.nextUrl.pathname != initialPathName) {
-    //     const newURL = new URL(request.nextUrl.pathname, request.nextUrl.origin)
-    //     searchParams.forEach((value, key) => {
-    //         newURL.searchParams.append(key, value);
-    //     });
+    if (request.nextUrl.pathname != initialPathName) {
+        const newURL = new URL(request.nextUrl.pathname, request.nextUrl.origin)
+        searchParams.forEach((value, key) => {
+            newURL.searchParams.append(key, value);
+        });
 
-    //     response = NextResponse.redirect(newURL);
-    // }
+        response = NextResponse.redirect(newURL);
+    }
 
     if (token) {
         response.headers.append("Authorization", `Bearer ${token}`);
@@ -32,7 +32,7 @@ export function middleware(request: NextRequest) {
 
 function CheckTokenURL(pathName: string, token?: string) {
     const paths = pathName.split("/");
-    const lastPath = paths[paths.length - 1];    
+    const lastPath = paths[paths.length - 1];
 
     if (!token && !["signin", "callback"].includes(lastPath)) {
         pathName = "signin"
@@ -48,16 +48,15 @@ function CheckBrowser(request: NextRequest) {
     const mobilePathName = "mobile"
     const firstPath = pathName.split("/")[1];
     const { device } = userAgent(request);
-    const callback = getCookieCallback(request.cookies);
 
-    if (device.type == "mobile" || callback.device == "mobile") {
+    if (device.type == "mobile") {
         if (firstPath != mobilePathName) {
             pathName = pathName.replace(/^\/+/g, '');
             pathName = `/${mobilePathName}/${pathName}`;
         }
     }
     else {
-        pathName = "/"
+        pathName = pathName.replaceAll("/mobile", "");
     }
     // else if (firstPath == mobilePathName) {
     //     const newPathName = pathName.replace(`/${mobilePathName}`, "");
