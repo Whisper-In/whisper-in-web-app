@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
         const token = searchParams.get("token");
         const user = searchParams.get("user");
 
-        const newURL = new URL('/mobile/callback', url.origin);
+        const newURL = new URL('/callback', url.origin);
 
         if (user) {
             newURL.searchParams.append("user", user);
