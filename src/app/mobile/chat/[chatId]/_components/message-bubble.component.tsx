@@ -49,12 +49,12 @@ export default function MessageBubble({ className, message, isUser }
             "max-w-[80%]",
             className
         )} isPrimary={isUser}>
-            <div className="flex gap-2 p-1 items-end">
-                <div className="p-1 whitespace-pre-wrap">
+            <div className="p-1 items-end">
+                <div className="p-1 break-words">
                     {message.message}
                 </div>
 
-                <div className="text-xs">
+                <div className="text-xs w-full text-end">
                     {time}
                 </div>
             </div>
@@ -69,8 +69,8 @@ const WAVEFORM_GAP = 1;
 const WAVEFORM_AMPLIFICATION = 2;
 const MAX_PROGRESS = 100;
 
-export function MessageBubbleAudio({ className, message, isUser }
-    : { className?: string, message: ChatMessage, isUser?: boolean }) {
+export function MessageBubbleAudio({ className, message, chatId, isUser }
+    : { className?: string, message: ChatMessage, chatId: string, isUser?: boolean }) {
     const theme = useTheme();
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -79,12 +79,16 @@ export function MessageBubbleAudio({ className, message, isUser }
     const [audioURL, setAudioURL] = useState<string | undefined>();
     const [isPlaying, setIsPlaying] = useState(false);
     const [audioTime, setAudioTime] = useState(0);
+    const [channelData, setChannelData] = useState<number[]>(Array(WAVEFORM_BARS).fill(0));
     const audioSeekerValue = useSpringValue(0);
 
     const messageTime = convertTime(message.updatedAt!);
 
     const audio = useLiveQuery(async () =>
-        await idb.audios.where('id').equals(message.audioId!).first(),
+        await idb.audios
+            .where(['chatId', 'id'])
+            .equals([chatId, message.audioId!])
+            .first(),
         [message.audioId]
     );
 
@@ -107,19 +111,21 @@ export function MessageBubbleAudio({ className, message, isUser }
                 channelData.push(total / channelSkipCount);
             }
 
-            return channelData;
+            setChannelData(channelData);
         } catch (error) {
             throw error;
         }
     }
 
-    const generateWaveform = async (arrayBuffer: ArrayBuffer) => {
+    const drawWaveform = async () => {
         if (!audioContext) {
             return;
         }
 
-        const channelData = await getWaveformChannelData(arrayBuffer);
         const context = canvasRef.current!.getContext("2d")!;
+
+        context.restore();
+        context.clearRect(0, 0, WAVEFORM_WIDTH, WAVEFORM_HEIGHT);
 
         context.save();
 
@@ -164,20 +170,27 @@ export function MessageBubbleAudio({ className, message, isUser }
             const url = URL.createObjectURL(blob);
 
             setAudioURL(url);
+
+            getWaveformChannelData(audio.arrayBuffer);
         }
     }, [audio]);
 
     useEffect(() => {
-        if (audio && audioContext && canvasRef.current) {
-            generateWaveform(audio.arrayBuffer);
+        if (audioContext && canvasRef.current) {
+            drawWaveform();
         }
-    }, [audio, canvasRef.current]);
+    }, [channelData]);
 
 
     const toggleAudio = async () => {
+        if (!audio) {
+            return;
+        }
+
         if (audioRef.current) {
             if (!isPlaying) {
                 resetAudioSeeker();
+                drawWaveform();
 
                 audioRef.current.currentTime = 0;
 

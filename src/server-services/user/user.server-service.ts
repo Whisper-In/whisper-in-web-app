@@ -1,4 +1,4 @@
-import { IUserProfileDto } from "@/server-dtos/user/user.server-dtos";
+import { IUserProfileDto } from "@/dtos/user/user.dtos";
 import axiosInstance from "../axios";
 
 const route = "user";

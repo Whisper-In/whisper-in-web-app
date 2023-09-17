@@ -1,4 +1,4 @@
-import { IUserChatMessageDto } from "@/server-dtos/chats/chats.server-dtos";
+import { IUserChatMessageDto } from "@/dtos/chats/chats.dtos";
 import OpenAI from "openai";
 import axiosInstance from "../axios";
 

@@ -1,4 +1,4 @@
-import { IProfileDto, IProfileSearchDto } from "@/server-dtos/profile/profile.server-dtos";
+import { IProfileDto, IProfileSearchDto } from "@/dtos/profile/profile.dtos";
 import classNames from "classnames";
 import SearchListItem from "./search-list-item.component";
 import { List } from "@mui/material";

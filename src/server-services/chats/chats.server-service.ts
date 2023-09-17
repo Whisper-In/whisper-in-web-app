@@ -1,6 +1,6 @@
-import { IProfileDto, IProfileSearchDto } from "@/server-dtos/profile/profile.server-dtos";
+import { IProfileDto, IProfileSearchDto } from "@/dtos/profile/profile.dtos";
 import axiosInstance from "../axios";
-import { ChatFeature, IUserChatRawDto, IUserChatDto } from "@/server-dtos/chats/chats.server-dtos";
+import { ChatFeature, IUserChatRawDto, IUserChatDto } from "@/dtos/chats/chats.dtos";
 
 const route = "chats";
 

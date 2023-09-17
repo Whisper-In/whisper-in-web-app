@@ -1,6 +1,6 @@
 "use client"
 
-import { IProfileDto } from "@/server-dtos/profile/profile.server-dtos";
+import { IProfileDto } from "@/dtos/profile/profile.dtos";
 import classNames from "classnames";
 
 export default function SubscribeButton({ className, profile, disabled, onClick }

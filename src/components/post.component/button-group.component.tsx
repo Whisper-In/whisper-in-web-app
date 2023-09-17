@@ -1,4 +1,4 @@
-import { IPostDto } from "@/server-dtos/content/post.server-dtos";
+import { IPostDto } from "@/dtos/content/post.dtos";
 import { faHeart, faPlus, faPlusCircle, faShare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Avatar } from "@mui/material";

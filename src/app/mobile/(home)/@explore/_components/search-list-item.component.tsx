@@ -1,4 +1,4 @@
-import { IProfileDto, IProfileSearchDto } from "@/server-dtos/profile/profile.server-dtos";
+import { IProfileDto, IProfileSearchDto } from "@/dtos/profile/profile.dtos";
 import { Avatar, ListItem, ListItemButton } from "@mui/material";
 import Link from "next/link";
 

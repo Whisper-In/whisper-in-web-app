@@ -34,7 +34,7 @@ export default function Settings() {
         {
             label: "About",
             icon: faInfoCircle,
-            onClick: () => window.open("https://www.whisperin.com", "_blank")
+            onClick: () => window.open(process.env.NEXT_PUBLIC_WHISPERIN_URL, "_blank")
         },
         {
             label: "Log Out",

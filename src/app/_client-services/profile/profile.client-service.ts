@@ -1,5 +1,5 @@
-import { ICreatePaymentSheetDto } from "@/server-dtos/payment/payment.server-dtos";
-import { IProfileSearchDto } from "@/server-dtos/profile/profile.server-dtos";
+import { ICreatePaymentSheetDto } from "@/dtos/payment/payment.dtos";
+import { IProfileSearchDto } from "@/dtos/profile/profile.dtos";
 import axios from "axios";
 
 const route = "/api/profile";

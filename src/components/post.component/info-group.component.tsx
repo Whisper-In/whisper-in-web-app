@@ -1,4 +1,4 @@
-import { IPostDto } from "@/server-dtos/content/post.server-dtos";
+import { IPostDto } from "@/dtos/content/post.dtos";
 import classNames from "classnames";
 
 export default function InfoGroup({ className, post }

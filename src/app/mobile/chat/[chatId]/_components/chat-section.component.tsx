@@ -3,20 +3,16 @@
 import classNames from "classnames";
 import MessageList from "./message-list.component";
 import ChatInputBar from "./input-bar.component";
-import { useEffect, useRef, useState } from "react";
-import { IUserChatRawDto, IUserChatMessageDto, IUserChatDto } from "@/server-dtos/chats/chats.server-dtos";
+import { useEffect, useState } from "react";
+import { IUserChatDto } from "@/dtos/chats/chats.dtos";
 import { useAppDispath, useAppSelector } from "@/store/hooks";
-import * as chatGPTClientService from "@/app/_client-services/chat/chat-gpt.client-service";
 import Header from "@/app/mobile/_components/header.component";
 import { Avatar } from "@mui/material";
 import { addNewChatMessage, toggleAudioReplies, updateChatFeatures } from "@/store/slices/chats.slice";
 import { fetchChatCompletion } from "@/store/thunks/chats.thunks";
-import BackButton from "@/app/mobile/_components/back-button.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVolumeHigh, faVolumeMute, faVolumeXmark } from "@fortawesome/free-solid-svg-icons";
-import { profile } from "console";
+import { faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
 import { ChatFeature } from "@/store/states/chats.states";
-import { faAdversal, faAmazonPay } from "@fortawesome/free-brands-svg-icons";
 
 export default function ChatSection({ className, chat }
     : { className?: string, chat: IUserChatDto }) {
@@ -105,7 +101,11 @@ export default function ChatSection({ className, chat }
                 "h-full w-full flex flex-col",
                 className
             )}>
-                <MessageList className="grow" messageList={messageList} userId={me?._id} isTyping={isReplying} />
+                <MessageList className="grow"
+                    messageList={messageList}
+                    userId={me?._id}
+                    chatId={chat.chatId}
+                    isTyping={isReplying} />
 
                 <ChatInputBar onSend={onSend} />
             </div>

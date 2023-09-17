@@ -1,6 +1,6 @@
 "use client"
 
-import { IPostResultsDto, PostType } from "@/server-dtos/content/post.server-dtos"
+import { IPostResultsDto, PostType } from "@/dtos/content/post.dtos"
 import { Tab, Tabs } from "@mui/material"
 import { SyntheticEvent, useEffect, useState } from "react"
 import * as postService from "@/app/_client-services/content/post.service"

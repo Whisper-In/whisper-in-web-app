@@ -1,4 +1,4 @@
-import { IPostDto, IPostResultsDto } from "@/server-dtos/content/post.server-dtos";
+import { IPostDto, IPostResultsDto } from "@/dtos/content/post.dtos";
 import axiosInstance from "@/server-services/axios";
 
 const route = "/content/posts";

@@ -1,4 +1,4 @@
-import { IPostDto, PostType } from "@/server-dtos/content/post.server-dtos";
+import { IPostDto, PostType } from "@/dtos/content/post.dtos";
 import { isScrollEnded } from "@/utils/component.util";
 import classNames from "classnames";
 import Link from "next/link";

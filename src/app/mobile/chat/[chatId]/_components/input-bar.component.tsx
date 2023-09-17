@@ -8,38 +8,32 @@ import { ChangeEvent, useRef, useState } from "react";
 export default function ChatInputBar({ onChange, onSend }
     : { onChange?: (input: string) => void, onSend?: (input: string | undefined) => void }) {
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
-    const [initialTextAreaHeight] = useState(0);
-    const theme = useTheme();
-
-    const updateTextAreaHeight = (target: HTMLTextAreaElement) => {
-        target.style.height = `${initialTextAreaHeight}px`
-        target.style.height = `${target.scrollHeight}px`
-    }
+    const theme = useTheme();    
 
     const _onSend = () => {
-        if (textAreaRef.current) {
+        if (textAreaRef.current) {            
             if (onSend) {
                 onSend(textAreaRef.current.value);
             }
 
             textAreaRef.current.value = "";
-
-            updateTextAreaHeight(textAreaRef.current)
         }
     }
 
     return (
         <>
             <div className="flex px-2 py-3 gap-3 items-end">
-                <Input ref={textAreaRef}
+                <Input inputRef={textAreaRef}
                     fullWidth={true}
                     multiline={true}
                     minRows={1}
                     maxRows={4}
-                    disableUnderline={true}
+                    disableUnderline={true}                    
                     sx={{
+                        minHeight: 40,
                         borderRadius: 5,
-                        padding: 1.5
+                        paddingX: 2,
+                        backgroundColor: theme.palette.container.main                    
                     }}
                 />
 

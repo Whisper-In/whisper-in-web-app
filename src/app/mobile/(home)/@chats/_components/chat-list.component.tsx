@@ -2,7 +2,7 @@
 
 import classNames from "classnames";
 import Chat from "./chat.component";
-import { IUserChatRawDto } from "@/server-dtos/chats/chats.server-dtos";
+import { IUserChatRawDto } from "@/dtos/chats/chats.dtos";
 import { useAppDispath, useAppSelector } from "@/store/hooks";
 import { fetchChats } from "@/store/thunks/chats.thunks";
 import { useEffect, useRef } from "react";

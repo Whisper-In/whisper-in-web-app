@@ -24,6 +24,7 @@ export interface IUserChatDto {
 export interface IUserChatMessageDto {
     message: string;
     sender: string;
+    isAudio?:boolean;
     createdAt?: Date;
     updatedAt?: Date;
 }

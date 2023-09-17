@@ -82,6 +82,7 @@ export const fetchChatCompletion = createAsyncThunk<
         const arrayBuffer = await elevenLabsService.getTextToSpeech(props.contactId, chatGPTResult.message);
 
         const id = await idb.audios.add({
+          chatId: chat!.chatId,
           arrayBuffer
         });
 

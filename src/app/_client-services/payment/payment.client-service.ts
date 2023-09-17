@@ -1,4 +1,4 @@
-import { ICreatePaymentSheetDto } from "@/server-dtos/payment/payment.server-dtos";
+import { ICreatePaymentSheetDto } from "@/dtos/payment/payment.dtos";
 import axios from "axios";
 
 const route = "/api/payment";

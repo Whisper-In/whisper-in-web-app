@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import * as postService from "@/app/_client-services/content/post.service";
-import { IPostDto } from "@/server-dtos/content/post.server-dtos";
+import { IPostDto } from "@/dtos/content/post.dtos";
 import RecommendedTypesNav from "./_components/recommended-types.component";
 import classNames from "classnames";
 import PostFeed from "./_components/post-feed.component";

@@ -1,4 +1,4 @@
-import { IUserChatRawDto, IUserChatMessageDto } from "@/server-dtos/chats/chats.server-dtos";
+import { IUserChatRawDto } from "@/dtos/chats/chats.dtos";
 import axios from "axios";
 
 const route = "/api/chat";

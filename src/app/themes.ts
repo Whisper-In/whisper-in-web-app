@@ -20,7 +20,7 @@ export const lightTheme = createTheme({
             paper: "#fff"
         },
         container: {
-            main: grey[400],
+            main: grey[300],
             contrastText: grey[600]
         }
     },
@@ -30,13 +30,6 @@ export const lightTheme = createTheme({
                 colorPrimary: {
                     backgroundColor: "#fff",
                     color: "#121212"
-                }
-            }
-        },
-        MuiInput: {
-            styleOverrides: {
-                root: {
-                    backgroundColor: grey[300]
                 }
             }
         }
@@ -62,13 +55,6 @@ export const darkTheme = createTheme({
                 colorPrimary: {
                     backgroundColor: "#121212",
                     color: "#fff"
-                }
-            }
-        },
-        MuiInput: {
-            styleOverrides: {
-                root: {
-                    backgroundColor: grey[900]
                 }
             }
         }

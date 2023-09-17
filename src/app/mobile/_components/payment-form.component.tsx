@@ -2,13 +2,13 @@
 
 import { CircularProgress, Drawer } from "@mui/material";
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { ICreatePaymentSheetDto } from "@/server-dtos/payment/payment.server-dtos";
+import { ICreatePaymentSheetDto } from "@/dtos/payment/payment.dtos";
 import * as userClientService from "@/app/_client-services/user/user.client-service";
 import * as chatClientService from "@/app/_client-services/chat/chat.client-service";
 import * as profileClientService from "@/app/_client-services/profile/profile.client-service";
 import { UserProfile } from "@/store/slices/user.slice";
 import { useAppSelector } from "@/store/hooks";
-import { IProfileDto } from "@/server-dtos/profile/profile.server-dtos";
+import { IProfileDto } from "@/dtos/profile/profile.dtos";
 import { useState } from "react";
 import Stripe from "@stripe/stripe-js";
 
