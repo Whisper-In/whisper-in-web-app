@@ -5,7 +5,7 @@ import Header from "../../_components/header.component";
 import { useAppDispath, useAppSelector } from "@/store/hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle, faMoon, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as authClientService from "@/app/_client-services/auth/auth.service";
 import { useRouter } from "next/navigation";
 import { setDarkMode } from "@/store/slices/app.slice";
@@ -13,18 +13,20 @@ import { useSpinner } from "@/components/spinner.component";
 
 export default function Settings() {
     const router = useRouter();
-    const me = useAppSelector((state) => state.user.me)!;
+    const me = useAppSelector((state) => state.user.me);
     const isDarkMode = useAppSelector((state) => state.app.darkMode);
     const dispatch = useAppDispath();
     const { showSpinner } = useSpinner();
-
-    const name = me.name ?? me.email?.split("@")[0];
-
+    const [name, setName] = useState("");
+    
     const avatarSize = 80;
 
-    if (!me) {
-        return null;
-    }
+    useEffect(() => {
+        if(me) {
+            const _name = me.name ?? me.email?.split("@")[0] ?? "";
+            setName(_name);
+        }
+    }, [me])
 
     const settings = [
         {
@@ -60,7 +62,7 @@ export default function Settings() {
 
             <div className="flex flex-col items-center gap-3 my-5">
                 <Avatar
-                    src={me.avatar}
+                    src={me?.avatar}
                     sx={{
                         width: avatarSize,
                         height: avatarSize,
