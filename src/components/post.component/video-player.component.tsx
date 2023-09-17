@@ -15,7 +15,7 @@ export default function VideoPlayer({ className, src, poster }
     useEffect(() => {
         if (ref.current) {
             if (isInViewPort) {
-                ref.current.play().catch(() => {});
+                ref.current.play().catch(() => { });
             } else {
                 ref.current.currentTime = 0;
                 ref.current.pause();
@@ -50,6 +50,7 @@ export default function VideoPlayer({ className, src, poster }
             }
 
             <video ref={ref}
+                controls={false}
                 className="w-full h-full object-cover"
                 loop={true}
                 src={src}
