@@ -9,8 +9,9 @@ import ProfileInfo from "./_component/profile-info.component";
 
 export default async function Profile({ params, searchParams }
     : { params: { profileId: string }, searchParams: { [key: string]: string } }) {
-    const { profileId } = params;
     
+    const { profileId } = params;
+
     const profile = await profileServerService.getProfile(profileId, true)
         .catch(() => {
             return notFound();
@@ -18,11 +19,11 @@ export default async function Profile({ params, searchParams }
 
     if (!profile) {
         return notFound();
-    }    
+    }
 
     return (
         <main className="h-screen flex flex-col">
-            <BackButton className="absolute top-14 left-5"/>
+            <BackButton className="absolute top-14 left-5" />
 
             <ProfileInfo profile={profile} />
 

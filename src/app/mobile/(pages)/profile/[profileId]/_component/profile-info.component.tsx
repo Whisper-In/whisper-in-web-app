@@ -9,7 +9,7 @@ import { useAppDispath, useAppSelector } from "@/store/hooks";
 import * as profileClientService from "@/app/_client-services/profile/profile.client-service";
 import { useEffect, useState } from "react";
 import { ICreatePaymentSheetDto } from "@/dtos/payment/payment.dtos";
-import { CircularProgress, Drawer, Modal } from "@mui/material";
+import { Avatar, CircularProgress, Drawer, Modal } from "@mui/material";
 import PaymentForm from "@/app/mobile/_components/payment-form.component";
 import * as chatClientService from "@/app/_client-services/chat/chat.client-service";
 import * as userClientService from "@/app/_client-services/user/user.client-service";
@@ -146,9 +146,7 @@ export default function ProfileInfo({ profile }: { profile: IProfileDto }) {
             setup_future_usage: "off_session"
         }}>
             <div className="flex flex-col items-center gap-3 pt-14 px-5 mb-3">
-                <div className="rounded-full w-[96px] h-[96px] overflow-hidden">
-                    <img className="object-cover bg-secondary w-full h-full" src={_profile.avatar} />
-                </div>
+                <Avatar src={_profile.avatar} sx={{ width: 96, height: 96 }} />
 
                 <div className="text-lg italic">
                     @{_profile.userName}
