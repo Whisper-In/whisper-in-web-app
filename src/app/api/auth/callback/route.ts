@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
 
         if (token) {
             response.cookies.set("token", token);
-        }
+        }                
 
         return response;
     } catch (error) {

@@ -20,7 +20,7 @@ export default function SignIn() {
     const router = useRouter();
     const { showSpinner } = useSpinner();
 
-    const login = async (loginUrl:string) => {
+    const login = async (loginUrl: string) => {
         showSpinner(true);
         authClientService.login(loginUrl).then(({ user }) => {
             if (user) {
@@ -31,8 +31,9 @@ export default function SignIn() {
                 throw "No user found.";
             }
         }).catch((error) => {
+            console.log("Sign In Error:", error)
             authClientService.logout(dispatch);
-                        
+
             promptAlert({
                 title: "Login Failed",
                 message: "Opps, login failed. Please try again."
@@ -61,7 +62,7 @@ export default function SignIn() {
             <div className="flex flex-col gap-5">
                 <GoogleSignInButton onClick={() => login("/google/login")} />
 
-                <AppleSignInButton onClick={() => login("/apple/login")}/>
+                <AppleSignInButton onClick={() => login("/apple/login")} />
             </div>
         </main>
     )
