@@ -67,10 +67,6 @@ export default function Post({ className, post, hideAvatar }
         }
     }
 
-    const onProfileClick = (profileId: string) => {
-        router.push(`/mobile/profile/${profileId}`);
-    }
-
     const onShareClick = () => {
         setShowShareModal(true, `${origin}/mobile/post/${post._id}?showAvatar=true`);
     }
@@ -96,7 +92,7 @@ export default function Post({ className, post, hideAvatar }
 
             <LikePrompt ref={likePromptRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 " />
 
-            <div className="absolute w-full left-0 bottom-0 px-4 pb-8 flex items-end">
+            <div className="absolute w-full left-0 bottom-1 px-4 pb-8 flex items-end">
                 <InfoGroup post={_post} className="grow" />
                 <ButtonGroup post={_post}
                     onLikeClick={onLikeClick}                    

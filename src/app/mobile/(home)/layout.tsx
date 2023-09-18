@@ -31,6 +31,7 @@ export default function MobileHomeLayout(props: {
   chats: React.ReactNode,
   settings: React.ReactNode
 }) {
+  const theme = useTheme();
   const settingsDarkMode = useAppSelector((state) => state.app.darkMode);
   const { setDarkMode } = useAppTheme();
   const [tab, setTab] = useState<TabType>("feed");
@@ -68,7 +69,10 @@ export default function MobileHomeLayout(props: {
         </TabScreen>
       </div>
 
-      <Paper sx={{ bottom: 0 }} elevation={5}>
+      <Paper sx={{
+        border: 1,
+        borderColor: theme.palette.background.paper
+      }} elevation={5}>
         <BottomNavigation value={tab} onChange={onTabChange} >
           <BottomNavigationAction value="feed" icon={<FontAwesomeIcon icon={faHome} fontSize={20} />} />
           <BottomNavigationAction value="explore" icon={<FontAwesomeIcon icon={faMagnifyingGlass} fontSize={20} />} />
