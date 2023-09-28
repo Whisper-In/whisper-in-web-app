@@ -1,4 +1,4 @@
-import { UserProfile } from "@/store/slices/user.slice";
+import { UserProfile } from "@/store/types/user.types";
 import { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies"
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { NextResponse } from "next/server";

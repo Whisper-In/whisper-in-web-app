@@ -135,4 +135,6 @@ const EditProfileDrawer = forwardRef<EditProfileDrawerElement>((props: DrawerPro
     );
 });
 
+EditProfileDrawer.displayName = "EditProfileDrawer";
+
 export default EditProfileDrawer;

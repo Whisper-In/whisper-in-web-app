@@ -1,5 +1,6 @@
-import { UserProfile, logout as userLogout } from "@/store/slices/user.slice";
+import { logout as userLogout } from "@/store/slices/user.slice";
 import { AppDispatch } from "@/store/store";
+import { UserProfile } from "@/store/types/user.types";
 import axios from "axios";
 
 const route = "/api/auth"
