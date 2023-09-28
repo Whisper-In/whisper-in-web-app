@@ -7,14 +7,14 @@ import axiosInstance from "../axios";
   export const MAX_PREV_MESSAGES_LIMIT = 100;
   
   export const getChatCompletion = async (
-    aiProfileId: string,
+    profileId: string,
     message: string,
     prevMessages: OpenAI.Chat.ChatCompletionMessageParam[]
   ): Promise<IUserChatMessageDto> => {
     try {
       const result = await axiosInstance.post(`${route}/chat-completion`, {
         message,
-        aiProfileId,
+        profileId,
         prevMessages,
       });
   

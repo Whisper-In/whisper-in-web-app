@@ -3,9 +3,9 @@ import axios from "axios";
 
 const route = "/api/chat";
 
-export async function getUserChats(userId: string) {
+export async function getUserChats() {
     try {
-        const results = await axios.get(`${route}/user-chats/${userId}`);
+        const results = await axios.get(`${route}/user-chats`);
 
         return results.data as IUserChatRawDto[];
     } catch (error) {
@@ -13,14 +13,11 @@ export async function getUserChats(userId: string) {
     }
 }
 
-export async function createNewChat(userId: string, aiProfileId: string) {
+export async function createNewChat(profileId: string) {
     try {
-        const chatId: string = await axios.post(`${route}/user-chats/create-new-chat`, {
-            userId,
-            aiProfileId
-        });
+        const result = await axios.post(`${route}/user-chats/create-new-chat`, { profileId });
 
-        return chatId
+        return result.data
     } catch (error) {
         throw error;
     }

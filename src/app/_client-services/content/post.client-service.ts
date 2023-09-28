@@ -55,3 +55,20 @@ export const getPostDetails = async (postId: string) => {
         throw error;
     }
 }
+
+export const createPost = async (file: File, description?: string) => {
+    try {
+        const formData = new FormData();
+        formData.append("post", file);
+
+        if (description) {
+            formData.append("description", description);
+        }
+
+        const result = await axios.post(route, formData);
+
+        return result.data as IPostDto;
+    } catch (error) {
+        throw error;
+    }
+}

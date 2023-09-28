@@ -4,13 +4,9 @@ import { CircularProgress, Drawer } from "@mui/material";
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { ICreatePaymentSheetDto } from "@/dtos/payment/payment.dtos";
 import * as userClientService from "@/app/_client-services/user/user.client-service";
-import * as chatClientService from "@/app/_client-services/chat/chat.client-service";
-import * as profileClientService from "@/app/_client-services/profile/profile.client-service";
-import { UserProfile } from "@/store/slices/user.slice";
 import { useAppSelector } from "@/store/hooks";
 import { IProfileDto } from "@/dtos/profile/profile.dtos";
 import { useState } from "react";
-import Stripe from "@stripe/stripe-js";
 
 export default function PaymentForm({
     open,
@@ -34,21 +30,16 @@ export default function PaymentForm({
     const elements = useElements();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const price = profile.priceTiers?.length ? profile.priceTiers[0].price : 0;
+    const priceTier = profile.priceTiers?.length ? profile.priceTiers[0] : undefined;
 
     if (!me) {
         return null;
     }
 
+
     const initializePaymentSheetResult = async () => {
         try {
-            const paymentSheetResult = await profileClientService.createPaymentSubscription(
-                price,
-                {
-                    userId: me._id,
-                    aiProfileId: profile.id
-                }
-            );
+            const paymentSheetResult = await userClientService.createPaymentSubscription(profile.id, priceTier?.tier);
 
             return paymentSheetResult;
         } catch (error) {
@@ -61,18 +52,16 @@ export default function PaymentForm({
             return null;
         }
 
-        try {            
+        try {
             await stripe?.confirmPayment({
                 elements,
-                clientSecret: paymentSheetResult.paymentIntent,
                 redirect: "if_required",
-                confirmParams: {                    
+                clientSecret: paymentSheetResult.paymentIntent,
+                confirmParams: {
                     save_payment_method: true,
-                    return_url: "/",
+                    return_url: window.location.href,
                 }
             });
-
-
         } catch (error) {
             alert(error)
             throw error;
@@ -100,10 +89,6 @@ export default function PaymentForm({
             setIsSubmitting(true);
 
             const paymentSheetResult = await initializePaymentSheetResult();
-
-            if (!paymentSheetResult) {
-                throw "Failed to initialize payment."
-            }
 
             if (onPaymentInitlialized) {
                 onPaymentInitlialized(paymentSheetResult)

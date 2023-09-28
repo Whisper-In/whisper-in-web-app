@@ -17,31 +17,3 @@ export const searchProfiles = async (query: string) => {
         throw error;
     }
 }
-
-export const createPaymentSubscription = async (
-    amount: number,
-    metadata: { userId: string, aiProfileId: string }) => {
-    try {
-        const result = await axios.post(`${route}/payment-subscription`, {
-            amount,
-            metadata
-        });
-
-        return <ICreatePaymentSheetDto>result.data;
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-export const cancelPaymentSubscription = async (userId: string, aiProfileId: string) => {
-    try {
-        const results = await axios.post(`${route}/cancel-subscription`, {
-            userId,
-            aiProfileId
-        });
-
-        return results.data;
-    } catch (error) {
-        throw error;
-    }
-}

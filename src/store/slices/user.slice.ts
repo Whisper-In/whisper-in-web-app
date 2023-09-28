@@ -1,17 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-
-export type UserProfile = {
-    _id: string;
-    name?: string;
-    aboutMe?: string;
-    avatar?: string;
-    email?: string;
-    linkedAIProfile?: string;
-}
-
-export type UserState = {
-    me?: UserProfile;
-};
+import { fetchUserProfile, updateUserAvatar, updateUserProfile, updateUserVoice } from "../thunks/user.thunks";
+import * as userReducers from "../reducers/user.reducers";
+import { UserState } from "../states/user.states";
 
 export const initialState: UserState = {
 };
@@ -20,12 +10,14 @@ export const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        setUser: (state: UserState, action: PayloadAction<UserState>) => {
-            state.me = action.payload.me;
-        },
-        logout: (state: UserState) => {
-            state.me = undefined
-        }
+        setUser: userReducers.setUser,
+        logout: userReducers.logout
+    },
+    extraReducers: (builder) => {
+        builder.addCase(fetchUserProfile.fulfilled, userReducers.setUser);
+        builder.addCase(updateUserProfile.fulfilled, userReducers.setUser);
+        builder.addCase(updateUserAvatar.fulfilled, userReducers.setUser);
+        builder.addCase(updateUserVoice.fulfilled, userReducers.setUser);
     }
 });
 

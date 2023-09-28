@@ -5,14 +5,11 @@ export async function POST(request: Request) {
     try {
         const body = await request.json();
 
-        const { userId, aiProfileId, tier, subscriptionId } = body;
+        const { tier, profileId } = body;
 
-        const result = await userServerService.createUserAISubscription(
-            userId,
-            aiProfileId,
-            tier,
-            subscriptionId
-        );        
+        const result = await userServerService.createPaymentSubscription(
+            profileId, tier
+        );
 
         return NextResponse.json(result);
     } catch (error) {

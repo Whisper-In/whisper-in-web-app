@@ -4,8 +4,7 @@ export enum ChatFeature {
 
 export interface IUserChatProfileDto {
     _id: string;
-    name: string;
-    isAI: boolean;
+    name: string;    
     avatar?: string;
     isBlocked?: boolean;
 }

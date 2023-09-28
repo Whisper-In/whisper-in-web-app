@@ -7,12 +7,16 @@ import PostTabs from "./_component/post-tabs.component";
 import BackButton from "@/app/mobile/_components/back-button.component";
 import ProfileInfo from "./_component/profile-info.component";
 
-export default async function Profile({ params, searchParams }
-    : { params: { profileId: string }, searchParams: { [key: string]: string } }) {
-    
+export default async function Profile({
+    params,
+    searchParams
+}: {
+    params: { profileId: string },
+    searchParams: { [key: string]: string },
+}) {
     const { profileId } = params;
 
-    const profile = await profileServerService.getProfile(profileId, true)
+    const profile = await profileServerService.getProfile(profileId)
         .catch(() => {
             return notFound();
         });
@@ -22,7 +26,7 @@ export default async function Profile({ params, searchParams }
     }
 
     return (
-        <main className="h-screen flex flex-col">
+        <main className="h-full flex flex-col">
             <BackButton className="absolute top-14 left-5" />
 
             <ProfileInfo profile={profile} />

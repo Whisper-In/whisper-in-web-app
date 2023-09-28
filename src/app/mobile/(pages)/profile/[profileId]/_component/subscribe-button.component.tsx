@@ -30,7 +30,7 @@ export default function SubscribeButton({ className, profile, disabled, onClick 
                     <>
                         <div className="grow text-left">Subscribe</div>
 
-                        <div className="font-bold">{(priceTier?.price ?? 0) > 0 ? `$${(priceTier!.price / 100).toFixed(2)}` : "FREE"}</div>
+                        <div className="font-bold">{(priceTier?.price ?? 0) > 0 ? `$${(priceTier!.price).toFixed(2)}` : "FREE"}</div>
                     </>
                     :
                     <div>Subscribed</div>

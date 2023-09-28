@@ -13,15 +13,21 @@ export async function GET(request: NextRequest) {
             newURL.searchParams.append("user", user);
         }
 
-        if(token) {
+        if (token) {
             newURL.searchParams.append("token", token);
         }
 
         const response = NextResponse.redirect(newURL);
 
         if (token) {
-            response.cookies.set("token", token);
-        }                
+            const maxAge = 60 * 60 * 24 * 7;
+            response.cookies.set("token", token, {
+                maxAge
+            });
+            response.cookies.set("userId", JSON.parse(user!)._id, {
+                maxAge: 60 * 60 * 24 * 7
+            });
+        }
 
         return response;
     } catch (error) {

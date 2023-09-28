@@ -1,10 +1,11 @@
 import { configureStore, ThunkAction, Action, combineReducers, getDefaultMiddleware } from "@reduxjs/toolkit"
-import userReducer, { UserState, userSlice } from "./slices/user.slice"
+import userReducer, { userSlice } from "./slices/user.slice"
 import { FLUSH, PAUSE, PERSIST, PURGE, PersistConfig, REGISTER, REHYDRATE, persistReducer } from "redux-persist";
 import storage from "./storage";
 import chatReducer, { chatSlice } from "./slices/chats.slice";
 import { ChatsState } from "./states/chats.states";
 import appReducer, { AppState, appSlice } from "./slices/app.slice";
+import { UserState } from "./states/user.states";
 
 const rootPersistConfig: PersistConfig<{
     app: AppState,

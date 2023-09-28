@@ -1,8 +1,7 @@
 export type LoadChatsProfile = {
   id: string;
   name: string;
-  avatar?: string;
-  isAI: boolean;
+  avatar?: string;  
   isBlocked?: boolean;
 };
 

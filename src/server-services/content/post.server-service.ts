@@ -40,7 +40,7 @@ export async function getPosts(profileId: string, postType: string, pageIndex: n
 }
 
 export const getPostDetails = async (postId: string) => {
-    try {        
+    try {
         const result = await axiosInstance.get(`${route}/details/${postId}`);
 
         return result.data as IPostDto;
@@ -48,3 +48,20 @@ export const getPostDetails = async (postId: string) => {
         throw error;
     }
 }
+
+export const createPost = async (formData: FormData) => {
+    try {
+        const result = await axiosInstance.post(route,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+        return result.data as IPostDto;
+    } catch (error) {
+        throw error;
+    }
+}
+

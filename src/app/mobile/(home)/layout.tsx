@@ -1,85 +1,45 @@
-"use client"
-
-import { useAppTheme } from '@/app/theme-provider'
-import { useAppSelector } from '@/store/hooks'
-import { setDarkMode } from '@/store/slices/app.slice'
-import { faCog, faComment, faHome, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { BottomNavigation, BottomNavigationAction, Paper, Tab, useTheme } from '@mui/material'
-import classNames from 'classnames'
-import { useState, PropsWithChildren, useEffect } from "react"
-import { useDispatch } from 'react-redux'
-
-function TabScreen({ children, hidden }: PropsWithChildren & { hidden?: boolean }) {
-  return (
-    <div className={classNames(
-      "h-full",
-      {
-        "hidden": hidden
-      }
-    )}>
-      {children}
-    </div>
-  )
-}
-
-type TabType = "feed" | "explore" | "chats" | "settings";
+import { faCamera, faComment, faHome, faMagnifyingGlass, faPlusCircle, faUser } from '@fortawesome/free-solid-svg-icons'
+import BottomNavigation from './_components/bottom-navigation.component'
 
 export default function MobileHomeLayout(props: {
   children: React.ReactNode,
   explore: React.ReactNode,
   chats: React.ReactNode,
-  settings: React.ReactNode
+  post: React.ReactNode,
+  me: React.ReactNode
 }) {
-  const theme = useTheme();
-  const settingsDarkMode = useAppSelector((state) => state.app.darkMode);
-  const { setDarkMode } = useAppTheme();
-  const [tab, setTab] = useState<TabType>("feed");
-
-  const onTabChange = (event: React.SyntheticEvent, newValue: TabType) => {
-    setTab(newValue);
-  }
-
-  const checkTabDarkMode = () => {
-    if (tab == "feed") {
-      setDarkMode(true);
-    } else {
-      setDarkMode(settingsDarkMode);
-    }
-  }
-
-  useEffect(() => {
-    checkTabDarkMode();
-  }, [tab]);
-
   return (
     <div className='flex flex-col h-full'>
-      <div className="h-full overflow-auto">
-        <TabScreen hidden={tab != "feed"}>
-          {props.children}
-        </TabScreen>
-        <TabScreen hidden={tab != "explore"}>
-          {props.explore}
-        </TabScreen>
-        <TabScreen hidden={tab != "chats"}>
-          {props.chats}
-        </TabScreen>
-        <TabScreen hidden={tab != "settings"}>
-          {props.settings}
-        </TabScreen>
+      <div className="h-full w-screen overflow-x-hidden overflow-y-auto">
+        <BottomNavigation tabs={[
+          {
+            tabValue: "feed",
+            tabIcon: faHome,
+            screen: props.children,
+            darkTheme: true
+          },
+          {
+            tabValue: "explore",
+            tabIcon: faMagnifyingGlass,
+            screen: props.explore
+          },
+          {
+            tabValue: "create-post",
+            tabIcon: faCamera,
+            screen: props.post
+          },
+          {
+            tabValue: "chats",
+            tabIcon: faComment,
+            screen: props.chats
+          },
+          {
+            tabValue: "me",
+            tabIcon: faUser,
+            screen: props.me
+          }
+        ]} />
       </div>
-
-      <Paper sx={{
-        border: 1,
-        borderColor: theme.palette.background.paper
-      }} elevation={5}>
-        <BottomNavigation value={tab} onChange={onTabChange} >
-          <BottomNavigationAction value="feed" icon={<FontAwesomeIcon icon={faHome} fontSize={20} />} />
-          <BottomNavigationAction value="explore" icon={<FontAwesomeIcon icon={faMagnifyingGlass} fontSize={20} />} />
-          <BottomNavigationAction value="chats" icon={<FontAwesomeIcon icon={faComment} fontSize={20} />} />
-          <BottomNavigationAction value="settings" icon={<FontAwesomeIcon icon={faCog} fontSize={20} />} />
-        </BottomNavigation>
-      </Paper>
     </div>
   )
 }

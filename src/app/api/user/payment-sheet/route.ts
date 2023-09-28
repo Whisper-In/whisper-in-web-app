@@ -1,15 +1,14 @@
-import * as profileServerService from "@/server-services/profile/profile.server-service";
+import * as userServerService from "@/server-services/user/user.server-service";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
     try {
         const body = await request.json();
 
-        const { amount, metadata } = body;
+        const { profileId, tier } = body;
 
-        const result = await profileServerService.createPaymentSubscription(
-            amount,
-            metadata
+        const result = await userServerService.createPaymentSheet(
+            profileId, tier,
         );
 
         return NextResponse.json(result);

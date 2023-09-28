@@ -5,25 +5,23 @@ import { useAppSelector } from "@/store/hooks";
 import { Chat } from "@/store/states/chats.states";
 import { Avatar, ListItem, ListItemButton } from "@mui/material";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 export default function Chat({ chat }
-    : { chat: Chat }) {
-    const router = useRouter();
+    : { chat: IUserChatRawDto }) {    
     const me = useAppSelector((state) => state.user.me)!;
-    const profile = chat.profiles.findLast((profile) => profile?.id != me?._id);
+    const profile = chat.profiles.findLast((profile) => profile?._id != me?._id);
 
     const lastMessage: string | undefined = undefined;
     const messageDateTime: string | undefined = undefined;
 
     return (
-        <ListItem disablePadding>
+        <ListItem disablePadding={true} suppressHydrationWarning={true}>
             <ListItemButton sx={{
                 display: "flex",
                 gap: 2,
                 padding: 2
             }}>
-                <Link href={`/profile/${profile?.id}`}>
+                <Link href={`/profile/${profile?._id}`}>
                     <Avatar src={profile?.avatar} sx={{ width: 50, height: 50 }} />
                 </Link>
 

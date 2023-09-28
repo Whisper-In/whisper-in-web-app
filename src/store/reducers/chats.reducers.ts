@@ -22,8 +22,7 @@ export const loadChatsReducer = (
             profiles: item.profiles.map<ChatProfile>((profile) => ({
                 id: profile.id,
                 name: profile.name,
-                avatar: profile.avatar,
-                isAI: profile.isAI,
+                avatar: profile.avatar,                
                 isBlocked: profile.isBlocked
             })),
             messages: [...stateChatMessages],

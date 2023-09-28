@@ -7,7 +7,7 @@ export default function SearchListItem({ className, profile }
     return (
         <ListItem disablePadding>
             <ListItemButton>
-                <Link href={`/mobile/profile/${profile?.id}?isAI=true`}
+                <Link href={`/mobile/profile/${profile?.id}`}
                     className="flex items-center gap-5 p-2">
                     <Avatar src={profile?.avatar} sx={{ width: 50, height: 50 }} />
 

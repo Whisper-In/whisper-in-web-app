@@ -10,8 +10,7 @@ export type ChatMessage = {
 export type ChatProfile = {
     id: string;
     name: string;
-    avatar?: string;
-    isAI: boolean;
+    avatar?: string;    
     isBlocked?: boolean;
 };
 

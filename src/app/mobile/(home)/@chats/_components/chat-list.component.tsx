@@ -3,30 +3,28 @@
 import classNames from "classnames";
 import Chat from "./chat.component";
 import { IUserChatRawDto } from "@/dtos/chats/chats.dtos";
-import { useAppDispath, useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchChats } from "@/store/thunks/chats.thunks";
 import { useEffect, useRef } from "react";
-import { List } from "@mui/material";
+import { List, ListItem } from "@mui/material";
+import { Chat as ChatState } from "@/store/states/chats.states";
 
-export default function ChatList({ className }
-    : { className?: string }) {
+export default function ChatList({ className, rawChatList }
+    : { className?: string, rawChatList: IUserChatRawDto[] }) {
     const me = useAppSelector((state) => state.user.me)!;
 
-    const chatList = useAppSelector((state) => state.chats.chats);
-
-    const dispatch = useAppDispath();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (me) {
-            console.log("Name:", me.name);
-            dispatch(fetchChats(me._id));
+        if (me) {            
+            dispatch(fetchChats());
         }
     }, [me]);
 
     return (
-        <List disablePadding>
+        <List disablePadding={true}>
             {
-                chatList.map((chat, idx) =>
+                rawChatList.map((chat, idx) =>
                     <Chat key={idx} chat={chat} />)
             }
         </List>

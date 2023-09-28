@@ -1,8 +1,4 @@
-export interface IPriceTierDto {
-    price: number,
-    tier: number,
-    features: string[]
-}
+import { IPriceTierDto } from "../user/user.dtos";
 
 export interface IProfileDto {
     id: string;
@@ -12,6 +8,7 @@ export interface IProfileDto {
     userName: string;
     avatar?: string;
     priceTiers: IPriceTierDto[];
+    isSubscriptionOn?: boolean;
     isSubscribed?: boolean;
     isSubscriptionExpired?: boolean;
     isBlocked?: boolean;

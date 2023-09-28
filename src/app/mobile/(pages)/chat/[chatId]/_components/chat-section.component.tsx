@@ -5,7 +5,7 @@ import MessageList from "./message-list.component";
 import ChatInputBar from "./input-bar.component";
 import { useEffect, useState } from "react";
 import { IUserChatDto } from "@/dtos/chats/chats.dtos";
-import { useAppDispath, useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Header from "@/app/mobile/_components/header.component";
 import { Avatar } from "@mui/material";
 import { addNewChatMessage, toggleAudioReplies, updateChatFeatures } from "@/store/slices/chats.slice";
@@ -18,11 +18,11 @@ import BackButton from "@/app/mobile/_components/back-button.component";
 export default function ChatSection({ className, chat }
     : { className?: string, chat: IUserChatDto }) {
     const me = useAppSelector((state) => state.user.me);
-    const aiProfile = chat.profiles.findLast((profile) => profile._id != me?._id)!;
+    const profile = chat.profiles.findLast((profile) => profile._id != me?._id)!;
     const _chat = useAppSelector((state) => state.chats.chats.find((c) => c.chatId == chat.chatId));
     const messageList = _chat?.messages ?? [];
     const [isReplying, setIsReplying] = useState(false);
-    const dispatch = useAppDispath();
+    const dispatch = useAppDispatch();
 
     const hasAudioReply = chat.features.includes(ChatFeature.AUDIO);
 
@@ -41,7 +41,7 @@ export default function ChatSection({ className, chat }
         try {
             await dispatch(fetchChatCompletion({
                 chatId: chat.chatId,
-                contactId: aiProfile._id,
+                contactId: profile._id,
                 message
             }));
         } catch (error) {
@@ -66,7 +66,7 @@ export default function ChatSection({ className, chat }
             updatedAt: createdAt
         }));
 
-        if (aiProfile.isBlocked) {
+        if (profile.isBlocked) {
             return;
         }
 
@@ -83,11 +83,11 @@ export default function ChatSection({ className, chat }
     return (
         <>
             <Header>
-                <div className="flex gap-5 items-center">
+                <div className="flex gap-5 items-center w-full">
                     <div className="flex grow items-center gap-5">
                         <BackButton/>
-                        <Avatar src={aiProfile.avatar} sx={{ width: 40, height: 40 }} />
-                        <label className="font-bold text-lg">{aiProfile.name}</label>
+                        <Avatar src={profile.avatar} sx={{ width: 40, height: 40 }} />
+                        <label className="font-bold text-lg">{profile.name}</label>
                     </div>
 
                     {

@@ -3,9 +3,9 @@
 import Image from "next/image"
 import GoogleSignInButton from "./_components/google-signin-button.component"
 import AppleSignInButton from "./_components/apple-signIn-button.component copy"
-import * as authClientService from "@/app/_client-services/auth/auth.service"
+import * as authClientService from "@/app/_client-services/auth/auth.client-service"
 import { Alert } from "@mui/material"
-import { useAppDispath, useAppSelector } from "@/store/hooks"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { UserProfile, setUser } from "@/store/slices/user.slice"
 import { useEffect } from "react"
 import { useAlertPrompt } from "@/components/alert-prompt.component"
@@ -15,7 +15,7 @@ import { useSpinner } from "@/components/spinner.component"
 
 export default function SignIn() {
     const me = useAppSelector((state) => state.user.me);
-    const dispatch = useAppDispath();
+    const dispatch = useAppDispatch();
     const { promptAlert } = useAlertPrompt();
     const router = useRouter();
     const { showSpinner } = useSpinner();
@@ -24,9 +24,7 @@ export default function SignIn() {
         showSpinner(true);
         authClientService.login(loginUrl).then(({ user }) => {
             if (user) {
-                dispatch(setUser({
-                    me: user
-                }));
+                dispatch(setUser(user));
             } else {
                 throw "No user found.";
             }

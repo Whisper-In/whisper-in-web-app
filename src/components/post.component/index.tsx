@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import LikePrompt, { LikePromptType } from "./like-prompt.component";
 import { IPostDto, PostType } from "@/dtos/content/post.dtos";
-import * as postService from "@/app/_client-services/content/post.service";
+import * as postService from "@/app/_client-services/content/post.client-service";
 import VideoPlayer from "./video-player.component";
 import { usePathname, useRouter } from "next/navigation";
 import { ShareModalContext, useShareModal } from "@/app/mobile/_components/share-modal.component";

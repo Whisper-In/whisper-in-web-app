@@ -5,7 +5,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import SubscribeButton from "./subscribe-button.component";
 import StatItem from "./stat-item.component";
 import { IProfileDto } from "@/dtos/profile/profile.dtos";
-import { useAppDispath, useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import * as profileClientService from "@/app/_client-services/profile/profile.client-service";
 import { useEffect, useState } from "react";
 import { ICreatePaymentSheetDto } from "@/dtos/payment/payment.dtos";
@@ -22,24 +22,21 @@ const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 )
 
-export default function ProfileInfo({ profile }: { profile: IProfileDto }) {
+export default function ProfileInfo({ profile }
+    : { profile: IProfileDto }) {
     const [_profile, setProfile] = useState(profile);
     const me = useAppSelector((state) => state.user.me)!;
     const [isPaymentFormOpen, setIsPaymentFormOpen] = useState(false);
     const { isShowingSpinner, showSpinner } = useSpinner();
-    const dispatch = useAppDispath();
+    const dispatch = useAppDispatch();
     const { promptAlert } = useAlertPrompt();
     const router = useRouter();
 
     const priceTier = profile.priceTiers.length ? profile.priceTiers[0] : null;
 
-    const createUserAISubscription = (subscriptionId?: string) => {
-        return userClientService.createUserAISubscription(me._id, profile.id, priceTier?.tier, subscriptionId);
-    }
-
     const onPaymentInitlialized = async (paymentSheetResult: ICreatePaymentSheetDto) => {
         try {
-            await createUserAISubscription(paymentSheetResult.subscriptionId);
+            await userClientService.createUserSubscription(profile.id, priceTier?.tier, paymentSheetResult.subscriptionId);
         } catch (error) {
             throw error;
         }
@@ -64,9 +61,9 @@ export default function ProfileInfo({ profile }: { profile: IProfileDto }) {
         try {
             showSpinner(true);
 
-            const chatId = await chatClientService.createNewChat(me._id, profile.id);
+            const { chatId } = await chatClientService.createNewChat(profile.id);
 
-            const navigateToChat = () => () => router.push(`/chat/${chatId}`);
+            const navigateToChat = () => router.push(`/chat/${chatId}`);
 
             promptAlert({
                 title: "Success",
@@ -78,7 +75,7 @@ export default function ProfileInfo({ profile }: { profile: IProfileDto }) {
             _profile.isSubscribed = true;
             setProfile({ ..._profile });
 
-            dispatch(fetchChats(me._id));
+            dispatch(fetchChats());
         } catch (error) {
             promptAlert({
                 title: "Opps",
@@ -94,7 +91,7 @@ export default function ProfileInfo({ profile }: { profile: IProfileDto }) {
             if (profile?.isSubscribed) {
                 showSpinner(true);
                 try {
-                    const deletedSubscription = await profileClientService.cancelPaymentSubscription(me._id, profile!.id);
+                    const deletedSubscription = await userClientService.cancelPaymentSubscription(profile!.id);
 
                     _profile.isSubscribed = false;
                     setProfile({ ..._profile })
@@ -125,23 +122,15 @@ export default function ProfileInfo({ profile }: { profile: IProfileDto }) {
     }
 
     const startSubscription = async () => {
-        if ((priceTier?.price ?? 0) > 0) {
+        if (_profile.isSubscriptionOn) {
             setIsPaymentFormOpen(true);
-        } else {
-            try {
-                await createUserAISubscription();
-
-                onSubscribed();
-            } catch (error) {
-
-            }
         }
     }
 
     return (
         <Elements stripe={stripePromise} options={{
             mode: "subscription",
-            amount: priceTier?.price ?? 0,
+            amount: (priceTier?.price ?? 0) * 100,
             currency: "usd",
             setup_future_usage: "off_session"
         }}>
@@ -157,7 +146,10 @@ export default function ProfileInfo({ profile }: { profile: IProfileDto }) {
                     <StatItem label="Likes" value={_profile.totalLikeCount ?? 0} />
                 </div>
 
-                <SubscribeButton disabled={isShowingSpinner} profile={_profile} onClick={onSubscribeClick} />
+                {
+                    me?._id != profile.id && profile.isSubscriptionOn &&
+                    <SubscribeButton disabled={isShowingSpinner} profile={_profile} onClick={onSubscribeClick} />
+                }
             </div>
 
             <PaymentForm

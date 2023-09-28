@@ -4,34 +4,33 @@ import {
   LoadChatsActionPayload,
   LoadChatsProfile,
 } from "../types/chats.types";
-import * as chatGPTService from "@/app/_client-services/chat/chat-gpt.client-service";
-import * as elevenLabsService from "@/app/_client-services/chat/eleven-labs.client-service";
-import * as chatService from "@/app/_client-services/chat/chat.client-service";
+import * as chatGPTClientService from "@/app/_client-services/chat/chat-gpt.client-service";
+import * as elevenLabsClientService from "@/app/_client-services/chat/eleven-labs.client-service";
+import * as chatClientService from "@/app/_client-services/chat/chat.client-service";
 import OpenAI from "openai";
 import { RootState } from "@/store/store";
 import { ChatFeature } from "../states/chats.states";
 import { idb } from "../indexedDB";
 
-export const fetchChats = createAsyncThunk<LoadChatsActionPayload[] | any, string>(
+export const fetchChats = createAsyncThunk<LoadChatsActionPayload[] | any>(
   "chats/fetchChats",
-  async (userId: string) => {
+  async () => {
     let payload: LoadChatsActionPayload[] = [];
 
     try {
-      const userChats = await chatService.getUserChats(userId);
+      const userChats = await chatClientService.getUserChats();
       payload = userChats.map((userChat) => ({
         chatId: userChat.chatId,
         profiles: userChat.profiles.map<LoadChatsProfile>((profile) => ({
           id: profile._id,
           name: profile.name,
           avatar: profile.avatar,
-          isAI: profile.isAI,
           isBlocked: profile.isBlocked
         })),
       }));
     } catch (error) {
-      console.log(error);
-      return { error };
+      console.log("chats/fetchChats:", error);
+      throw error;
     }
 
     return payload;
@@ -61,11 +60,11 @@ export const fetchChatCompletion = createAsyncThunk<
       const chat = chats.chats.find((c) => c.chatId == props.chatId);
       let prevChatMessages = chat?.messages ?? [];
 
-      const chatGPTResult = await chatGPTService.getChatCompletion(
+      const chatGPTResult = await chatGPTClientService.getChatCompletion(
         props.contactId,
         props.message,
         prevChatMessages
-          .slice(-chatGPTService.MAX_PREV_MESSAGES_LIMIT)
+          .slice(-chatGPTClientService.MAX_PREV_MESSAGES_LIMIT)
           .map<OpenAI.Chat.ChatCompletionMessage>((item) => ({
             role: item.senderId != props.contactId ? "user" : "assistant",
             content: item.message,
@@ -79,14 +78,18 @@ export const fetchChatCompletion = createAsyncThunk<
       let audioId: number | undefined;
 
       if (isAudio) {
-        const arrayBuffer = await elevenLabsService.getTextToSpeech(props.contactId, chatGPTResult.message);
+        try {
+          const arrayBuffer = await elevenLabsClientService.getTextToSpeech(props.contactId, chatGPTResult.message);
+console.log(arrayBuffer)
+          const id = await idb.audios.add({
+            chatId: chat!.chatId,
+            arrayBuffer
+          });
 
-        const id = await idb.audios.add({
-          chatId: chat!.chatId,
-          arrayBuffer
-        });
-
-        audioId = parseInt(id.toString());
+          audioId = parseInt(id.toString());
+        } catch (error) {
+          //ignore the error here
+        }
       }
 
       payload = {
@@ -99,7 +102,7 @@ export const fetchChatCompletion = createAsyncThunk<
         updatedAt: createdAt,
       };
     } catch (error) {
-      console.log(error);
+      console.log("chats/getChatCompletion", error);
     }
 
     return payload;

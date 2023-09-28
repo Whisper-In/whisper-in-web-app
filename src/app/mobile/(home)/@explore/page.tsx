@@ -28,7 +28,7 @@ export default function Explore() {
     return (
         <main className="w-full h-full flex flex-col">
             <Header>
-                <SearchInput onInput={onSearchInput} />
+                <SearchInput className="w-full" onChange={onSearchInput} />
             </Header>
 
             <SearchList searchResults={searchResults} />

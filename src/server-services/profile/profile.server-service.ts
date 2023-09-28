@@ -4,13 +4,9 @@ import { ICreatePaymentSheetDto } from "@/dtos/payment/payment.dtos";
 
 const route = "profile";
 
-export async function getProfile(profileId: string, isAI = false) {
+export async function getProfile(profileId: string) {
     try {
-        const result = await axiosInstance.get(`${route}/${profileId}`, {
-            params: {
-                isAI
-            }
-        });
+        const result = await axiosInstance.get(`${route}/${profileId}`);
 
         return <IProfileDto>result.data;
     } catch (error) {
@@ -23,36 +19,6 @@ export const searchProfiles = async (query: string) => {
         const result = await axiosInstance.get(`${route}/search/${query}`);
 
         return <IProfileSearchDto[]>result.data;
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-
-export const createPaymentSubscription = async (
-    amount: number,
-    metadata: { userId: string, aiProfileId: string }) => {
-
-    try {
-        const result = await axiosInstance.post(`${route}/payment-subscription`, {
-            amount,
-            metadata
-        });
-
-        return <ICreatePaymentSheetDto>result.data;
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-
-export const cancelPaymentSubscription = async (userId: string, aiProfileId: string) => {
-    try {
-        const result = await axiosInstance.post(`${route}/cancel-subscription`, {
-            userId, aiProfileId
-        });
-
-        return result.data;
     } catch (error) {
         console.log(error)
     }

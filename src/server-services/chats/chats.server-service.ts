@@ -1,24 +1,24 @@
-import { IProfileDto, IProfileSearchDto } from "@/dtos/profile/profile.dtos";
 import axiosInstance from "../axios";
 import { ChatFeature, IUserChatRawDto, IUserChatDto } from "@/dtos/chats/chats.dtos";
 
 const route = "chats";
 
-export const getUserChats = async (userId: string) => {
+export const getUserChats = async () => {   
   try {
     const result = await axiosInstance.get<IUserChatRawDto[]>(
-      `${route}/user-chats/${userId}`
+      `${route}/user-chats/chats`
     );
 
     return result.data;
   } catch (error) {
+    console.log(error)
     throw error;
   }
 };
 
-export const createNewChat = async (userId: string, aiProfileId: string) => {
+export const createNewChat = async (profileId: string) => {
   try {
-    const result = await axiosInstance.post(`${route}/user-chats/new-chat`, { userId, aiProfileId });
+    const result = await axiosInstance.post(`${route}/user-chats/new-chat`, { profileId });
 
     return result.data.chatId;
   } catch (error) {
