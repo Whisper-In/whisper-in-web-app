@@ -24,7 +24,7 @@ export default function Header({
                 justifyContent: "space-between",
                 position: "relative",
                 minHeight: 88,
-                paddingTop: 5,
+                paddingTop: 8,
                 paddingBottom: 2,
                 paddingRight: 2,
                 paddingLeft: 2,
