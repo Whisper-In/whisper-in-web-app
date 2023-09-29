@@ -9,7 +9,7 @@ export default function Modal({ children }: PropsWithChildren) {
     return (
         <div style={{
             backgroundColor: theme.palette.background.paper
-        }} className="fixed z-10 w-screen h-full overflow-auto">
+        }} className="fixed z-20 w-screen h-full overflow-auto">
             {children}
         </div>
     )
