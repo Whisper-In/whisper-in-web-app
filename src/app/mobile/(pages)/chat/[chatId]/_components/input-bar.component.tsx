@@ -22,7 +22,7 @@ export default function ChatInputBar({ onChange, onSend }
 
     return (
         <>
-            <div className="flex px-2 py-3 gap-3 items-end">
+            <div className="flex px-2 py-3 pb-8 gap-3 items-end">
                 <Input inputRef={textAreaRef}
                     fullWidth={true}
                     multiline={true}

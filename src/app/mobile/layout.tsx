@@ -11,8 +11,8 @@ export default function MobileRootLayout(props
             <AlertPromptProvider>
                 <SpinnerProvider>
                     <ShareModalProvider>
-                        {props.modal}
                         {props.children}
+                        {props.modal}
                     </ShareModalProvider>
                 </SpinnerProvider>
             </AlertPromptProvider>

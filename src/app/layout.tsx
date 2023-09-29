@@ -31,8 +31,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" style={{ height: "100%" }}>
-      <body className={inter.className} style={{ height: "100%", overflow: "hidden" }}>
+    <html lang="en" style={{ 
+      height: "100vh", 
+      overflow: "hidden"
+       }}>
+      <body className={inter.className} style={{
+        touchAction: "none",
+        height: "100vh",
+        overflow: "hidden",
+      }}>
         <Providers>
           <AppThemeProvider>
             {children}
