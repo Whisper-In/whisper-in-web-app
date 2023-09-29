@@ -24,6 +24,7 @@ export default function EditProfileInfo({
     const theme = useTheme();
     const { showToast } = useToast();
     const dispatch = useAppDispatch();
+    const isSubscriptionOn = Boolean(me?.isSubscriptionOn);
 
     const listItemTextSX: SxProps<Theme> = {
         display: "flex",
@@ -85,12 +86,12 @@ export default function EditProfileInfo({
                 <ListItemButton onClick={onSubscriptionChange}>
                     <ListItemText primary="Enable Subscriptions" />
                     <ListItemIcon>
-                        <Switch checked={me?.isSubscriptionOn} />
+                        <Switch checked={isSubscriptionOn} />
                     </ListItemIcon>
                 </ListItemButton>
 
                 {
-                    <Collapse in={me?.isSubscriptionOn}>
+                    <Collapse in={isSubscriptionOn}>
                         <List>
                             {
                                 subscriptionListItems.map((item, idx) =>
