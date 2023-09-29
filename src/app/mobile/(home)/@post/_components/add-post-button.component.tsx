@@ -18,7 +18,7 @@ export default function AddPostButton({ onChange }
 
             <input ref={inputRef}
                 type="file"
-                accept=".jpg,.jpeg,.png,.mp4,.mpeg,.ogg,.avi"
+                accept="image/*,video/*"
                 hidden={true}
                 onChange={onChange} />
         </>

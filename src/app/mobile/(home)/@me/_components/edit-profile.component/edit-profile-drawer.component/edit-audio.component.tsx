@@ -201,7 +201,7 @@ export default function EditAudio(props: EditInputProps) {
                 type="file"
                 hidden={true}
                 onChange={handleAudioUpload}
-                accept=".mp3,.wav,.ogg,.aac"
+                accept="audio/*"
             />
         </Box>
     );
