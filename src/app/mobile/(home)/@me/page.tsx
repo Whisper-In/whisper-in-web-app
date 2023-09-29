@@ -16,7 +16,7 @@ export default async function Me() {
 
     return (
         <main className="h-full flex flex-col relative">
-            <SettingsMenu className="absolute top-5 right-5" />
+            <SettingsMenu className="absolute top-10 right-5" />
 
             <MyProfileInfo />
 
