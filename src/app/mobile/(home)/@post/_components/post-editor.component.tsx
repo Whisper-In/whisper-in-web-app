@@ -38,6 +38,7 @@ export default function PostEditor({ src, type, onCancel, onSave }
                     width: "100%",
                     position: "absolute",
                     padding: 2,
+                    top: 26,
                     zIndex: 1
                 }}>
                     <Button sx={{ color: "white" }}
