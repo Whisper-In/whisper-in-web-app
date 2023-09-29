@@ -1,5 +1,5 @@
 {
-    "display": "fullscreen",
+    "display": "standalone",
     "scope": "/",
     "start_url": "/",
     "name": "Whisper In App",
