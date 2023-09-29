@@ -42,7 +42,7 @@ export const darkTheme = createTheme({
         primary: lightTheme.palette.primary,
         background: {
             default: "#121212",
-            paper: "#121212"
+            paper: "#121212"    
         },
         container: {
             main: grey[900],

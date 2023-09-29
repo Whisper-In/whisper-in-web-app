@@ -12,6 +12,7 @@ import { useAlertPrompt } from "@/components/alert-prompt.component"
 import { useRouter } from "next/navigation"
 import { convertClientCookieToObject } from "@/utils/cookies.util"
 import { useSpinner } from "@/components/spinner.component"
+import { fetchUserProfile } from "@/store/thunks/user.thunks"
 
 export default function SignIn() {
     const me = useAppSelector((state) => state.user.me);
@@ -23,11 +24,7 @@ export default function SignIn() {
     const login = async (loginUrl: string) => {
         showSpinner(true);
         authClientService.login(loginUrl).then(({ user }) => {
-            if (user) {
-                dispatch(setUser(user));
-            } else {
-                throw "No user found.";
-            }
+            dispatch(fetchUserProfile());
         }).catch((error) => {
             console.log("Sign In Error:", error)
             authClientService.logout(dispatch);

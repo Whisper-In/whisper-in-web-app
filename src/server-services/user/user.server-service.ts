@@ -16,7 +16,7 @@ export const createUserSubscription = async (profileId: string, tier?: number, s
 
 export const getUserProfile = async () => {
   try {
-    const result = await axiosInstance.get<IUserProfileDto>(`${route}/`);
+    const result = await axiosInstance.get<IUserProfileDto>(`${route}`);
 
     return result.data;
   } catch (error) {

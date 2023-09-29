@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faImage, faPhotoFilm, faVideo } from "@fortawesome/free-solid-svg-icons"
 
 export default function PostTabs({ className, profileId }
-    : { className?: string, profileId: string }) {
+    : { className?: string, profileId?: string }) {
     const [tab, setTab] = useState<PostType>(PostType.PHOTO);
     const [photoResults, setPhotoResults] = useState<IPostResultsDto>();
     const [videoResults, setVideoResults] = useState<IPostResultsDto>();
@@ -23,6 +23,10 @@ export default function PostTabs({ className, profileId }
     const postHeight = postWidth * heightToWidthRatio;
 
     const getPosts = (postType: PostType, pageIndex: number, callback: (results: IPostResultsDto) => void) => {
+        if (!profileId) {
+            return;
+        }
+
         postService.getPosts(profileId, PostType[postType], pageIndex, postsPerLoad)
             .then(callback).catch((error) => { });
     }

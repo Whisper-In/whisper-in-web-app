@@ -9,35 +9,37 @@ export default function MobileHomeLayout(props: {
   me: React.ReactNode
 }) {
   return (
-      <div className="h-screen w-screen overflow-x-hidden overflow-y-hidden">
-        <BottomNavigation tabs={[
-          {
-            tabValue: "feed",
-            tabIcon: faHome,
-            screen: props.children,
-            darkTheme: true
-          },
-          {
-            tabValue: "explore",
-            tabIcon: faMagnifyingGlass,
-            screen: props.explore
-          },
-          {
-            tabValue: "create-post",
-            tabIcon: faCamera,
-            screen: props.post
-          },
-          {
-            tabValue: "chats",
-            tabIcon: faComment,
-            screen: props.chats
-          },
-          {
-            tabValue: "me",
-            tabIcon: faUser,
-            screen: props.me
-          }
-        ]} />
+    <div className="h-screen w-screen overflow-x-hidden overflow-y-hidden">
+      <BottomNavigation tabs={[
+        {
+          tabValue: "feed",
+          tabIcon: faHome,
+          screen: props.children,
+          darkTheme: true
+        },
+        {
+          tabValue: "explore",
+          tabIcon: faMagnifyingGlass,
+          screen: props.explore
+        },
+        {
+          tabValue: "create-post",
+          tabIcon: faCamera,
+          screen: props.post,
+          darkTheme: true
+        },
+        {
+          tabValue: "chats",
+          tabIcon: faComment,
+          screen: props.chats
+        },
+        {
+          tabValue: "me",
+          tabIcon: faUser,
+          screen: props.me,
+          destroyOnHide: true
+        }
+      ]} />
     </div>
   )
 }

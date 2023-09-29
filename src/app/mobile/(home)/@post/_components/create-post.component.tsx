@@ -10,7 +10,7 @@ import { useSpinner } from "@/components/spinner.component";
 import { useAlertPrompt } from "@/components/alert-prompt.component";
 import * as postClientService from "@/app/_client-services/content/post.client-service";
 
-export default function CreatePost() {
+export default function CreatePost() {    
     const [file, setFile] = useState<File>();
     const [mediaType, setMediaType] = useState<PostType>(PostType.PHOTO);
     const [mediaURL, setMediaURL] = useState<string | undefined>();

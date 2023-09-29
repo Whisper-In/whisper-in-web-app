@@ -1,5 +1,10 @@
 import Loading from "@/app/mobile/(pages)/profile/[profileId]/loading";
+import Modal from "@/app/mobile/_components/modal.component";
 
 export default function ProfileModalLoading() {
-    return Loading();
+    return (
+        <Modal>
+            <Loading />
+        </Modal>
+    )
 }

@@ -20,10 +20,10 @@ export async function login(loginUrl: string) {
                 window.addEventListener("message", (event) => {
                     if (event.origin == window.location.origin) {
                         if (event.data?.signin_status == "SUCCESS") {
+                            clearInterval(closedCheck)
+
                             newWindow.close();
                             const user = event.data.user;
-
-                            clearInterval(closedCheck)
                             resolve({ user });
                         } else {
                             clearInterval(closedCheck)

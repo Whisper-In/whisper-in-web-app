@@ -36,7 +36,7 @@ export default function PostList({ className, posts, postWidth, postHeight, onSc
                         </div>
                     </div>
                     :
-                    <span className="text-onSurface">No Posts.</span>
+                    <span className="opacity-30">No Posts.</span>
             }
         </div>
     );

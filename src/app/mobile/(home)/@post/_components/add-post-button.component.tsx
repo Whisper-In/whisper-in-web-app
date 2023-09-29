@@ -10,7 +10,7 @@ export default function AddPostButton({ onChange }
 
     return (
         <>
-            <AddAPhoto sx={{ fontSize: 60 }} />
+            <AddAPhoto sx={{ fontSize: 60, opacity: 0.3 }} />
 
             <Button variant="outlined" onClick={() => inputRef.current?.click()}>
                 Upload

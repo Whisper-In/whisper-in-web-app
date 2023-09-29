@@ -25,7 +25,8 @@ export type Tab = {
     tabValue: string,
     tabIcon?: IconProp,
     tabLabel?: string,
-    darkTheme?: boolean
+    darkTheme?: boolean,
+    destroyOnHide?: boolean
 }
 
 export default function BottomNavigation({ tabs }: { tabs: Tab[] }) {
@@ -44,16 +45,20 @@ export default function BottomNavigation({ tabs }: { tabs: Tab[] }) {
             <div className='flex flex-col h-full'>
                 <div className="h-full overflow-auto">
                     {
-                        tabs.map((t, index) =>
-                            <TabScreen key={index} hidden={tab != t.tabValue}>
-                                {t.screen}
-                            </TabScreen>
-                        )
+                        tabs.map((t, index) => {
+                            if (!t.destroyOnHide || tab == t.tabValue) {
+                                return (
+                                    <TabScreen key={index} hidden={tab != t.tabValue}>
+                                        {t.screen}
+                                    </TabScreen>
+                                )
+                            }
+                        })
                     }
                 </div>
 
                 <Paper elevation={5}>
-                    <MatBottomNavigation sx={{height: 65, pb:1}} value={tab} onChange={onTabChange}>
+                    <MatBottomNavigation sx={{ height: 65, pb: 1 }} value={tab} onChange={onTabChange}>
                         {
                             tabs.map((t, index) =>
                                 <BottomNavigationAction
