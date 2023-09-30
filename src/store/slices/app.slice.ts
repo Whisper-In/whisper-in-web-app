@@ -5,7 +5,7 @@ export type AppState = {
 };
 
 export const initialAppState: AppState = {
-    darkMode: false,
+    darkMode: true,
 };
 
 

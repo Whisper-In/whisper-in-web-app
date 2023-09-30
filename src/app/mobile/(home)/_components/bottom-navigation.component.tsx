@@ -3,7 +3,7 @@
 import { darkTheme } from "@/app/themes";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { BottomNavigation as MatBottomNavigation, BottomNavigationAction, Paper, useTheme, ThemeProvider } from "@mui/material";
+import { BottomNavigation as MatBottomNavigation, BottomNavigationAction, Paper, useTheme, ThemeProvider, CssBaseline, ScopedCssBaseline } from "@mui/material";
 import classNames from "classnames";
 import { PropsWithChildren, useState } from "react";
 
@@ -30,25 +30,24 @@ export type Tab = {
 }
 
 export default function BottomNavigation({ tabs }: { tabs: Tab[] }) {
-    const [tab, setTab] = useState(tabs[0].tabValue);
+    const [tab, setTab] = useState(tabs[0]);
 
-    const currentTab = tabs.find(t => t.tabValue == tab);
     const currentTheme = useTheme();
-    const tabTheme = currentTab?.darkTheme ? darkTheme : currentTheme;
+    const tabTheme = tab?.darkTheme ? darkTheme : currentTheme;
 
-    const onTabChange = (event: React.SyntheticEvent, newValue: string) => {
+    const onTabChange = (event: React.SyntheticEvent, newValue: Tab) => {
         setTab(newValue);
     }
 
     return (
         <ThemeProvider theme={tabTheme}>
-            <div className='flex flex-col h-full'>
+            <ScopedCssBaseline className="flex flex-col h-full">
                 <div className="h-full overflow-auto">
                     {
                         tabs.map((t, index) => {
-                            if (!t.destroyOnHide || tab == t.tabValue) {
+                            if (!t.destroyOnHide || tab.tabValue == t.tabValue) {
                                 return (
-                                    <TabScreen key={index} hidden={tab != t.tabValue}>
+                                    <TabScreen key={index} hidden={tab.tabValue != t.tabValue}>
                                         {t.screen}
                                     </TabScreen>
                                 )
@@ -64,7 +63,7 @@ export default function BottomNavigation({ tabs }: { tabs: Tab[] }) {
                                 <BottomNavigationAction
                                     disableRipple={true}
                                     key={index}
-                                    value={t.tabValue}
+                                    value={t}
                                     label={t.tabLabel}
                                     icon={t.tabIcon ? <FontAwesomeIcon icon={t.tabIcon} fontSize={20} /> : undefined}
                                 />
@@ -72,7 +71,7 @@ export default function BottomNavigation({ tabs }: { tabs: Tab[] }) {
                         }
                     </MatBottomNavigation>
                 </Paper>
-            </div>
+            </ScopedCssBaseline>
         </ThemeProvider>
     )
 }

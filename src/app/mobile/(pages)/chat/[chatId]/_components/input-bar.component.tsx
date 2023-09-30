@@ -22,7 +22,7 @@ export default function ChatInputBar({ onChange, onSend }
 
     return (
         <>
-            <div className="flex px-2 py-3 pb-8 gap-3 items-end">
+            <div className="flex px-2 py-3 pb-sab-pr-14 gap-3 items-end">
                 <Input inputRef={textAreaRef}
                     fullWidth={true}
                     multiline={true}
@@ -37,7 +37,7 @@ export default function ChatInputBar({ onChange, onSend }
                     }}
                 />
 
-                <button onClick={_onSend} className="rounded-full p-2 w-[40px] h-[40px]" style={{
+                <button onClick={_onSend} className="rounded-full aspect-square min-w-[40px] h-[40px]" style={{
                     backgroundColor: theme.palette.primary.main
                 }}>
                     <FontAwesomeIcon style={{ color: theme.palette.primary.contrastText }} icon={faArrowUp} />

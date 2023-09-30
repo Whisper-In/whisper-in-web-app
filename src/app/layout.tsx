@@ -37,10 +37,8 @@ export default function RootLayout({
       <body className={inter.className} style={{
         height: "100vh"
       }}>
-        <Providers>
-          <AppThemeProvider>
-            {children}
-          </AppThemeProvider>
+        <Providers>        
+            {children}        
         </Providers>
       </body>
     </html>
