@@ -34,9 +34,9 @@ export default function ProfileInfo({ profile }
 
     const priceTier = profile.priceTiers.length ? profile.priceTiers[0] : null;
 
-    const onPaymentInitlialized = async (paymentSheetResult: ICreatePaymentSheetDto) => {
+    const onPaymentInitlialized = async (paymentSheetResult?: ICreatePaymentSheetDto) => {
         try {
-            await userClientService.createUserSubscription(profile.id, priceTier?.tier, paymentSheetResult.subscriptionId);
+            await userClientService.createUserSubscription(profile.id, priceTier?.tier, paymentSheetResult?.subscriptionId);
         } catch (error) {
             throw error;
         }
@@ -123,7 +123,12 @@ export default function ProfileInfo({ profile }
 
     const startSubscription = async () => {
         if (_profile.isSubscriptionOn) {
-            setIsPaymentFormOpen(true);
+            if ((priceTier?.price ?? 0) > 0) {
+                setIsPaymentFormOpen(true);
+            } else {
+                await onPaymentInitlialized();
+                await onPaymentCompleted();
+            }
         }
     }
 

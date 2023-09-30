@@ -31,7 +31,8 @@ export default function MobileHomeLayout(props: {
         {
           tabValue: "chats",
           tabIcon: faComment,
-          screen: props.chats
+          screen: props.chats,
+          destroyOnHide: true
         },
         {
           tabValue: "me",

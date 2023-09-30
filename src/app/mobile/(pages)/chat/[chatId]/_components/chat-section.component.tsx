@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
 import { ChatFeature } from "@/store/states/chats.states";
 import BackButton from "@/app/mobile/_components/back-button.component";
+import Link from "next/link";
 
 export default function ChatSection({ className, chat }
     : { className?: string, chat: IUserChatDto }) {
@@ -85,8 +86,12 @@ export default function ChatSection({ className, chat }
             <Header>
                 <div className="flex gap-5 items-center w-full">
                     <div className="flex grow items-center gap-5">
-                        <BackButton/>
-                        <Avatar src={profile.avatar} sx={{ width: 40, height: 40 }} />
+                        <BackButton />
+
+                        <Link href={`/profile/${profile._id}`}>
+                            <Avatar src={profile.avatar} sx={{ width: 40, height: 40 }} />
+                        </Link>
+
                         <label className="font-bold text-lg">{profile.name}</label>
                     </div>
 
