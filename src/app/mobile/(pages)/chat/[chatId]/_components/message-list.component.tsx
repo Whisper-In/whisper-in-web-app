@@ -11,7 +11,10 @@ export default function MessageList({ className, messageList, chatId, userId, is
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        messageListRef.current?.scrollTo({ top: messageListRef.current.scrollHeight });
+        messageListRef.current?.scrollTo({
+            top: messageListRef.current.scrollHeight,
+            behavior: "smooth"
+        });
     }, [messageList])
 
     return (
@@ -21,7 +24,7 @@ export default function MessageList({ className, messageList, chatId, userId, is
         )}>
             <div ref={messageListRef} className="flex flex-col overflow-y-auto overflow-x-hidden absolute top-0 bottom-0 left-0 right-0" >
                 <div className={classNames(
-                    "flex flex-col-reverse justify-end items-stretch h-full p-3 gap-2",
+                    "flex flex-col-reverse justify-start items-stretch p-3 gap-2",
                     className
                 )}>
                     {
