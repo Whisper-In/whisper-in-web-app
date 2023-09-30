@@ -18,13 +18,13 @@ export default function Header({
     return (
         <AppBar
             position="static"
+            className="pt-sat"
             sx={{
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
                 position: "relative",
                 minHeight: 88,
-                paddingTop: 8,
                 paddingBottom: 2,
                 paddingRight: 2,
                 paddingLeft: 2,

@@ -13,6 +13,10 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      spacing: {
+        'sat': 'var(--safe-area-inset-top)',
+        'sab': 'var(--safe-area-inset-bottom)'
+      },
       colors: {
         primary: "#3B96EB",
         onPrimary: "#FFF",

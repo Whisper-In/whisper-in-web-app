@@ -48,13 +48,15 @@ export default function MobileHome() {
 
     return (
         <main className="h-full bg-black relative">
-            <RecommendedTypesNav className="absolute top-10 left-1/2 -translate-x-1/2 z-10"
+            <RecommendedTypesNav className={`absolute top-sat left-1/2 -translate-x-1/2 z-10`}
                 onRecommendTypeChange={(recommendedType) => setRecommendedType(recommendedType)}
                 currentRecommendedType={recommendedType} />
 
             <PostFeed className={classNames({
                 "hidden": recommendedType != "FOLLOWING"
-            })} posts={followingPosts} onScrollEnd={() => loadMore("FOLLOWING")} />
+            })} posts={followingPosts} 
+            onScrollEnd={() => loadMore("FOLLOWING")}
+            placeholder="You are not following anyone yet." />
 
             <PostFeed className={classNames({
                 "hidden": recommendedType != "FORYOU"

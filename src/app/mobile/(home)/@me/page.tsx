@@ -9,7 +9,7 @@ const MyProfileInfo = dynamic(
 export default async function Me() {
     return (
         <main className="h-full flex flex-col relative">
-            <SettingsMenu className="absolute top-12 right-5" />
+            <SettingsMenu className="absolute top-sat right-5" />
 
             <MyProfileInfo />
 

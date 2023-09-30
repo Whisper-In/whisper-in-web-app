@@ -58,7 +58,7 @@ export default function BottomNavigation({ tabs }: { tabs: Tab[] }) {
                 </div>
 
                 <Paper elevation={5}>
-                    <MatBottomNavigation sx={{ height: 65, pb: 1 }} value={tab} onChange={onTabChange}>
+                    <MatBottomNavigation value={tab} onChange={onTabChange}>
                         {
                             tabs.map((t, index) =>
                                 <BottomNavigationAction
