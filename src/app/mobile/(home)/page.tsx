@@ -48,7 +48,7 @@ export default function MobileHome() {
 
     return (
         <main className="h-full bg-black relative">
-            <RecommendedTypesNav className={`absolute top-sat left-1/2 -translate-x-1/2 z-10`}
+            <RecommendedTypesNav className={`absolute top-sat pt-5 left-1/2 -translate-x-1/2 z-10`}
                 onRecommendTypeChange={(recommendedType) => setRecommendedType(recommendedType)}
                 currentRecommendedType={recommendedType} />
 

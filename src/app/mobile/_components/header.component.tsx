@@ -8,12 +8,12 @@ export default function Header({
     title,
     titleAlignment,
     leftComponent,
-    rightComponent    
+    rightComponent
 }: {
     title?: string,
     titleAlignment?: "start" | "center" | "end",
     leftComponent?: React.ReactNode,
-    rightComponent?: React.ReactNode,    
+    rightComponent?: React.ReactNode,
 } & React.PropsWithChildren) {
     return (
         <AppBar
@@ -23,6 +23,7 @@ export default function Header({
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
+                alignItems: "flex-end",
                 position: "relative",
                 minHeight: 88,
                 paddingBottom: 2,

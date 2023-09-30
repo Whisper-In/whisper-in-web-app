@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     statusBarStyle: "black-translucent",
     capable: true
   },
-  themeColor: "white",
+  themeColor: "#121212",
   viewport: {
     width: "device-width",
     initialScale: 1,
