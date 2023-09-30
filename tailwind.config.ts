@@ -15,7 +15,8 @@ const config: Config = {
       },
       spacing: {
         'sat': 'var(--safe-area-inset-top)',
-        'sab': 'var(--safe-area-inset-bottom)'
+        'sab': 'var(--safe-area-inset-bottom)',
+        'sab-md': 'calc(var(--safe-area-inset-bottom) + 14px)'
       },
       colors: {
         primary: "#3B96EB",
