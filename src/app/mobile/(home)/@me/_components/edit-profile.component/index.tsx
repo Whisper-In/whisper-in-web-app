@@ -12,7 +12,7 @@ import { useAlertPrompt } from "@/components/alert-prompt.component";
 import { Validator } from "@/utils/form.util";
 import EditAvatar from "./avatar.component";
 import EditProfileInfo from "./profile-info.component";
-import * as configClientService from "@/app/_client-services/business/config.client-service";
+import * as configClientService from "@/store/services/business/config.service";
 
 
 export default function EditProfile({ open, handleClose }

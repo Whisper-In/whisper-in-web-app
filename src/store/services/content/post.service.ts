@@ -1,4 +1,4 @@
-import { IPostDto, IPostResultsDto } from "@/dtos/content/post.dtos";
+import { IDeletedResultDto, IPostDto, IPostResultsDto } from "@/dtos/content/post.dtos";
 import axios from "axios";
 
 const route = "/api/content/post";
@@ -68,6 +68,16 @@ export const createPost = async (file: File, description?: string) => {
         const result = await axios.post(route, formData);
 
         return result.data as IPostDto;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const deletePost = async (postId: string) => {
+    try {
+        const result = await axios.delete(`${route}/${postId}`);
+
+        return result.data as IDeletedResultDto;
     } catch (error) {
         throw error;
     }

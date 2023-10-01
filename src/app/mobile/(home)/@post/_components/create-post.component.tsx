@@ -8,7 +8,7 @@ import AddPostButton from "./add-post-button.component";
 import PostEditor from "./post-editor.component";
 import { useSpinner } from "@/components/spinner.component";
 import { useAlertPrompt } from "@/components/alert-prompt.component";
-import * as postClientService from "@/app/_client-services/content/post.client-service";
+import * as postClientService from "@/store/services/content/post.service";
 
 export default function CreatePost() {        
     const [file, setFile] = useState<File>();

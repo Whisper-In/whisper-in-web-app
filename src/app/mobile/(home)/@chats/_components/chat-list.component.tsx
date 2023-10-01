@@ -1,30 +1,39 @@
 "use client"
-
-import classNames from "classnames";
 import Chat from "./chat.component";
 import { IUserChatRawDto } from "@/dtos/chats/chats.dtos";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchChats } from "@/store/thunks/chats.thunks";
-import { useEffect, useRef } from "react";
-import { List, ListItem } from "@mui/material";
-import { Chat as ChatState } from "@/store/states/chats.states";
+import { Box, List, ListItem, Typography } from "@mui/material";
+import { useEffect } from "react";
 
-export default function ChatList({ className, rawChatList }
-    : { className?: string, rawChatList: IUserChatRawDto[] }) {
-    const me = useAppSelector((state) => state.user.me)!;
+export default function ChatList({ className }: { className?: string }) {
+    const me = useAppSelector((state) => state.user.me);
+    const chats = useAppSelector((state) => state.chats.chats);
 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (me) {            
+        if (me) {
             dispatch(fetchChats());
         }
     }, [me]);
 
+    if (!chats.length) {
+        return (
+            <Typography sx={{
+                mt: 2,
+                textAlign: "center",
+                opacity: 0.3
+            }}>
+                No chats.
+            </Typography>
+        )
+    }
+
     return (
         <List disablePadding={true}>
             {
-                rawChatList.map((chat, idx) =>
+                chats.map((chat, idx) =>
                     <Chat key={idx} chat={chat} />)
             }
         </List>

@@ -6,7 +6,7 @@ import { faCog, faInfoCircle, faMoon, faRightFromBracket, faUser } from "@fortaw
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { ListItemIcon, ListItemText, Menu, MenuItem, Switch } from "@mui/material"
 import { useState } from "react"
-import * as authClientService from "@/app/_client-services/auth/auth.client-service";
+import * as authClientService from "@/store/services/auth/auth.service";
 import { useRouter } from "next/navigation"
 import { useSpinner } from "@/components/spinner.component"
 import dynamic from "next/dynamic"

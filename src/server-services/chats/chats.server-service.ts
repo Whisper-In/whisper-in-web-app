@@ -1,15 +1,18 @@
-import axiosInstance from "../axios";
+import axiosInstance, { fetchInstance } from "../axios";
 import { ChatFeature, IUserChatRawDto, IUserChatDto } from "@/dtos/chats/chats.dtos";
 
 const route = "chats";
 
-export const getUserChats = async () => {   
+export const getUserChats = async () => {
   try {
-    const result = await axiosInstance.get<IUserChatRawDto[]>(
-      `${route}/user-chats/chats`
+    const result = await fetchInstance.fetch<IUserChatRawDto[]>(
+      `${route}/user-chats/chats`,
+      {
+        method: "GET"
+      }
     );
 
-    return result.data;
+    return result;
   } catch (error) {
     console.log(error)
     throw error;

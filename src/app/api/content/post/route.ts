@@ -19,7 +19,6 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-
     try {
         const formData = await request.formData();
         const result = await postServerService.createPost(formData);

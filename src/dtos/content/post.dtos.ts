@@ -25,3 +25,8 @@ export interface IPostResultsDto {
     posts: IPostDto[],
     totalPosts: number
 };
+
+export interface IDeletedResultDto {
+    acknowledged: boolean;
+    deletedCount: number;
+}

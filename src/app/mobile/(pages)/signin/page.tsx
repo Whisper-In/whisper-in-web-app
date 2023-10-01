@@ -3,7 +3,7 @@
 import Image from "next/image"
 import GoogleSignInButton from "./_components/google-signin-button.component"
 import AppleSignInButton from "./_components/apple-signIn-button.component copy"
-import * as authClientService from "@/app/_client-services/auth/auth.client-service"
+import * as authClientService from "@/store/services/auth/auth.service"
 import { Alert } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { setUser } from "@/store/slices/user.slice"

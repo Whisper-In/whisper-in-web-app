@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import * as postService from "@/app/_client-services/content/post.client-service";
+import * as postService from "@/store/services/content/post.service";
 import { IPostDto } from "@/dtos/content/post.dtos";
 import RecommendedTypesNav from "./_components/recommended-types.component";
 import classNames from "classnames";

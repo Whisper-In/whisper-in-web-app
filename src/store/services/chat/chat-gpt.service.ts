@@ -15,7 +15,6 @@ export async function getChatCompletion(aiProfileId: string,
             message,
             prevMessages
         });
-
         return results.data as IUserChatMessageDto;
     } catch (error) {
         throw error;

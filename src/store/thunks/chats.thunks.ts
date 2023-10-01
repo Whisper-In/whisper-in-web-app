@@ -4,9 +4,9 @@ import {
   LoadChatsActionPayload,
   LoadChatsProfile,
 } from "../types/chats.types";
-import * as chatGPTClientService from "@/app/_client-services/chat/chat-gpt.client-service";
-import * as elevenLabsClientService from "@/app/_client-services/chat/eleven-labs.client-service";
-import * as chatClientService from "@/app/_client-services/chat/chat.client-service";
+import * as chatGPTService from "@/store/services/chat/chat-gpt.service";
+import * as elevenLabsService from "@/store/services/chat/eleven-labs.service";
+import * as chatService from "@/store/services/chat/chat.service";
 import OpenAI from "openai";
 import { RootState } from "@/store/store";
 import { ChatFeature } from "../states/chats.states";
@@ -18,7 +18,7 @@ export const fetchChats = createAsyncThunk<LoadChatsActionPayload[] | any>(
     let payload: LoadChatsActionPayload[] = [];
 
     try {
-      const userChats = await chatClientService.getUserChats();
+      const userChats = await chatService.getUserChats();
       payload = userChats.map((userChat) => ({
         chatId: userChat.chatId,
         profiles: userChat.profiles.map<LoadChatsProfile>((profile) => ({
@@ -60,11 +60,11 @@ export const fetchChatCompletion = createAsyncThunk<
       const chat = chats.chats.find((c) => c.chatId == props.chatId);
       let prevChatMessages = chat?.messages ?? [];
 
-      const chatGPTResult = await chatGPTClientService.getChatCompletion(
+      const chatGPTResult = await chatGPTService.getChatCompletion(
         props.contactId,
         props.message,
         prevChatMessages
-          .slice(-chatGPTClientService.MAX_PREV_MESSAGES_LIMIT)
+          .slice(-chatGPTService.MAX_PREV_MESSAGES_LIMIT)
           .map<OpenAI.Chat.ChatCompletionMessage>((item) => ({
             role: item.senderId != props.contactId ? "user" : "assistant",
             content: item.message,
@@ -79,7 +79,7 @@ export const fetchChatCompletion = createAsyncThunk<
 
       if (isAudio) {
         try {
-          const arrayBuffer = await elevenLabsClientService.getTextToSpeech(props.contactId, chatGPTResult.message);
+          const arrayBuffer = await elevenLabsService.getTextToSpeech(props.contactId, chatGPTResult.message);
 console.log(arrayBuffer)
           const id = await idb.audios.add({
             chatId: chat!.chatId,

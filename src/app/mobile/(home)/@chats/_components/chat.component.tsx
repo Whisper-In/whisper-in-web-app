@@ -7,9 +7,9 @@ import { Avatar, ListItem, ListItemButton } from "@mui/material";
 import Link from "next/link";
 
 export default function Chat({ chat }
-    : { chat: IUserChatRawDto }) {    
+    : { chat: Chat }) {    
     const me = useAppSelector((state) => state.user.me)!;
-    const profile = chat.profiles.findLast((profile) => profile?._id != me?._id);
+    const profile = chat.profiles.findLast((profile) => profile?.id != me?._id);
 
     const lastMessage: string | undefined = undefined;
     const messageDateTime: string | undefined = undefined;
@@ -21,7 +21,7 @@ export default function Chat({ chat }
                 gap: 2,
                 padding: 2
             }}>
-                <Link href={`/profile/${profile?._id}`}>
+                <Link href={`/profile/${profile?.id}`}>
                     <Avatar src={profile?.avatar} sx={{ width: 50, height: 50 }} />
                 </Link>
 
