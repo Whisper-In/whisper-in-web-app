@@ -17,19 +17,19 @@ export default function Header({
 } & React.PropsWithChildren) {
     return (
         <AppBar
-            position="static"
+            position="sticky"
             className="pt-sat"
             sx={{
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "flex-end",
-                position: "relative",
                 minHeight: 88,
                 paddingBottom: 2,
                 paddingRight: 2,
                 paddingLeft: 2,
-                gap: 3
+                gap: 3,
+                zIndex:1,
             }}>
             {
                 children ?

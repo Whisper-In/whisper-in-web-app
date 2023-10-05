@@ -9,7 +9,7 @@ export default function MobileHomeLayout(props: {
   me: React.ReactNode
 }) {
   return (
-    <div className="h-full w-screen overflow-x-hidden overflow-y-hidden">
+    <main className="h-full w-full overflow-hidden">
       <BottomNavigation tabs={[
         {
           tabValue: "feed",
@@ -41,6 +41,6 @@ export default function MobileHomeLayout(props: {
           destroyOnHide: true
         }
       ]} />
-    </div>
+    </main>
   )
 }

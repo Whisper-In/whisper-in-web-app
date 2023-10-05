@@ -11,11 +11,20 @@ export default function BackButton({ className }
     const router = useRouter();
     const searchParams = useSearchParams();
 
+    const onBack = () => {
+        console.log(window.history.length)
+        if(window.history.length) {
+            router.back();
+        } else {
+            router.replace("/")
+        }
+    }
+
     return (
         <button className={classNames(
             "w-fit drop-shadow-md",
             className
-        )} onClick={() => router.back()}>
+        )} onClick={onBack}>
             <FontAwesomeIcon icon={faArrowLeft} fontSize={25} />
         </button >
     );

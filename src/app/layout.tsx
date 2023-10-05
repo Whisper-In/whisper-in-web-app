@@ -35,10 +35,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className} style={{
-        height: "100vh"
+        height: "100dvh",
+        position: "fixed",
+        overflow: "hidden"
       }}>
-        <Providers>        
-            {children}        
+        <Providers>
+          {children}
         </Providers>
       </body>
     </html>

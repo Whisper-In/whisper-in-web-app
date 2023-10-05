@@ -1,6 +1,6 @@
 "use client"
 
-import StatItem from "@/app/mobile/(pages)/profile/[profileId]/_component/stat-item.component";
+import StatItem from "@/app/mobile/(pages)/profile/(profileId)/[profileId]/_component/stat-item.component";
 import { useAppSelector } from "@/store/hooks";
 import { Avatar } from "@mui/material";
 import { useEffect } from "react";

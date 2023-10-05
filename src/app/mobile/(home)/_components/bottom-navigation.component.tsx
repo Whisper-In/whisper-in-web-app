@@ -10,7 +10,7 @@ import { PropsWithChildren, useState } from "react";
 export function TabScreen({ children, hidden }: PropsWithChildren & { hidden?: boolean }) {
     return (
         <div className={classNames(
-            "h-full",
+            "h-full overflow-hidden",
             {
                 "hidden": hidden
             }
@@ -42,7 +42,7 @@ export default function BottomNavigation({ tabs }: { tabs: Tab[] }) {
     return (
         <ThemeProvider theme={tabTheme}>
             <ScopedCssBaseline className="flex flex-col h-full">
-                <div className="h-full overflow-auto">
+                <div className="h-full overflow-hidden">
                     {
                         tabs.map((t, index) => {
                             if (!t.destroyOnHide || tab.tabValue == t.tabValue) {

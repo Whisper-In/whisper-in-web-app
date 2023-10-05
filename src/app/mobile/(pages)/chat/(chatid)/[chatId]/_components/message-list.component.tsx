@@ -1,9 +1,9 @@
 import classNames from "classnames";
-import MessageBubble from "./message-bubble.component";
+import MessageBubble from "./message-bubbles/message-bubble.component";
 import { useEffect, useRef, useState } from "react";
 import { ChatMessage } from "@/store/states/chats.states";
-import { MessageBubbleAudio } from "./message-bubble-audio.component";
-import { MessageBubbleTyping } from "./message-bubble-typing.component";
+import { MessageBubbleAudio } from "./message-bubbles/message-bubble-audio.component";
+import { MessageBubbleTyping } from "./message-bubbles/message-bubble-typing.component";
 
 export default function MessageList({ className, messageList, chatId, userId, isTyping }
     : { className?: string, messageList: ChatMessage[], chatId: string, userId?: string, isTyping?: boolean }) {

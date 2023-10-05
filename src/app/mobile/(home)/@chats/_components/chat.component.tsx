@@ -7,7 +7,7 @@ import { Avatar, ListItem, ListItemButton } from "@mui/material";
 import Link from "next/link";
 
 export default function Chat({ chat }
-    : { chat: Chat }) {    
+    : { chat: Chat }) {
     const me = useAppSelector((state) => state.user.me)!;
     const profile = chat.profiles.findLast((profile) => profile?.id != me?._id);
 
@@ -18,14 +18,15 @@ export default function Chat({ chat }
         <ListItem disablePadding={true} suppressHydrationWarning={true}>
             <ListItemButton sx={{
                 display: "flex",
-                gap: 2,
-                padding: 2
+                alignItems: "stretch",
+                padding: 2,
+                gap: 2
             }}>
                 <Link href={`/profile/${profile?.id}`}>
                     <Avatar src={profile?.avatar} sx={{ width: 50, height: 50 }} />
                 </Link>
 
-                <Link href={`/mobile/chat/${chat.chatId}`} className="grow">
+                <Link href={`/mobile/chat/${chat.chatId}`} className="grow flex">
                     <div className="flex items-center">
                         <label className="grow font-bold text-lg">{profile?.name}</label>
                         <label className="text-sm">{messageDateTime}</label>

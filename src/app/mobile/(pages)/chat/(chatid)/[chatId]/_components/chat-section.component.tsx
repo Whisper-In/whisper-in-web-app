@@ -103,19 +103,15 @@ export default function ChatSection({ className, chat }
                     }
                 </div>
             </Header>
+                 
+            <MessageList className="grow"
+                messageList={messageList}
+                userId={me?._id}
+                chatId={chat.chatId}
+                isTyping={isReplying} />
 
-            <div className={classNames(
-                "h-full w-full flex flex-col",
-                className
-            )}>
-                <MessageList className="grow"
-                    messageList={messageList}
-                    userId={me?._id}
-                    chatId={chat.chatId}
-                    isTyping={isReplying} />
-
-                <ChatInputBar onSend={onSend} />
-            </div>
+            <ChatInputBar onSend={onSend} />
+           
         </>
     )
 }
