@@ -36,6 +36,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className} style={{
         height: "100dvh",
+        width: "100vw",
         position: "fixed",
         overflow: "hidden"
       }}>
