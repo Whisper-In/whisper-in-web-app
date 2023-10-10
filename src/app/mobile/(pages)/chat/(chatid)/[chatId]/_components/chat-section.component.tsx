@@ -7,8 +7,7 @@ import { IUserChatDto } from "@/dtos/chats/chats.dtos";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Header from "@/app/mobile/_components/header.component";
 import { Avatar } from "@mui/material";
-import { toggleAudioReplies } from "@/store/slices/chats.slice";
-import { fetchChatCompletion, insertNewUserChatMessage } from "@/store/thunks/chats.thunks";
+import { fetchChatCompletion, insertNewUserChatMessage, setChatAudioReply } from "@/store/thunks/chats.thunks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
 import { ChatFeature } from "@/store/states/chats.states";
@@ -58,9 +57,9 @@ export default function ChatSection({ className, chat }
     }
 
     const onToggleAudioReplies = () => {
-        dispatch(toggleAudioReplies({
+        dispatch(setChatAudioReply({
             chatId: chat.chatId,
-            isAudioRepliesOff: !_chat?.isAudioRepliesOff
+            isAudioOn: !_chat?.isAudioOn
         }));
     }
 
@@ -81,7 +80,7 @@ export default function ChatSection({ className, chat }
                     {
                         hasAudioReply &&
                         <button onClick={onToggleAudioReplies}>
-                            <FontAwesomeIcon icon={_chat?.isAudioRepliesOff ? faVolumeMute : faVolumeHigh} fontSize={20} />
+                            <FontAwesomeIcon icon={!_chat?.isAudioOn ? faVolumeMute : faVolumeHigh} fontSize={20} />
                         </button>
                     }
                 </div>

@@ -96,18 +96,15 @@ export const fetchChatCompletion = createAsyncThunk<
       //   props.message
       // );
 
-      let audioId: number | undefined;
-
       if (chatGPTResult.isAudio) {
         try {
           const arrayBuffer = await elevenLabsService.getTextToSpeech(props.contactId, chatGPTResult.message);
 
           const id = await idb.audios.add({
             chatId: props.chatId,
+            messageId: chatGPTResult._id,
             arrayBuffer
           });
-
-          audioId = parseInt(id.toString());
         } catch (error) {
           //ignore the error here
         }
@@ -155,7 +152,7 @@ export const fetchChatMessages = createAsyncThunk<
 
     try {
       const result = await chatService.getChatMessages(props.chatId, props.pageIndex, props.messageCount);
-
+      
       payload.messages = result.messages;
       payload.totalMessages = result.totalMessages;
     } catch (error) {
@@ -164,5 +161,35 @@ export const fetchChatMessages = createAsyncThunk<
     }
 
     return payload;
+  }
+);
+
+
+export const setChatAudioReply = createAsyncThunk<
+  {
+    chatId: string,
+    isAudioOn: boolean,
+  },
+  {
+    chatId: string,
+    isAudioOn: boolean
+  }
+>(
+  "chats/setChatAudioReply",
+  async (props: {
+    chatId: string,
+    isAudioOn: boolean
+  }) => {
+    try {
+      const result = await chatService.setChatAudioReply(props.chatId, props.isAudioOn);
+
+      return {
+        chatId: result._id,
+        isAudioOn: result.isAudioOn,
+      }
+    } catch (error) {
+      console.log("chats/setChatAudioReply:", error);
+      throw error;
+    }
   }
 );

@@ -13,14 +13,14 @@ export const loadChatsReducer = (
     action: LoadChatsAction
 ) => {
     const payload = action.payload as LoadChatsActionPayload[];
-
+    
     state.chats = payload.map<Chat>((item) => {
         const stateChat = state.chats?.find((chat) => chat.chatId == item.chatId);
         const stateChatMessages = stateChat?.messages ?? [];
 
         return {
             chatId: item.chatId,
-            isAudioRepliesOff: !item.isAudioOn,
+            isAudioOn: item.isAudioOn,
             profiles: item.profiles.map<ChatProfile>((profile) => ({
                 id: profile.id,
                 name: profile.name,
@@ -44,10 +44,10 @@ export const loadChatMessages = (
     const chat = state.chats?.find((chat) => chat.chatId == payload.chatId);
 
     if (chat) {
-        if(payload.clearMessages) {
+        if (payload.clearMessages) {
             chat.messages = [];
         }
-        
+
         chat.messages = chat.messages.concat(payload.messages);
         chat.totalMessages = payload.totalMessages;
     }
@@ -87,12 +87,12 @@ export const addNewChatMessage = (
 
 export const toggleChatAudioReplies = (
     state: ChatsState,
-    action: { payload: { chatId: string, isAudioRepliesOff: boolean } }
+    action: { payload: { chatId: string, isAudioOn: boolean } }
 ) => {
     const chat = state.chats.find((chat) => chat.chatId == action.payload.chatId);
 
     if (chat) {
-        chat.isAudioRepliesOff = action.payload.isAudioRepliesOff;
+        chat.isAudioOn = action.payload.isAudioOn;
     }
 
     return state;

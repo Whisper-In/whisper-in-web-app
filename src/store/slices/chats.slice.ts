@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as chatsReducers from "../reducers/chats.reducers";
 import { ChatsState } from "../states/chats.states";
-import { fetchChatCompletion, fetchChatMessages, fetchChats, insertNewUserChatMessage } from "../thunks/chats.thunks";
+import { fetchChatCompletion, fetchChatMessages, fetchChats, insertNewUserChatMessage, setChatAudioReply } from "../thunks/chats.thunks";
 
 const initialState: ChatsState = {
     chats: [],
@@ -12,7 +12,6 @@ export const chatSlice = createSlice({
     initialState,
     reducers: {
         addNewChatMessage: chatsReducers.addNewChatMessage,
-        toggleAudioReplies: chatsReducers.toggleChatAudioReplies,
         updateChatFeatures: chatsReducers.updateChatFeatures
     },
     extraReducers: (builder) => {
@@ -20,12 +19,12 @@ export const chatSlice = createSlice({
         builder.addCase(fetchChatMessages.fulfilled, chatsReducers.loadChatMessages)
         builder.addCase(fetchChatCompletion.fulfilled, chatsReducers.addNewChatMessage);
         builder.addCase(insertNewUserChatMessage.fulfilled, chatsReducers.addNewChatMessage);
+        builder.addCase(setChatAudioReply.fulfilled, chatsReducers.toggleChatAudioReplies)
     }
 });
 
 export const {
-    addNewChatMessage,
-    toggleAudioReplies,
+    addNewChatMessage,    
     updateChatFeatures
 } = chatSlice.actions;
 

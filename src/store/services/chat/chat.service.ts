@@ -1,4 +1,4 @@
-import { IUserChatMessageDto, IUserChatMessagesResultDto, IUserChatRawDto } from "@/dtos/chats/chats.dtos";
+import { IUserChatDto, IUserChatMessageDto, IUserChatMessagesResultDto, IUserChatRawDto } from "@/dtos/chats/chats.dtos";
 import axios from "axios";
 
 const route = "/api/chat";
@@ -81,6 +81,21 @@ export async function getChatCompletion(chatId: string, profileId: string, messa
         }).then((result) => result.json());
 
         return result as IUserChatMessageDto
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function setChatAudioReply(chatId: string, isAudioOn: boolean) {
+    try {
+        const result = await fetch(`${route}/audio-reply/${chatId}`, {
+            method: "PUT",
+            body: JSON.stringify({
+                isAudioOn
+            })
+        }).then((result) => result.json());
+
+        return result as IUserChatRawDto;
     } catch (error) {
         throw error;
     }

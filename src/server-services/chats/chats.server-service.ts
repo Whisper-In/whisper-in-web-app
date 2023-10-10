@@ -119,3 +119,18 @@ export const getChatCompletion = async (chatId: string, profileId: string, messa
     throw error;
   }
 }
+
+export const setChatAudioReply = async (chatId: string, isAudioOn: boolean) => {
+  try {
+    const result = await fetchInstance.fetch(`${route}/audio-reply/${chatId}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        isAudioOn
+      })
+    })
+
+    return result as IUserChatDto;
+  } catch (error) {
+    throw error;
+  }
+}

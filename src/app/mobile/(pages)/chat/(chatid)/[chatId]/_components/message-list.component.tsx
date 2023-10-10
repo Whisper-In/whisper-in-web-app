@@ -99,11 +99,11 @@ export default function MessageList({
                     }
                     {
                         messageList?.map((message, idx) => {
-                            let messageBubble = <MessageBubbleAudio chatId={chatId}
+                            let messageBubble = <MessageBubble
                                 message={message} isUser={message.sender == userId} />
 
-                            if (!message.isAudio || !message.messageId) {
-                                messageBubble = <MessageBubble
+                            if (message.isAudio && message.sender != userId) {
+                                messageBubble = <MessageBubbleAudio chatId={chatId}
                                     message={message} isUser={message.sender == userId} />
                             }
 

@@ -12,11 +12,12 @@ export interface IUserChatProfileDto {
 }
 
 export interface IUserChatRawDto {
+    _id: string;
     chatId: string;
     features: string[];
     profiles: IUserChatProfileDto[];
     isAudioOn: boolean;
-    lastMessage: IUserChatMessageDto;    
+    lastMessage: IUserChatMessageDto;
 }
 
 export interface IUserChatDto {
@@ -34,7 +35,6 @@ export interface IUserChatMessageDto {
     createdAt?: string;
     updatedAt?: string;
 }
-
 
 export interface IUserChatMessagesResultDto {
     chatId: string;

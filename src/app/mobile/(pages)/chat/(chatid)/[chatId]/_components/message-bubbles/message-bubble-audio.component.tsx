@@ -34,7 +34,7 @@ export function MessageBubbleAudio({ className, message, chatId, isUser }
 
     const audio = useLiveQuery(async () =>
         await idb.audios
-            .where(['chatId', 'id'])
+            .where(['chatId', 'messageId'])
             .equals([chatId, message.messageId!])
             .first(),
         [message.messageId]
