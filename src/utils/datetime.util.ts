@@ -75,7 +75,10 @@ export const convertToMessageDateGroup = (date?: Date | string) => {
 
 export const isDateEqual = (dateA: Date | string, dateB: Date | string) => {
     dateA = stringToDate(dateA);
-    dateB = stringToDate(dateB);
+    dateA = new Date(dateA?.getFullYear(), dateA?.getMonth(), dateA?.getDate());
 
-    return dateA?.getDate() == dateB?.getDate();
+    dateB = stringToDate(dateB);
+    dateB = new Date(dateB?.getFullYear(), dateB?.getMonth(), dateB?.getDate());
+
+    return dateA.getTime() == dateB.getTime();
 }
