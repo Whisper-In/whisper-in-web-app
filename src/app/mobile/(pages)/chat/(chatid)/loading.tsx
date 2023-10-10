@@ -1,7 +1,6 @@
 import Header from "@/app/mobile/_components/header.component";
-import ChatSection from "./[chatId]/_components/chat-section.component";
 import BackButton from "@/app/mobile/_components/back-button.component";
-import { Avatar, Skeleton } from "@mui/material";
+import { Skeleton } from "@mui/material";
 import classNames from "classnames";
 import ChatInputBar from "./[chatId]/_components/input-bar.component";
 

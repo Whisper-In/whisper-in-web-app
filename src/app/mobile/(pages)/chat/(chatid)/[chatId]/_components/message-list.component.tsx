@@ -98,7 +98,7 @@ export default function MessageList({
                         <MessageBubbleTyping />
                     }
                     {
-                        messageList.map((message, idx) => {
+                        messageList?.map((message, idx) => {
                             let messageBubble = <MessageBubbleAudio chatId={chatId}
                                 message={message} isUser={message.sender == userId} />
 
