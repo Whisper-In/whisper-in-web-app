@@ -1,15 +1,14 @@
 "use client"
 
-import classNames from "classnames";
 import MessageList from "./message-list.component";
 import ChatInputBar from "./input-bar.component";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IUserChatDto } from "@/dtos/chats/chats.dtos";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Header from "@/app/mobile/_components/header.component";
 import { Avatar } from "@mui/material";
-import { addNewChatMessage, toggleAudioReplies, updateChatFeatures } from "@/store/slices/chats.slice";
-import { fetchChatCompletion } from "@/store/thunks/chats.thunks";
+import { toggleAudioReplies } from "@/store/slices/chats.slice";
+import { fetchChatCompletion, insertNewUserChatMessage } from "@/store/thunks/chats.thunks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
 import { ChatFeature } from "@/store/states/chats.states";
@@ -19,23 +18,12 @@ import Link from "next/link";
 export default function ChatSection({ className, chat }
     : { className?: string, chat: IUserChatDto }) {
     const me = useAppSelector((state) => state.user.me);
-    const profile = chat.profiles.findLast((profile) => profile._id != me?._id)!;
     const _chat = useAppSelector((state) => state.chats.chats.find((c) => c.chatId == chat.chatId));
-    const messageList = _chat?.messages ?? [];
+    const profile = chat.profiles.findLast((profile) => profile._id != me?._id)!;
     const [isReplying, setIsReplying] = useState(false);
     const dispatch = useAppDispatch();
 
     const hasAudioReply = chat.features.includes(ChatFeature.AUDIO);
-
-    useEffect(() => {
-        if (chat) {
-            dispatch(updateChatFeatures({
-                chatId: chat.chatId,
-                features: chat.features
-            }));
-        }
-    }, [chat]);
-
 
     const getChatCompletion = async (message: string) => {
         setIsReplying(true);
@@ -57,14 +45,9 @@ export default function ChatSection({ className, chat }
             return
         }
 
-        const createdAt = new Date().toString();
-
-        dispatch(addNewChatMessage({
+        dispatch(insertNewUserChatMessage({
             chatId: chat.chatId,
-            senderId: me._id,
             message,
-            createdAt,
-            updatedAt: createdAt
         }));
 
         if (profile.isBlocked) {
@@ -103,15 +86,14 @@ export default function ChatSection({ className, chat }
                     }
                 </div>
             </Header>
-                 
+
             <MessageList className="grow"
-                messageList={messageList}
                 userId={me?._id}
                 chatId={chat.chatId}
                 isTyping={isReplying} />
 
             <ChatInputBar onSend={onSend} />
-           
+
         </>
     )
 }

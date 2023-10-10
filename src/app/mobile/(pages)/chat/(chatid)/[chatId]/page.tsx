@@ -3,8 +3,8 @@ import * as chatServerService from "@/server-services/chats/chats.server-service
 import { notFound } from "next/navigation";
 
 export default async function Chat(props: { params: { chatId: string } }) {
-    const chat = await chatServerService.getChat(props.params.chatId);
-    
+    const chat = await chatServerService.getChat(props.params.chatId);    
+
     if (!chat.chatId) {
         return notFound();
     }

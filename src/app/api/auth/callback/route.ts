@@ -23,10 +23,7 @@ export async function GET(request: NextRequest) {
             const maxAge = 60 * 60 * 24 * 7;
             response.cookies.set("token", token, {
                 maxAge
-            });
-            response.cookies.set("userId", JSON.parse(user!)._id, {
-                maxAge: 60 * 60 * 24 * 7
-            });
+            });            
         }
 
         return response;

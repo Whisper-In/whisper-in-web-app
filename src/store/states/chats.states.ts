@@ -1,8 +1,8 @@
 export type ChatMessage = {
-    senderId: string;
+    sender: string;
     message: string;
     isAudio?: boolean;
-    audioId?: number;
+    messageId?: string;
     createdAt?: string;
     updatedAt?: string;
 };
@@ -10,7 +10,7 @@ export type ChatMessage = {
 export type ChatProfile = {
     id: string;
     name: string;
-    avatar?: string;    
+    avatar?: string;
     isBlocked?: boolean;
 };
 
@@ -23,7 +23,9 @@ export type Chat = {
     isAudioRepliesOff?: boolean;
     features?: number[];
     profiles: ChatProfile[];
+    lastMessage?: ChatMessage;
     messages: ChatMessage[];
+    totalMessages?: number;
 };
 
 export type ChatsState = {

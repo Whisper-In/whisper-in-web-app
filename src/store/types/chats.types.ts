@@ -1,12 +1,14 @@
 export type LoadChatsProfile = {
   id: string;
   name: string;
-  avatar?: string;  
+  avatar?: string;
   isBlocked?: boolean;
 };
 
 export type LoadChatsActionPayload = {
   chatId: string;
+  isAudioOn:boolean;
+  lastMessage: ChatMessageActionPayload;
   profiles: LoadChatsProfile[]
 };
 
@@ -16,8 +18,8 @@ export type LoadChatsAction = {
 
 export type ChatMessageActionPayload = {
   chatId: string;
-  senderId: string;
-  audioId?: number;
+  sender: string;
+  messageId?: string;
   isAudio?: boolean;
   message: string;
   createdAt?: string;
@@ -26,4 +28,15 @@ export type ChatMessageActionPayload = {
 
 export type AddNewChatMessageAction = {
   payload: ChatMessageActionPayload
+}
+
+export type UpdateChatMessageAction = {
+  payload: { position: number } & ChatMessageActionPayload
+}
+
+export type LoadChatMessagesPayload = {
+  chatId: string;
+  messages: ChatMessageActionPayload[];
+  totalMessages: number;
+  clearMessages?:boolean;
 }

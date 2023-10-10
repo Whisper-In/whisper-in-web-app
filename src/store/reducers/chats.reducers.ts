@@ -1,8 +1,10 @@
 import {
     AddNewChatMessageAction,
     ChatMessageActionPayload,
+    LoadChatMessagesPayload,
     LoadChatsAction,
     LoadChatsActionPayload,
+    UpdateChatMessageAction,
 } from "../types/chats.types";
 import { Chat, ChatFeature, ChatProfile, ChatsState } from "../states/chats.states";
 
@@ -18,16 +20,37 @@ export const loadChatsReducer = (
 
         return {
             chatId: item.chatId,
-            isAudioRepliesOff: stateChat?.isAudioRepliesOff,
+            isAudioRepliesOff: !item.isAudioOn,
             profiles: item.profiles.map<ChatProfile>((profile) => ({
                 id: profile.id,
                 name: profile.name,
-                avatar: profile.avatar,                
+                avatar: profile.avatar,
                 isBlocked: profile.isBlocked
             })),
+            lastMessage: item.lastMessage,
             messages: [...stateChatMessages],
         };
     });
+
+    return state;
+};
+
+export const loadChatMessages = (
+    state: ChatsState,
+    action: { payload: LoadChatMessagesPayload }
+) => {
+    const payload = action.payload;
+
+    const chat = state.chats?.find((chat) => chat.chatId == payload.chatId);
+
+    if (chat) {
+        if(payload.clearMessages) {
+            chat.messages = [];
+        }
+        
+        chat.messages = chat.messages.concat(payload.messages);
+        chat.totalMessages = payload.totalMessages;
+    }
 
     return state;
 };
@@ -58,7 +81,7 @@ export const addNewChatMessage = (
     if (chat) {
         chat.messages.unshift(payload);
     }
-    
+
     return state;
 };
 

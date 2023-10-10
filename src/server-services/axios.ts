@@ -1,5 +1,6 @@
 import axios from "axios"
 import { cookies } from "next/headers"
+import deepmerge from "deepmerge";
 
 console.log(process.env.SERVICE_URL);
 
@@ -52,11 +53,11 @@ class FetchClient {
 
         if (this.interceptors.request.getValue) {
             const requestInterceptorInit = this.interceptors.request.getValue({});
-            init = { ...init, ...requestInterceptorInit }
+            init = deepmerge(init ?? {}, requestInterceptorInit)
         }
 
         const url = this.baseURL ? `${this.baseURL}${input}` : input;
-        return fetch(url, { ...this.defaultInit, ...init })
+        return fetch(url, deepmerge(this.defaultInit ?? {}, init ?? {}))
             .then(response => {
                 if (!response.ok) {
                     throw new Error(response.statusText);
@@ -76,7 +77,9 @@ fetchInstance.interceptors.request.use((config) => {
 
     if (token) {
         config.headers = {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
         }
     }
 

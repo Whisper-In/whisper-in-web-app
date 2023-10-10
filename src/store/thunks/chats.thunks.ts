@@ -1,15 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   ChatMessageActionPayload,
+  LoadChatMessagesPayload,
   LoadChatsActionPayload,
   LoadChatsProfile,
 } from "../types/chats.types";
-import * as chatGPTService from "@/store/services/chat/chat-gpt.service";
 import * as elevenLabsService from "@/store/services/chat/eleven-labs.service";
 import * as chatService from "@/store/services/chat/chat.service";
-import OpenAI from "openai";
 import { RootState } from "@/store/store";
-import { ChatFeature } from "../states/chats.states";
 import { idb } from "../indexedDB";
 
 export const fetchChats = createAsyncThunk<LoadChatsActionPayload[] | any>(
@@ -19,8 +17,11 @@ export const fetchChats = createAsyncThunk<LoadChatsActionPayload[] | any>(
 
     try {
       const userChats = await chatService.getUserChats();
+
       payload = userChats.map((userChat) => ({
         chatId: userChat.chatId,
+        lastMessage: userChat.lastMessage,
+        isAudioOn: userChat.isAudioOn,
         profiles: userChat.profiles.map<LoadChatsProfile>((profile) => ({
           id: profile._id,
           name: profile.name,
@@ -37,52 +38,72 @@ export const fetchChats = createAsyncThunk<LoadChatsActionPayload[] | any>(
   }
 );
 
+export const insertNewUserChatMessage = createAsyncThunk<
+  ChatMessageActionPayload,
+  { chatId: string, message: string },
+  { state: RootState }>(
+    "chats/insertNewUserChatMessage",
+    async (props: { chatId: string, message: string }, { getState }) => {
+      const me = getState().user.me;
+      const today = new Date();
+
+      const payload: ChatMessageActionPayload = {
+        chatId: props.chatId,
+        message: props.message,
+        sender: me!._id,
+        createdAt: today.toString(),
+        updatedAt: today.toString()
+      }
+
+      try {
+        chatService.insertNewChatMessage(props.chatId, me!._id, props.message);
+      } catch (error) {
+        throw error;
+      }
+
+      return payload;
+    }
+  )
+
 export const fetchChatCompletion = createAsyncThunk<
   ChatMessageActionPayload,
   { chatId: string; contactId: string; message: string },
   { state: RootState }
 >(
-  "chats/getChatCompletion",
+  "chats/fetchChatCompletion",
   async (
     props: { chatId: string; contactId: string; message: string },
     { getState }
   ) => {
     let payload: ChatMessageActionPayload = {
       chatId: props.chatId,
-      senderId: props.contactId,
+      sender: props.contactId,
       message: "",
       createdAt: "",
       updatedAt: "",
     };
 
     try {
-      const chats = getState().chats;
-      const chat = chats.chats.find((c) => c.chatId == props.chatId);
-      let prevChatMessages = chat?.messages ?? [];
-
-      const chatGPTResult = await chatGPTService.getChatCompletion(
+      const chatGPTResult = await chatService.getChatCompletion(
+        props.chatId,
         props.contactId,
-        props.message,
-        prevChatMessages
-          .slice(-chatGPTService.MAX_PREV_MESSAGES_LIMIT)
-          .map<OpenAI.Chat.ChatCompletionMessage>((item) => ({
-            role: item.senderId != props.contactId ? "user" : "assistant",
-            content: item.message,
-          }))
+        props.message
       );
 
-      const createdAt = new Date().toString();
-
-      const isAudio = chat?.features?.includes(ChatFeature.AUDIO) && !chat?.isAudioRepliesOff;
+      // const chatGPTResult = await chatService.getChatCompletionWithVectorDB(
+      //   props.chatId,
+      //   props.contactId,
+      //   props.message
+      // );
 
       let audioId: number | undefined;
 
-      if (isAudio) {
+      if (chatGPTResult.isAudio) {
         try {
           const arrayBuffer = await elevenLabsService.getTextToSpeech(props.contactId, chatGPTResult.message);
-console.log(arrayBuffer)
+
           const id = await idb.audios.add({
-            chatId: chat!.chatId,
+            chatId: props.chatId,
             arrayBuffer
           });
 
@@ -94,15 +115,52 @@ console.log(arrayBuffer)
 
       payload = {
         chatId: props.chatId,
-        senderId: props.contactId,
+        sender: props.contactId,
         message: chatGPTResult.message,
-        audioId,
-        isAudio,
-        createdAt,
-        updatedAt: createdAt,
+        messageId: chatGPTResult._id,
+        isAudio: chatGPTResult.isAudio,
+        createdAt: chatGPTResult.createdAt,
+        updatedAt: chatGPTResult.updatedAt
       };
     } catch (error) {
-      console.log("chats/getChatCompletion", error);
+      console.log("chats/fetchChatCompletion", error);
+    }
+
+    return payload;
+  }
+);
+
+export const fetchChatMessages = createAsyncThunk<
+  LoadChatMessagesPayload,
+  {
+    chatId: string,
+    pageIndex: number,
+    messageCount: number,
+    clearMessages?: boolean
+  }
+>(
+  "chats/fetchChatMessages",
+  async (props: {
+    chatId: string,
+    pageIndex: number,
+    messageCount: number,
+    clearMessages?: boolean
+  }) => {
+    let payload: LoadChatMessagesPayload = {
+      chatId: props.chatId,
+      messages: [],
+      totalMessages: 0,
+      clearMessages: props.clearMessages
+    };
+
+    try {
+      const result = await chatService.getChatMessages(props.chatId, props.pageIndex, props.messageCount);
+
+      payload.messages = result.messages;
+      payload.totalMessages = result.totalMessages;
+    } catch (error) {
+      console.log("chats/fetchChatMessages:", error);
+      throw error;
     }
 
     return payload;
