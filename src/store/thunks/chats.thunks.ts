@@ -98,13 +98,12 @@ export const fetchChatCompletion = createAsyncThunk<
 
       if (chatGPTResult.isAudio) {
         try {
-          const arrayBuffer = await elevenLabsService.getTextToSpeech(props.contactId, chatGPTResult.message);
-
-          const id = await idb.audios.add({
-            chatId: props.chatId,
-            messageId: chatGPTResult._id,
-            arrayBuffer
-          });
+          await elevenLabsService.getTextToSpeechStoreInIDB(
+            props.contactId,
+            chatGPTResult.message,
+            props.chatId,
+            chatGPTResult._id
+          );
         } catch (error) {
           //ignore the error here
         }
@@ -152,7 +151,7 @@ export const fetchChatMessages = createAsyncThunk<
 
     try {
       const result = await chatService.getChatMessages(props.chatId, props.pageIndex, props.messageCount);
-      
+
       payload.messages = result.messages;
       payload.totalMessages = result.totalMessages;
     } catch (error) {

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export type AppState = {
     darkMode: boolean;
+    currentPlayingAudio?: string;
 };
 
 export const initialAppState: AppState = {
@@ -17,12 +18,18 @@ export const appSlice = createSlice({
             state.darkMode = action.payload;
 
             return state;
+        },
+        setCurrentPlayingAudio: (state: AppState, action: { payload: string | undefined }) => {
+            state.currentPlayingAudio = action.payload;
+
+            return state;
         }
     }
 });
 
 export const {
-    setDarkMode
+    setDarkMode,
+    setCurrentPlayingAudio
 } = appSlice.actions;
 
 export default appSlice.reducer;

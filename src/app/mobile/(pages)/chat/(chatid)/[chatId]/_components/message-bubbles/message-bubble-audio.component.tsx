@@ -3,12 +3,15 @@ import { MessageBubbleWrapper } from "./message-bubble-wrapper.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlayCircle, faStopCircle } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
-import { useTheme } from "@mui/material";
+import { CircularProgress, useTheme } from "@mui/material";
 import { useSpringValue } from "@react-spring/web";
 import { convertToMessageTime } from "@/utils/datetime.util";
 import { useLiveQuery } from "dexie-react-hooks";
 import { idb } from "@/store/indexedDB";
 import { ChatMessage } from "@/store/states/chats.states";
+import { getTextToSpeechStoreInIDB } from "@/store/services/chat/eleven-labs.service";
+import { setCurrentPlayingAudio } from "@/store/slices/app.slice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
 const WAVEFORM_BARS = 65;
 const WAVEFORM_WIDTH = 200;
@@ -28,7 +31,10 @@ export function MessageBubbleAudio({ className, message, chatId, isUser }
     const [isPlaying, setIsPlaying] = useState(false);
     const [audioTime, setAudioTime] = useState(0);
     const [channelData, setChannelData] = useState<number[]>(Array(WAVEFORM_BARS).fill(0));
+    const [loadingAudio, setLoadingAudio] = useState(false);
     const audioSeekerValue = useSpringValue(0);
+    const currentPlayingAudio = useAppSelector((state) => state.app.currentPlayingAudio);
+    const dispatch = useAppDispatch();
 
     const messageTime = convertToMessageTime(message.updatedAt!);
 
@@ -129,34 +135,55 @@ export function MessageBubbleAudio({ className, message, chatId, isUser }
         }
     }, [channelData]);
 
+    useEffect(() => {
+        if(currentPlayingAudio != `${chatId}|${message.messageId}`) {
+            stopAudio();
+        }
+    },[currentPlayingAudio]);
+
 
     const toggleAudio = async () => {
         if (!audio) {
+            setLoadingAudio(true);
+            await getTextToSpeechStoreInIDB(message.sender, message.message, chatId, message.messageId!)
+                .finally(() => setLoadingAudio(false));
             return;
         }
 
         if (audioRef.current) {
             if (!isPlaying) {
-                resetAudioSeeker();
-                drawWaveform();
+                playAudio();
 
-                audioRef.current.currentTime = 0;
-
-                audioSeekerValue.start({
-                    from: 0,
-                    to: MAX_PROGRESS,
-                    config: {
-                        duration: audioRef.current.duration * 1000
-                    },
-                    onChange: updateAudioSeeker
-                });
-
-                await audioRef.current.play()
+                dispatch(setCurrentPlayingAudio(`${chatId}|${message.messageId}`));
             } else {
-                audioSeekerValue.stop();
-                await audioRef.current.pause();
+                stopAudio();
+
+                dispatch(setCurrentPlayingAudio());
             }
         }
+    }
+
+    const playAudio = async () => {
+        resetAudioSeeker();
+        drawWaveform();
+
+        audioRef.current!.currentTime = 0;
+
+        audioSeekerValue.start({
+            from: 0,
+            to: MAX_PROGRESS,
+            config: {
+                duration: audioRef.current!.duration * 1000
+            },
+            onChange: updateAudioSeeker
+        });
+
+        await audioRef.current!.play()
+    }
+
+    const stopAudio = async () => {    
+        audioSeekerValue.stop();
+        await audioRef.current!.pause();
     }
 
     const onTimeUpdate = () => {
@@ -194,7 +221,12 @@ export function MessageBubbleAudio({ className, message, chatId, isUser }
         )} isPrimary={isUser}>
             <div className="flex gap-5 p-2 items-center">
                 <button onClick={toggleAudio}>
-                    <FontAwesomeIcon icon={!isPlaying ? faPlayCircle : faStopCircle} fontSize={35} />
+                    {
+                        !loadingAudio ?
+                            <FontAwesomeIcon icon={!isPlaying ? faPlayCircle : faStopCircle} fontSize={35} />
+                            :
+                            <CircularProgress size={30} />
+                    }
                 </button>
 
                 <div>
