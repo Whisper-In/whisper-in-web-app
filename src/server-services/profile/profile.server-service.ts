@@ -1,11 +1,10 @@
 import { IProfileDto, IProfileSearchDto } from "@/dtos/profile/profile.dtos";
 import axiosInstance from "../axios";
-import { ICreatePaymentSheetDto } from "@/dtos/payment/payment.dtos";
 
 const route = "profile";
 
 export async function getProfile(profileId: string) {
-    try {
+    try {        
         const result = await axiosInstance.get(`${route}/${profileId}`);
 
         return <IProfileDto>result.data;

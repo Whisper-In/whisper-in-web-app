@@ -1,3 +1,10 @@
-export default function Loading() {
-    return null;
+import Loading from "@/app/mobile/(pages)/post/loading";
+import Modal from "@/app/mobile/_components/modal.component";
+
+export default function PostModalLoading() {
+    return (
+        <Modal>
+            <Loading />
+        </Modal>
+    );
 }
