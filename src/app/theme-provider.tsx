@@ -13,7 +13,7 @@ const ThemeContext = createContext({
 export const useAppTheme = () => useContext(ThemeContext);
 
 export default function AppThemeProvider({ children }: PropsWithChildren) {
-    const [darkMode, setDarkMode] = useState(false);
+    const [darkMode, setDarkMode] = useState(true);
     const settingsDarkMode = useAppSelector((state) => state.app.darkMode);
 
     const theme = useMemo(() => {
