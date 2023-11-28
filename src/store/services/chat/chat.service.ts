@@ -5,7 +5,7 @@ const route = "/api/chat";
 
 export async function getUserChats() {
     try {
-        const results = await axios.get(`${route}/user-chats`);
+        const results = await axios.get(`${route}/user-chats/chats`);
 
         return results.data as IUserChatRawDto[];
     } catch (error) {
@@ -15,7 +15,7 @@ export async function getUserChats() {
 
 export async function createNewChat(profileId: string) {
     try {
-        const result = await axios.post(`${route}/user-chats/create-new-chat`, { profileId });
+        const result = await axios.post(`${route}/user-chats/new-chat`, { profileId });
 
         return result.data
     } catch (error) {

@@ -5,7 +5,7 @@ const route = "api/business/configuration";
 
 export async function getMinSubscriptionFee() {
     try {
-        const result = await axios.get(`${route}/min-subscription-fee`);
+        const result = await axios.get(`${route}/MIN_SUBSCRIPTION_FEE`);
 
         return result.data as IConfig;
     } catch (error) {

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse, userAgent } from "next/server";
-import { getCookieCallback } from "./utils/cookies.util";
 
 export function middleware(request: NextRequest) {
     const token = request.cookies.get("token")?.value;
@@ -11,7 +10,7 @@ export function middleware(request: NextRequest) {
 
         request.nextUrl.pathname = CheckBrowser(request);
     }
-
+    
     let response = NextResponse.next();
 
     if (request.nextUrl.pathname != initialPathName) {

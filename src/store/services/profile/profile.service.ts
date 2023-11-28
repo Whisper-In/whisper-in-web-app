@@ -5,7 +5,7 @@ import axios from "axios";
 const route = "/api/profile";
 
 export const searchProfiles = async (query: string) => {
-    try {
+    try {        
         const results = await axios.get(`${route}/search`, {
             params: {
                 query

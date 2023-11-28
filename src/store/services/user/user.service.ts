@@ -7,7 +7,7 @@ const route = "/api/user";
 
 export async function createUserSubscription(profileId: string, tier?: number, subscriptionId?: string) {
     try {
-        const result = await axios.post(`${route}/create-subscription`, {
+        const result = await axios.post(`${route}/subscription`, {
             profileId,
             tier,
             subscriptionId

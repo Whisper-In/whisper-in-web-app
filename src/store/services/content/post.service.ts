@@ -1,7 +1,7 @@
 import { IDeletedResultDto, IPostDto, IPostResultsDto } from "@/dtos/content/post.dtos";
 import axios from "axios";
 
-const route = "/api/content/post";
+const route = "/api/content/posts";
 
 export async function getRecommendedPosts(size: number, filterPostIds?: string[], showFollowingOnly?: boolean) {
     try {
