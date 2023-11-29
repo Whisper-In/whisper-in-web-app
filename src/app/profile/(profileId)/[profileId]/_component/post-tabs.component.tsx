@@ -26,7 +26,7 @@ export default function PostTabs({ className, profileId }
         size: videoPostsSize,
         setSize: setVideoPostsSize,
         isLoading: isVideoPostsLoading
-    } = useGetPosts(profileId!, PostType[PostType.PHOTO], postsPerLoad);
+    } = useGetPosts(profileId!, PostType[PostType.VIDEO], postsPerLoad);
 
     const onTabChange = (event: SyntheticEvent<Element, Event>, value: PostType) => {
         setTab(value);

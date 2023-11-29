@@ -173,7 +173,7 @@ export default function Post({
                 </button>
             }
 
-            <div className="absolute w-full bottom-0 left-0 h-[350px] bg-gradient-to-t from-black/80 to-black/0s"></div>
+            <div className="pointer-events-none absolute w-full bottom-0 left-0 h-[350px] bg-gradient-to-t from-black/80 to-black/0s"></div>
 
             <LikePrompt ref={likePromptRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 " />
 
