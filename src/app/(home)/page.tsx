@@ -28,6 +28,15 @@ export default function MobileHome() {
         setSize: followingPostsSetSize
     } = useGetRecommendedPosts(postsPerLoad, true)
 
+    const onForYouScrollEnd = (() => {
+        if (recommendedType == "FORYOU") {
+            if (!isForYouPostsLoading) {
+                console.log("For you post scroll end...");
+                forYouPostsSetSize(forYouPostsSize + 1);
+            }
+        }
+    })
+
     return (
         <main className="h-full bg-black overflow-hidden relative">
             <RecommendedTypesNav className={`absolute top-sat pt-5 left-1/2 -translate-x-1/2 z-10`}
@@ -38,14 +47,14 @@ export default function MobileHome() {
                 "hidden": recommendedType != "FOLLOWING"
             })} posts={followingPosts?.flat()}
                 isLoading={isFollowingPostsLoading}
-                onScrollEnd={() => followingPostsSetSize(followingPostsSize + 1)}
+                onScrollEnd={() => recommendedType == "FOLLOWING" && !isFollowingPostsLoading && followingPostsSetSize(followingPostsSize + 1)}
                 placeholder="No posts found. Follow someone now to view their latest posts in your feed." />
 
             <PostFeed className={classNames({
                 "hidden": recommendedType != "FORYOU"
             })} posts={forYouPosts?.flat()}
                 isLoading={isForYouPostsLoading}
-                onScrollEnd={() => forYouPostsSetSize(forYouPostsSize + 1)}
+                onScrollEnd={onForYouScrollEnd}
                 placeholder="No posts found." />
         </main >
     );

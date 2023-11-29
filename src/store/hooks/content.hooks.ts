@@ -4,8 +4,14 @@ import { IPostDto } from "@/dtos/content/post.dtos";
 
 const route = "/api/content/posts";
 
-const getRecommendedPostsKey = (pageIndex: number, previousData: IPostDto[], params: URLSearchParams) => {
-    params.append("page", pageIndex.toString());
+const getRecommendedPostsKey = (page: number, previousData: IPostDto[], params: URLSearchParams) => {
+    if (previousData && !previousData.length) return null;
+
+    if (params.has("page")) {
+        params.set("page", page.toString());
+    } else {
+        params.append("page", page.toString());
+    }
 
     return `${route}/recommended?${params}`;
 }
@@ -23,7 +29,6 @@ export const useGetRecommendedPosts = (size: number, showFollowingOnly?: boolean
         (pageIndex, previousData) => getRecommendedPostsKey(pageIndex, previousData, searchParams),
         fetcher,
         {
-            keepPreviousData: true
-        }
-    );
+            revalidateAll: false
+        });
 }
