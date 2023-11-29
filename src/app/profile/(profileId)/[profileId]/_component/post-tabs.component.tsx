@@ -1,6 +1,6 @@
 "use client"
 
-import { IPostResultsDto, PostType } from "@/dtos/content/post.dtos"
+import { PostType } from "@/dtos/content/post.dtos"
 import { Tab, Tabs } from "@mui/material"
 import { SyntheticEvent, useEffect, useState } from "react"
 import * as postService from "@/store/services/content/post.service"
@@ -8,68 +8,45 @@ import classNames from "classnames"
 import PostList from "./post-list.component"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faImage, faPhotoFilm, faVideo } from "@fortawesome/free-solid-svg-icons"
+import { useGetPosts } from "@/store/hooks/content.hooks"
 
 export default function PostTabs({ className, profileId }
     : { className?: string, profileId?: string }) {
     const [tab, setTab] = useState<PostType>(PostType.PHOTO);
-    const [photoResults, setPhotoResults] = useState<IPostResultsDto>();
-    const [videoResults, setVideoResults] = useState<IPostResultsDto>();
     const postsPerLoad = 12;
+    const {
+        data: photoPosts,
+        size: photoPostsSize,
+        setSize: setPhotoPostsSize,
+        isLoading: isPhotoPostsLoading
+    } = useGetPosts(profileId!, PostType[PostType.PHOTO], postsPerLoad);
 
-    const screenWidth = typeof window !== "undefined" ? window.screen.width : 0;
-    const numOfColumns = 3;
-    const heightToWidthRatio = 1.33;
-    const postWidth = screenWidth / numOfColumns;
-    const postHeight = postWidth * heightToWidthRatio;
-
-    const getPosts = (postType: PostType, pageIndex: number, callback: (results: IPostResultsDto) => void) => {
-        if (!profileId) {
-            return;
-        }
-
-        postService.getPosts(profileId, PostType[postType], pageIndex, postsPerLoad)
-            .then(callback).catch((error) => { });
-    }
-
-    const loadPhotos = () => {
-        const count = photoResults?.posts.length ?? 0;
-        if (count < (photoResults?.totalPosts ?? Number.MAX_SAFE_INTEGER)) {
-            const pageIndex = count / postsPerLoad;
-            getPosts(PostType.PHOTO, pageIndex, (results) => {
-                const newResult: IPostResultsDto = {
-                    posts: (photoResults?.posts ?? []).concat(results.posts),
-                    totalPosts: results.totalPosts
-                };
-
-                setPhotoResults(newResult);
-            });
-        }
-    }
-
-    const loadVideos = () => {
-        const count = videoResults?.posts.length ?? 0;
-        if (count < (videoResults?.totalPosts ?? Number.MAX_SAFE_INTEGER)) {
-            const pageIndex = count / postsPerLoad;
-            getPosts(PostType.VIDEO, pageIndex, (results) => {
-                const newResult: IPostResultsDto = {
-                    posts: (videoResults?.posts ?? []).concat(results.posts),
-                    totalPosts: results.totalPosts
-                };
-
-                setVideoResults(newResult)
-            });
-        }
-    }
+    const {
+        data: videoPosts,
+        size: videoPostsSize,
+        setSize: setVideoPostsSize,
+        isLoading: isVideoPostsLoading
+    } = useGetPosts(profileId!, PostType[PostType.PHOTO], postsPerLoad);
 
     const onTabChange = (event: SyntheticEvent<Element, Event>, value: PostType) => {
         setTab(value);
     }
 
-    useEffect(() => {
-        loadPhotos();
-        loadVideos();
-    }, []);
+    const onPhotoTabScrollEnd = () => {
+        if (tab == PostType.PHOTO) {
+            if (!isPhotoPostsLoading) {
+                setPhotoPostsSize(photoPostsSize + 1);
+            }
+        }
+    }
 
+    const onVideoTabScrollEnd = () => {
+        if (tab == PostType.VIDEO) {
+            if (!isVideoPostsLoading) {
+                setVideoPostsSize(videoPostsSize + 1);
+            }
+        }
+    }
 
     return (
         <div className={classNames(
@@ -86,8 +63,8 @@ export default function PostTabs({ className, profileId }
                 {
                     "hidden": tab != PostType.PHOTO
                 }
-            )} posts={photoResults?.posts} postWidth={postWidth} postHeight={postHeight}
-                onScrollEnd={loadPhotos} />
+            )} posts={photoPosts?.flat()}
+                onScrollEnd={onPhotoTabScrollEnd} />
 
 
             <PostList className={classNames(
@@ -95,8 +72,8 @@ export default function PostTabs({ className, profileId }
                 {
                     "hidden": tab != PostType.VIDEO
                 }
-            )} posts={videoResults?.posts} postWidth={postWidth} postHeight={postHeight}
-                onScrollEnd={loadVideos} />
+            )} posts={videoPosts?.flat()}
+                onScrollEnd={onVideoTabScrollEnd} />
         </div>
     )
 }

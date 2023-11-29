@@ -31,7 +31,6 @@ export default function MobileHome() {
     const onForYouScrollEnd = (() => {
         if (recommendedType == "FORYOU") {
             if (!isForYouPostsLoading) {
-                console.log("For you post scroll end...");
                 forYouPostsSetSize(forYouPostsSize + 1);
             }
         }

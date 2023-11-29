@@ -1,4 +1,4 @@
-import { IDeletedResultDto, IPostDto, IPostResultsDto } from "@/dtos/content/post.dtos";
+import { IDeletedResultDto, IPostDto } from "@/dtos/content/post.dtos";
 import axios from "axios";
 
 const route = "/api/content/posts";
@@ -40,7 +40,7 @@ export async function getPosts(profileId: string, postType: string, pageIndex: n
             }
         });
 
-        return results.data as IPostResultsDto;
+        return results.data as IPostDto[];
     } catch (error) {
         throw error;
     }

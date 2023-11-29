@@ -1,4 +1,4 @@
-import { getPostDetails } from "@/server-services/content/post.server-service";
+import { getPostDetails } from "@/store/services/content/post.service";
 import { notFound } from "next/navigation";
 import Post from "@/app/_components/post.component";
 import BackButton from "@/app/_components/back-button.component";

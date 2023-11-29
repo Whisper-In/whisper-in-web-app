@@ -4,8 +4,15 @@ import classNames from "classnames";
 import Link from "next/link";
 import React from "react";
 
-export default function PostList({ className, posts, postWidth, postHeight, onScrollEnd }
-    : { className?: string, posts?: IPostDto[], postWidth: number, postHeight: number, onScrollEnd?: () => void }) {
+export default function PostList({
+    className,
+    posts,
+    onScrollEnd
+}: {
+    className?: string,
+    posts?: IPostDto[],
+    onScrollEnd?: () => void
+}) {
 
     const onScroll = (event: React.UIEvent) => {
         if (onScrollEnd) {
@@ -26,8 +33,13 @@ export default function PostList({ className, posts, postWidth, postHeight, onSc
                         <div className="grid grid-cols-3 gap-[2px]">
                             {
                                 posts.map((post, index) =>
-                                    <Link key={index} href={`/post/${post._id}`}>
-                                        <img className="object-cover w-full" style={{ height: postHeight }}
+                                    <Link key={index}
+                                        href={`/post/${post._id}`}
+                                        className="flex align-center">
+                                        <img className="object-cover w-full"
+                                            style={{
+                                                aspectRatio: 1/1.25
+                                            }}
                                             src={post.thumbnailURL ?? post.postURL}
                                         />
                                     </Link>
