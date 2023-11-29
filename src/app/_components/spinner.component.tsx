@@ -31,7 +31,7 @@ export default function Spinner({ show }: { show: boolean }) {
     }
 
     return (
-        <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black/30 z-[99999]">
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black/30 z-[99999]">
             <CircularProgress size={60} />
         </div>
     )

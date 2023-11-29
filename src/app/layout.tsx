@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 import { config } from "@fortawesome/fontawesome-svg-core"
 import "@fortawesome/fontawesome-svg-core/styles.css"
 import { Providers } from '@/store/provider'
-import AppThemeProvider from './theme-provider'
+import { Container } from '@mui/material'
 
 config.autoAddCss = false;
 
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   },
   themeColor: "#121212",
   viewport: {
-    width: "600px",
+    width: "device-width",
     initialScale: 1,
     maximumScale: 1,
     userScalable: false,
@@ -40,11 +40,18 @@ export default function RootLayout({
         height: "100dvh",
         width: "100vw",
         position: "fixed",
-        overflow: "hidden"
+        overflow: "hidden",
+        backgroundColor: "black"
       }}>
         <Providers>
-          {modal}
-          {children}
+          <Container sx={{
+            position: "relative",
+            height: "100%",
+            width: "100%"
+          }}>
+            {modal}
+            {children}
+          </Container>
         </Providers>
       </body>
     </html>

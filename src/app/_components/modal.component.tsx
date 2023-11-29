@@ -1,16 +1,18 @@
 "use client"
 
-import { useTheme } from "@mui/material";
+import { Container, useTheme } from "@mui/material";
 import { PropsWithChildren } from "react";
 
 export default function Modal({ children }: PropsWithChildren) {
-    const theme = useTheme();
-
     return (
-        <div style={{
-            backgroundColor: theme.palette.background.paper
-        }} className="fixed z-20 w-screen h-full overflow-hidden">
+        <Container sx={{
+            backgroundColor: (theme) => theme.palette.background.paper,
+            position: "fixed",
+            zIndex: (theme) => theme.zIndex.modal,
+            overflow: "hidden",
+            height: "100%"
+        }}>
             {children}
-        </div>
+        </Container>
     )
 }

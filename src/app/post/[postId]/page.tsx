@@ -9,10 +9,10 @@ export default async function PostPage({ params, searchParams }
     const showAvatar = searchParams["showAvatar"] == "true";
 
     return (
-        <main className="w-screen h-screen bg-black">
+        <main className="w-full h-full bg-black">
             <Post postId={params.postId} hideAvatar={!showAvatar} />
 
-            <BackButton className="absolute top-sat pt-5 left-5" />
+            <BackButton/>
         </main>
     );
 }

@@ -49,7 +49,7 @@ export default function SignIn() {
     }, [me])
 
     return (
-        <main className="flex flex-col items-center w-screen gap-5 h-screen py-48">
+        <main className="flex flex-col items-center w-full h-full gap-5 py-48">
             <div className="grow">
                 <Image src="/icons/icon-full.png" width={250} height={0} alt="" />
             </div>

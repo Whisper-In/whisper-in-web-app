@@ -1,5 +1,5 @@
 import { Skeleton, Tab, Tabs } from "@mui/material";
-import StatItem from "./[profileId]/_component/stat-item.component";
+import StatItem from "./_component/stat-item.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { PostType } from "@/dtos/content/post.dtos";

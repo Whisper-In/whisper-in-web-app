@@ -1,4 +1,4 @@
-import Profile from "@/app/profile/(profileId)/[profileId]/page";
+import Profile from "@/app/profile/[profileId]/page";
 import Modal from "@/app/_components/modal.component";
 
 export default function ProfileModal(props

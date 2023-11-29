@@ -31,7 +31,7 @@ export default function ProfileInfo({ profileId }
     const { promptAlert } = useAlertPrompt();
     const router = useRouter();
 
-    const priceTier = profile?.priceTiers.length ? profile?.priceTiers[0] : null;
+    const priceTier = profile?.priceTiers?.length ? profile?.priceTiers[0] : null;
 
     const onPaymentInitlialized = async (paymentSheetResult?: ICreatePaymentSheetDto) => {
         try {

@@ -1,5 +1,6 @@
 import { faCamera, faComment, faHome, faMagnifyingGlass, faPlusCircle, faUser } from '@fortawesome/free-solid-svg-icons'
 import BottomNavigation from './_components/bottom-navigation.component'
+import { Container } from '@mui/material'
 
 export default function MobileHomeLayout(props: {
   children: React.ReactNode,

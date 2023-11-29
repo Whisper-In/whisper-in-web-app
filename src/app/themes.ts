@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material";
+import { Components, Theme, createTheme } from "@mui/material";
 import { grey } from "@mui/material/colors";
 
 declare module '@mui/material/styles' {
@@ -8,6 +8,20 @@ declare module '@mui/material/styles' {
 
     interface PaletteOptions {
         container?: PaletteOptions['primary'];
+    }
+}
+
+const commonComponents: Components<Omit<Theme, "components">> = {
+    MuiContainer: {
+        defaultProps: {
+            maxWidth: "sm",
+            disableGutters: true
+        },
+        styleOverrides: {
+            root: ({ theme }) => ({
+                backgroundColor: theme.palette.background.default
+            })
+        }
     }
 }
 
@@ -25,6 +39,7 @@ export const lightTheme = createTheme({
         }
     },
     components: {
+        ...commonComponents,
         MuiAppBar: {
             styleOverrides: {
                 colorPrimary: {
@@ -42,7 +57,7 @@ export const darkTheme = createTheme({
         primary: lightTheme.palette.primary,
         background: {
             default: "#121212",
-            paper: "#121212"    
+            paper: "#121212"
         },
         container: {
             main: grey[900],
@@ -50,6 +65,7 @@ export const darkTheme = createTheme({
         }
     },
     components: {
+        ...commonComponents,
         MuiAppBar: {
             styleOverrides: {
                 colorPrimary: {

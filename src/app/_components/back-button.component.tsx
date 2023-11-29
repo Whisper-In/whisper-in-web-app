@@ -22,7 +22,7 @@ export default function BackButton({ className }
 
     return (
         <button className={classNames(
-            "w-fit drop-shadow-md",
+            "w-fit drop-shadow-md absolute top-14 left-5",
             className
         )} onClick={onBack}>
             <FontAwesomeIcon icon={faArrowLeft} fontSize={25} />

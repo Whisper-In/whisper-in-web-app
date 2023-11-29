@@ -1,4 +1,4 @@
-import Loading from "@/app/post/loading";
+import Loading from "@/app/post/[postId]/loading";
 import Modal from "@/app/_components/modal.component";
 
 export default function PostModalLoading() {

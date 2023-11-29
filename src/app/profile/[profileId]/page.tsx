@@ -15,8 +15,8 @@ export default async function Profile({
     searchParams: { [key: string]: string },
 }) {
     return (
-        <main className="h-full flex flex-col">
-            <BackButton className="absolute top-14 left-5" />
+        <main className="w-full h-full flex flex-col">
+            <BackButton />
 
             <ProfileInfo profileId={params.profileId} />
 
