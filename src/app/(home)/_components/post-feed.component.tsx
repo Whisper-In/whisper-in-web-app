@@ -33,7 +33,7 @@ export default function PostFeed({ className,
                 direction="y" onSrollEnd={onScrollEnd}>
                 {
                     posts?.map((post, index) =>
-                        <Post key={index} post={post} />)
+                        <Post key={index} postId={post._id} />)
                 }
             </Carousel>
         );

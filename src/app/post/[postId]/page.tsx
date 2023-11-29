@@ -2,21 +2,17 @@ import { getPostDetails } from "@/store/services/content/post.service";
 import { notFound } from "next/navigation";
 import Post from "@/app/_components/post.component";
 import BackButton from "@/app/_components/back-button.component";
+import { useGetPostDetails } from "@/store/hooks/content.hooks";
 
 export default async function PostPage({ params, searchParams }
     : { params: { postId: string }, searchParams: { [key: string]: string | string[] } }) {
-    const post = await getPostDetails(params.postId);
     const showAvatar = searchParams["showAvatar"] == "true";
-
-    if (!post) {
-        return notFound();
-    }
 
     return (
         <main className="w-screen h-screen bg-black">
-            <Post post={post} hideAvatar={!showAvatar} />
+            <Post postId={params.postId} hideAvatar={!showAvatar} />
 
-            <BackButton className="absolute top-sat pt-5 left-5"/>
+            <BackButton className="absolute top-sat pt-5 left-5" />
         </main>
     );
 }

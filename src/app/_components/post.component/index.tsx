@@ -14,10 +14,20 @@ import { Delete } from "@mui/icons-material";
 import { useAppSelector } from "@/store/hooks";
 import { useSpinner } from "../spinner.component";
 import { useAlertPrompt } from "../alert-prompt.component";
+import { useGetPostDetails } from "@/store/hooks/content.hooks";
+import { Box, CircularProgress, Typography } from "@mui/material";
 
-export default function Post({ className, post, hideAvatar }
-    : { className?: string, post: IPostDto, hideAvatar?: boolean }) {
-    const [_post, setPost] = useState<IPostDto>(post);
+export default function Post({
+    className,
+    postId,
+    hideAvatar
+}: {
+    className?: string,
+    postId: string,
+    hideAvatar?: boolean
+}) {
+    const { data: post, isLoading, mutate: updatePost } = useGetPostDetails(postId);
+
     const likePromptRef = useRef<LikePromptType>(null);
     const [clickCount, setClickCount] = useState(0);
     const [showLike, setShowLike] = useState(false);
@@ -33,26 +43,21 @@ export default function Post({ className, post, hideAvatar }
     const likePost = () => {
         likePromptRef.current?.prompt();
 
-        if (!_post.isLiked) {
-            _post.isLiked = true;
-            _post.likeCount += 1;
-            setPost({ ..._post });
-
-            postService.likePost(post._id);
+        if (!post?.isLiked) {
+            postService.likePost(postId).then(() => {
+                updatePost();
+            });
         }
     }
 
     const onLikeClick = () => {
-        _post.isLiked = !_post.isLiked;
-        _post.likeCount += _post.isLiked ? 1 : -1;
+        postService.likePost(postId).then((result) => {
+            if (result.isLiked) {
+                likePromptRef.current?.prompt();
+            }
 
-        setPost({ ..._post });
-
-        if (_post.isLiked) {
-            likePromptRef.current?.prompt();
-        }
-
-        postService.likePost(_post._id);
+            updatePost();
+        });
     }
 
     const onClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -72,7 +77,7 @@ export default function Post({ className, post, hideAvatar }
     }
 
     const onShareClick = () => {
-        setShowShareModal(true, `${origin}/post/${post._id}?showAvatar=true`);
+        setShowShareModal(true, `${origin}/post/${postId}?showAvatar=true`);
     }
 
     const deletePost = () => {
@@ -84,7 +89,7 @@ export default function Post({ className, post, hideAvatar }
             });
         }
 
-        postService.deletePost(post._id)
+        postService.deletePost(postId)
             .then((result) => {
                 if (result?.deletedCount > 0) {
                     promptAlert({
@@ -115,20 +120,49 @@ export default function Post({ className, post, hideAvatar }
         })
     }
 
+    if (isLoading) {
+        return (
+            <Box width="100%"
+                height="100%"
+                position="relative">
+                <CircularProgress sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%)"
+                }} />
+            </Box>
+        )
+    }
+
+    if (!post) {
+        return (
+            <Box width="100%"
+                height="100%"
+                display="flex"
+                justifyContent="center"
+                alignItems="center">
+                <Typography>
+                    Unable to load post.
+                </Typography>
+            </Box>
+        )
+    }
+
     return (
         <div className="w-full h-full relative">
             <div className="w-full h-full" onClick={onClick}>
                 {
-                    _post.postType == PostType[PostType.PHOTO] ?
+                    post.postType == PostType[PostType.PHOTO] ?
                         <img className={classNames(
                             "w-full h-full object-contain",
                             className
                         )}
-                            src={_post.postURL} />
+                            src={post.postURL} />
                         :
-                        <VideoPlayer className="w-full h-full object-cover"
-                            src={_post.postURL}
-                            poster={_post.thumbnailURL} />
+                        <VideoPlayer className="w-full h-full object-contain"
+                            src={post.postURL}
+                            poster={post?.thumbnailURL} />
                 }
             </div>
 
@@ -144,8 +178,8 @@ export default function Post({ className, post, hideAvatar }
             <LikePrompt ref={likePromptRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 " />
 
             <div className="absolute w-full left-0 bottom-1 px-4 pb-8 flex items-end">
-                <InfoGroup post={_post} className="grow" />
-                <ButtonGroup post={_post}
+                <InfoGroup post={post} className="grow" />
+                <ButtonGroup post={post}
                     onLikeClick={onLikeClick}
                     onShareClick={onShareClick}
                     hideAvatar={hideAvatar}
