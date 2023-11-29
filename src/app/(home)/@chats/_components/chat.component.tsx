@@ -6,7 +6,7 @@ import { convertToMessageDate } from "@/utils/datetime.util";
 import { Avatar, Box, ListItem, ListItemButton, Typography } from "@mui/material";
 import Link from "next/link";
 
-export default function Chat({ chat }
+export default function ChatPage({ chat }
     : { chat: Chat }) {
     const me = useAppSelector((state) => state.user.me)!;
     const profile = chat.profiles.findLast((profile) => profile?.id != me?._id);
@@ -26,7 +26,7 @@ export default function Chat({ chat }
                     <Avatar src={profile?.avatar} sx={{ width: 50, height: 50 }} />
                 </Link>
 
-                <Link href={`/mobile/chat/${chat.chatId}`} className="grow">
+                <Link href={`/chat/${chat.chatId}`} className="grow">
                     <div className="flex items-center">
                         <label className="grow font-bold text-lg">{profile?.name}</label>
                         <label className="text-sm">{convertToMessageDate(messageDateTime)}</label>

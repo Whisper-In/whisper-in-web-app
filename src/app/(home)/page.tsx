@@ -6,45 +6,27 @@ import { IPostDto } from "@/dtos/content/post.dtos";
 import RecommendedTypesNav from "./_components/recommended-types.component";
 import classNames from "classnames";
 import PostFeed from "./_components/post-feed.component";
+import { useGetRecommendedPosts } from "@/store/hooks/content.hooks";
 
 export type RecommendedTypes = "FOLLOWING" | "FORYOU";
 
 export default function MobileHome() {
     const [recommendedType, setRecommendedType] = useState<RecommendedTypes>("FORYOU");
-    const [isLoading, setIsLoading] = useState(false);
-    const [recommendedPosts, setRecommendedPosts] = useState<IPostDto[]>([]);
-    const [followingPosts, setFollowingPosts] = useState<IPostDto[]>([]);
     const postsPerLoad = 10;
-    const maxFilterPostIds = 100;
 
-    useEffect(() => {
-        loadMore("FORYOU");
-        loadMore("FOLLOWING");
-    }, []);
+    const {
+        data: forYouPosts,
+        isLoading: isForYouPostsLoading,
+        size: forYouPostsSize,
+        setSize: forYouPostsSetSize,
+    } = useGetRecommendedPosts(postsPerLoad)
 
-    const loadMore = (_recommendedType: RecommendedTypes) => {
-        if (isLoading) {
-            return;
-        }
-
-        const initialiPosts = _recommendedType == "FORYOU" ? recommendedPosts : followingPosts;
-
-        const filterPostIds = initialiPosts?.length ? initialiPosts.map((post) => post._id) : undefined;
-        filterPostIds?.splice(0, filterPostIds.length - maxFilterPostIds);
-
-        setIsLoading(true);
-
-        postService.getRecommendedPosts(postsPerLoad, filterPostIds, _recommendedType == "FOLLOWING").then((posts) => {
-            const newPosts = initialiPosts.concat(posts);
-
-            if (_recommendedType == "FORYOU") {
-                setRecommendedPosts(newPosts);
-            } else {
-                setFollowingPosts(newPosts)
-            }
-        }).catch((error) => { console.log(error) })
-            .finally(() => setIsLoading(false));
-    }
+    const {
+        data: followingPosts,
+        isLoading: isFollowingPostsLoading,
+        size: followingPostsSize,
+        setSize: followingPostsSetSize
+    } = useGetRecommendedPosts(postsPerLoad, true)
 
     return (
         <main className="h-full bg-black overflow-hidden relative">
@@ -54,13 +36,17 @@ export default function MobileHome() {
 
             <PostFeed className={classNames({
                 "hidden": recommendedType != "FOLLOWING"
-            })} posts={followingPosts} 
-            onScrollEnd={() => loadMore("FOLLOWING")}
-            placeholder="You are not following anyone yet." />
+            })} posts={followingPosts?.flat()}
+                isLoading={isFollowingPostsLoading}
+                onScrollEnd={() => followingPostsSetSize(followingPostsSize + 1)}
+                placeholder="No posts found. Follow someone now to view their latest posts in your feed." />
 
             <PostFeed className={classNames({
                 "hidden": recommendedType != "FORYOU"
-            })} posts={recommendedPosts} onScrollEnd={() => loadMore("FORYOU")} />
+            })} posts={forYouPosts?.flat()}
+                isLoading={isForYouPostsLoading}
+                onScrollEnd={() => forYouPostsSetSize(forYouPostsSize + 1)}
+                placeholder="No posts found." />
         </main >
     );
 }

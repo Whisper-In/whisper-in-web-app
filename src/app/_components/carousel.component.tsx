@@ -8,14 +8,21 @@ enum Direction {
     x, y
 }
 
-export default function Carousel<T>({ className, direction = "x", children, onSrollEnd }
-    : {
-        className?: string, direction?: "x" | "y",
-        children: React.ReactElement[], onSrollEnd?: () => void
-    }) {
+export default function Carousel<T>({
+    className,
+    direction = "x",
+    children,
+    onSrollEnd
+}: {
+    className?: string,
+    direction?: "x" | "y",
+    children: React.ReactElement[],
+    onSrollEnd?: () => void
+}) {
     const onSroll = (event: React.UIEvent<HTMLDivElement>) => {
         if (onSrollEnd) {
             if (isScrollEnded(event)) {
+                console.log("Scroll Ended")
                 onSrollEnd();
             }
         }

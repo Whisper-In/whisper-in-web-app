@@ -72,7 +72,7 @@ export default function Post({ className, post, hideAvatar }
     }
 
     const onShareClick = () => {
-        setShowShareModal(true, `${origin}/mobile/post/${post._id}?showAvatar=true`);
+        setShowShareModal(true, `${origin}/post/${post._id}?showAvatar=true`);
     }
 
     const deletePost = () => {
@@ -121,7 +121,7 @@ export default function Post({ className, post, hideAvatar }
                 {
                     _post.postType == PostType[PostType.PHOTO] ?
                         <img className={classNames(
-                            "w-full h-full object-cover",
+                            "w-full h-full object-contain",
                             className
                         )}
                             src={_post.postURL} />
@@ -139,7 +139,7 @@ export default function Post({ className, post, hideAvatar }
                 </button>
             }
 
-            <div className="absolute w-full bottom-0 left-0 h-[200px] bg-gradient-to-t from-black/80 to-black/0s"></div>
+            <div className="absolute w-full bottom-0 left-0 h-[350px] bg-gradient-to-t from-black/80 to-black/0s"></div>
 
             <LikePrompt ref={likePromptRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 " />
 

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import StatItem from "./_component/stat-item.component";
 import SubscribeButton from "./_component/subscribe-button.component";
-import * as profileServerService from "@/server-services/profile/profile.server-service";
+import * as profileService from "@/store/services/profile/profile.service";
 import { Tab, Tabs } from "@mui/material";
 import PostTabs from "./_component/post-tabs.component";
 import BackButton from "@/app/_components/back-button.component";
@@ -14,24 +14,13 @@ export default async function Profile({
     params: { profileId: string },
     searchParams: { [key: string]: string },
 }) {
-    const { profileId } = params;
-
-    const profile = await profileServerService.getProfile(profileId)
-        .catch(() => {
-            return notFound();
-        });
-
-    if (!profile) {
-        return notFound();
-    }
-
     return (
         <main className="h-full flex flex-col">
             <BackButton className="absolute top-14 left-5" />
 
-            <ProfileInfo profile={profile} />
+            <ProfileInfo profileId={params.profileId} />
 
-            <PostTabs className="grow" profileId={profile.id} />
+            <PostTabs className="grow" profileId={params.profileId} />
         </main>
     );
 }

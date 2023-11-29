@@ -1,18 +1,38 @@
 import Carousel from "@/app/_components/carousel.component";
 import Post from "@/app/_components/post.component";
 import { IPostDto } from "@/dtos/content/post.dtos";
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import classNames from "classnames";
 
-export default function PostFeed({ className, posts, onScrollEnd, placeholder }
-    : { className?: string, posts: IPostDto[], onScrollEnd?: () => void, placeholder?: string }) {
+export default function PostFeed({ className,
+    posts,
+    onScrollEnd,
+    placeholder,
+    isLoading
+}: {
+    className?: string,
+    posts?: IPostDto[],
+    onScrollEnd?: () => void,
+    placeholder?: string,
+    isLoading?: boolean
+}) {
+    if (isLoading) {
+        return (
+            <CircularProgress sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translateX(-50%) translateY(-50%)"
+            }} />
+        )
+    }
 
-    if (posts.length) {
+    if (posts?.length) {
         return (
             <Carousel className={classNames(className)}
                 direction="y" onSrollEnd={onScrollEnd}>
                 {
-                    posts.map((post, index) =>
+                    posts?.map((post, index) =>
                         <Post key={index} post={post} />)
                 }
             </Carousel>
@@ -21,7 +41,9 @@ export default function PostFeed({ className, posts, onScrollEnd, placeholder }
     else {
         return (
             <div className={classNames(["flex w-full h-full justify-center items-center", className])}>
-                <Typography color="GrayText">
+                <Typography color="GrayText"
+                    textAlign="center"
+                    px={10}>
                     {placeholder}
                 </Typography>
             </div>

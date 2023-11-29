@@ -8,7 +8,7 @@ export function middleware(request: NextRequest) {
     if (!initialPathName.startsWith("/api")) {
         request.nextUrl.pathname = CheckTokenURL(request.nextUrl.pathname, token);
 
-        request.nextUrl.pathname = CheckBrowser(request);
+        //request.nextUrl.pathname = CheckBrowser(request);
     }
     
     let response = NextResponse.next();

@@ -1,5 +1,5 @@
 "use client"
-import Chat from "./chat.component";
+import ChatPage from "./chat.component";
 import { IUserChatRawDto } from "@/dtos/chats/chats.dtos";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchChats } from "@/store/thunks/chats.thunks";
@@ -34,7 +34,7 @@ export default function ChatList({ className }: { className?: string }) {
         <List disablePadding={true}>
             {
                 chats.map((chat, idx) =>
-                    <Chat key={idx} chat={chat} />)
+                    <ChatPage key={idx} chat={chat} />)
             }
         </List>
     )
