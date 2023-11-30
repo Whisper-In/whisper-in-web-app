@@ -1,15 +1,15 @@
 "use client"
 
+import { IUserChatDto } from "@/dtos/chats/chats.dtos";
 import { useAppSelector } from "@/store/hooks";
-import { Chat } from "@/store/states/chats.states";
 import { convertToMessageDate } from "@/utils/datetime.util";
 import { Avatar, Box, ListItem, ListItemButton, Typography } from "@mui/material";
 import Link from "next/link";
 
 export default function ChatListItem({ chat }
-    : { chat: Chat }) {
+    : { chat: IUserChatDto }) {
     const me = useAppSelector((state) => state.user.me)!;
-    const profile = chat.profiles.findLast((profile) => profile?.id != me?._id);
+    const profile = chat.profile;
 
     const lastMessage = chat.lastMessage?.message;
     const messageDateTime = chat.lastMessage?.createdAt;
@@ -22,7 +22,7 @@ export default function ChatListItem({ chat }
                 padding: 2,
                 gap: 2
             }}>
-                <Link href={`/profile/${profile?.id}`}>
+                <Link href={`/profile/${profile?._id}`}>
                     <Avatar src={profile?.avatar} sx={{ width: 50, height: 50 }} />
                 </Link>
 

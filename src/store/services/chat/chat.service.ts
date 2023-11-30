@@ -1,13 +1,13 @@
-import { IUserChatDto, IUserChatMessageDto, IUserChatMessagesResultDto, IUserChatRawDto } from "@/dtos/chats/chats.dtos";
+import { IUserChatDto, IUserChatMessageDto, IUserChatMessagesResultDto } from "@/dtos/chats/chats.dtos";
 import axios from "axios";
 
-const route = "/api/chat";
+const route = "/api/chats";
 
 export async function getUserChats() {
     try {
         const results = await axios.get(`${route}/user-chats/chats`);
 
-        return results.data as IUserChatRawDto[];
+        return results.data as IUserChatDto[];
     } catch (error) {
         throw error;
     }
@@ -39,31 +39,26 @@ export async function getChatCompletionWithVectorDB(chatId: string, recipientUse
 
 export async function getChatMessages(chatId: string, pageIndex: number, messageCount: number) {
     try {
-        const result = await fetch(`${route}/chat-messages/${chatId}?${new URLSearchParams({
+        const result = await axios.get<IUserChatMessagesResultDto>(`${route}/chat-messages/${chatId}?${new URLSearchParams({
             pageIndex: pageIndex.toString(),
             messageCount: messageCount.toString()
-        })}`, {
-            method: "GET"
-        }).then((result) => result.json());
+        })}`)
 
-        return result as IUserChatMessagesResultDto
+        return result.data
     } catch (error) {
         throw error;
     }
 }
 
-export async function insertNewChatMessage(chatId: string, senderId: string, message: string) {
+export async function insertNewChatMessage(chatId: string, message: string, senderId?: string) {
     try {
-        const result = await fetch(`${route}/chat-messages/message`, {
-            method: "POST",
-            body: JSON.stringify({
-                chatId,
-                senderId,
-                message
-            })
-        }).then((result) => result.json());
+        const result = await axios.post<IUserChatMessageDto>(`${route}/chat-messages/message`, {
+            chatId,
+            senderId,
+            message
+        });
 
-        return result as IUserChatMessageDto
+        return result.data
     } catch (error) {
         throw error;
     }
@@ -71,16 +66,13 @@ export async function insertNewChatMessage(chatId: string, senderId: string, mes
 
 export async function getChatCompletion(chatId: string, profileId: string, message: string) {
     try {
-        const result = await fetch(`${route}/chat-completion`, {
-            method: "POST",
-            body: JSON.stringify({
-                chatId,
-                profileId,
-                message
-            })
-        }).then((result) => result.json());
+        const result = await axios.post<IUserChatMessageDto>(`${route}/chat-completion`, {
+            chatId,
+            profileId,
+            message
+        });
 
-        return result as IUserChatMessageDto
+        return result.data;
     } catch (error) {
         throw error;
     }
@@ -88,14 +80,11 @@ export async function getChatCompletion(chatId: string, profileId: string, messa
 
 export async function setChatAudioReply(chatId: string, isAudioOn: boolean) {
     try {
-        const result = await fetch(`${route}/audio-reply/${chatId}`, {
-            method: "PUT",
-            body: JSON.stringify({
-                isAudioOn
-            })
-        }).then((result) => result.json());
+        const result = await axios.put<IUserChatDto>(`${route}/audio-reply/${chatId}`, {
+            isAudioOn
+        });
 
-        return result as IUserChatRawDto;
+        return result.data;
     } catch (error) {
         throw error;
     }

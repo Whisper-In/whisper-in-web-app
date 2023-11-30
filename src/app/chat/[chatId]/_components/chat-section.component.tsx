@@ -2,65 +2,79 @@
 
 import MessageList from "./message-list.component";
 import ChatInputBar from "./input-bar.component";
-import { useState } from "react";
-import { IUserChatDto } from "@/dtos/chats/chats.dtos";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useEffect, useState } from "react";
+import { useAppDispatch } from "@/store/hooks";
 import Header from "@/app/_components/header.component";
 import { Avatar } from "@mui/material";
-import { fetchChatCompletion, insertNewUserChatMessage, setChatAudioReply } from "@/store/thunks/chats.thunks";
+import { fetchChatCompletion } from "@/store/thunks/chats.thunks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
-import { ChatFeature } from "@/store/states/chats.states";
 import BackButton from "@/app/_components/back-button.component";
 import Link from "next/link";
+import { useGetChatDetail, useGetChatMessages } from "@/store/hooks/chat.hooks";
+import { setChatAudioReply } from "@/store/services/chat/chat.service";
+import * as chatService from "@/store/services/chat/chat.service";
 
-export default function ChatSection({ className, chat }
-    : { className?: string, chat: IUserChatDto }) {
-    const me = useAppSelector((state) => state.user.me);
-    const _chat = useAppSelector((state) => state.chats.chats.find((c) => c.chatId == chat.chatId));
-    const profile = chat.profiles.findLast((profile) => profile._id != me?._id)!;
+const REPLY_MINDELAY = 1000;
+const REPLY_MAXDELAY = 10000;
+
+export default function ChatSection({ chatId }: { chatId: string }) {
+    const { data: chat, isLoading: isChatLoading, mutate: updateChat } = useGetChatDetail(chatId);
+
+    const messageCount = 50;
+    const { data, isLoading: isMessagesLoading, mutate: updateChatMessages, size, setSize, } = useGetChatMessages(chatId, messageCount);
+
+    const hasAudioFeature = chat?.features.includes("AUDIO");
+    const profile = chat?.profile
+
     const [isReplying, setIsReplying] = useState(false);
-    const dispatch = useAppDispatch();
-
-    const hasAudioReply = chat.features.includes(ChatFeature.AUDIO);
 
     const getChatCompletion = async (message: string) => {
+        if (!chat || !profile) {
+            return;
+        }
+
         setIsReplying(true);
         try {
-            await dispatch(fetchChatCompletion({
-                chatId: chat.chatId,
-                contactId: profile._id,
-                message
-            }));
+            await chatService.getChatCompletion(chat.chatId, profile._id, message);
         } catch (error) {
 
         } finally {
-            setIsReplying(false);
+            const delay = Math.random() * REPLY_MAXDELAY + REPLY_MINDELAY;
+            setTimeout(() => {
+                updateChatMessages();
+                setIsReplying(false);
+            }, delay);
         }
     }
 
     const onSend = (message: string | undefined) => {
-        if (!message?.length || !me) {
+        if (!chat || !message?.length) {
             return
         }
 
-        dispatch(insertNewUserChatMessage({
-            chatId: chat.chatId,
-            message,
-        }));
+        chatService.insertNewChatMessage(chatId, message).then(() => {
+            updateChatMessages();
 
-        if (profile.isBlocked) {
-            return;
-        }
+            if (profile?.isSubscriptionOn && !profile?.isBlocked) {
+                getChatCompletion(message);
+            }
+        }).catch(() => {
 
-        getChatCompletion(message);
+        });
     }
 
     const onToggleAudioReplies = () => {
-        dispatch(setChatAudioReply({
-            chatId: chat.chatId,
-            isAudioOn: !_chat?.isAudioOn
-        }));
+        setChatAudioReply(chatId, !chat?.isAudioOn)
+            .then(() => {
+                updateChat();
+            });
+    }
+
+    const onMessageListScrollEnd = () => {
+        if (!isMessagesLoading) {
+            setSize(size + 1)
+        }
     }
 
     return (
@@ -68,28 +82,30 @@ export default function ChatSection({ className, chat }
             <Header>
                 <div className="flex gap-5 items-center w-full">
                     <div className="flex grow items-center gap-5">
-                        <BackButton />
+                        <BackButton relative />
 
-                        <Link href={`/profile/${profile._id}`}>
-                            <Avatar src={profile.avatar} sx={{ width: 40, height: 40 }} />
+                        <Link href={`/profile/${profile?._id}`}>
+                            <Avatar src={profile?.avatar} sx={{ width: 40, height: 40 }} />
                         </Link>
 
-                        <label className="font-bold text-lg">{profile.name}</label>
+                        <label className="font-bold text-lg">{profile?.name}</label>
                     </div>
 
                     {
-                        hasAudioReply &&
+                        hasAudioFeature &&
                         <button onClick={onToggleAudioReplies}>
-                            <FontAwesomeIcon icon={!_chat?.isAudioOn ? faVolumeMute : faVolumeHigh} fontSize={20} />
+                            <FontAwesomeIcon icon={!chat?.isAudioOn ? faVolumeMute : faVolumeHigh} fontSize={20} />
                         </button>
                     }
                 </div>
             </Header>
 
             <MessageList className="grow"
-                userId={me?._id}
-                chatId={chat.chatId}
-                isTyping={isReplying} />
+                chatId={chatId}
+                isTyping={isReplying}
+                messagesList={data}
+                onScrollEnd={onMessageListScrollEnd}
+                isLoading={isMessagesLoading} />
 
             <ChatInputBar onSend={onSend} />
 

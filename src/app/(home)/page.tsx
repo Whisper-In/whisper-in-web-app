@@ -1,8 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import * as postService from "@/store/services/content/post.service";
-import { IPostDto } from "@/dtos/content/post.dtos";
 import RecommendedTypesNav from "./_components/recommended-types.component";
 import classNames from "classnames";
 import PostFeed from "./_components/post-feed.component";
@@ -10,7 +8,7 @@ import { useGetRecommendedPosts } from "@/store/hooks/content.hooks";
 
 export type RecommendedTypes = "FOLLOWING" | "FORYOU";
 
-export default function MobileHome() {
+export default function Home() {
     const [recommendedType, setRecommendedType] = useState<RecommendedTypes>("FORYOU");
     const postsPerLoad = 10;
 

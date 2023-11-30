@@ -1,21 +1,9 @@
 import useSWRInfinite from "swr/infinite";
-import { fetcher } from "./fetcher";
+import { fetcher, getKey } from "./fetcher";
 import { IPostDto } from "@/dtos/content/post.dtos";
 import useSWR from "swr";
 
 const route = "/api/content/posts";
-
-const getKey = <T>(url: string, pageIndex: number, previousData: T[], params: URLSearchParams) => {
-    if (previousData && !previousData.length) return null;
-
-    if (params.has("pageIndex")) {
-        params.set("pageIndex", pageIndex.toString());
-    } else {
-        params.append("pageIndex", pageIndex.toString());
-    }
-
-    return `${url}?${params}`;
-}
 
 export const useGetRecommendedPosts = (size: number, showFollowingOnly?: boolean) => {
     const params = new URLSearchParams({

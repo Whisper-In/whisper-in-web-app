@@ -8,7 +8,6 @@ import {
 import * as elevenLabsService from "@/store/services/chat/eleven-labs.service";
 import * as chatService from "@/store/services/chat/chat.service";
 import { RootState } from "@/store/store";
-import { idb } from "../indexedDB";
 
 export const fetchChats = createAsyncThunk<LoadChatsActionPayload[] | any>(
   "chats/fetchChats",
@@ -22,12 +21,7 @@ export const fetchChats = createAsyncThunk<LoadChatsActionPayload[] | any>(
         chatId: userChat.chatId,
         lastMessage: userChat.lastMessage,
         isAudioOn: userChat.isAudioOn,
-        profiles: userChat.profiles.map<LoadChatsProfile>((profile) => ({
-          id: profile._id,
-          name: profile.name,
-          avatar: profile.avatar,
-          isBlocked: profile.isBlocked
-        })),
+        profile: userChat.profile
       }));
     } catch (error) {
       console.log("chats/fetchChats:", error);

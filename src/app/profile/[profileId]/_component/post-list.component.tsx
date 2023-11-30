@@ -34,11 +34,12 @@ export default function PostList({
                             {
                                 posts.map((post, index) =>
                                     <Link key={index}
+                                        scroll={false}
                                         href={`/post/${post._id}`}
                                         className="flex align-center">
                                         <img className="object-cover w-full"
                                             style={{
-                                                aspectRatio: 1/1.25
+                                                aspectRatio: 1 / 1.25
                                             }}
                                             src={post.thumbnailURL ?? post.postURL}
                                         />

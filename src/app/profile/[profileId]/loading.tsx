@@ -1,8 +1,10 @@
-import { Skeleton, Tab, Tabs } from "@mui/material";
+import { IconButton, Skeleton, Stack, Tab, Tabs } from "@mui/material";
 import StatItem from "./_component/stat-item.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { PostType } from "@/dtos/content/post.dtos";
+import FollowButton from "./_component/follow-button.component";
+import { Chat } from "@mui/icons-material";
 
 export default function Loading() {
     return (
@@ -17,7 +19,16 @@ export default function Loading() {
                     <StatItem label="Likes" value={0} />
                 </div>
 
-                <Skeleton variant="rounded" sx={{ width: "100%", height: 48, borderRadius: 48 }} />
+                <Stack direction="row"
+                    spacing={1}
+                    width="100%">
+                    <FollowButton fullWidth
+                        disabled={true} />
+
+                    <IconButton color="secondary">
+                        <Chat />
+                    </IconButton>
+                </Stack>
 
                 <Tabs variant="fullWidth" value={PostType.PHOTO} sx={{ width: '100%' }}>
                     <Tab icon={<FontAwesomeIcon icon={faImage} fontSize={20} />} value={PostType.PHOTO} />

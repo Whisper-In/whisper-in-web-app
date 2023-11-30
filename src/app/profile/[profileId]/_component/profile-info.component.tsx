@@ -13,11 +13,10 @@ import * as chatClientService from "@/store/services/chat/chat.service";
 import * as userClientService from "@/store/services/user/user.service";
 import { fetchChats } from "@/store/thunks/chats.thunks";
 import { useAlertPrompt } from "@/app/_components/alert-prompt.component";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { useSpinner } from "@/app/_components/spinner.component";
 import { useGetProfile } from "@/store/hooks/profile.hooks";
 import { Chat } from "@mui/icons-material";
-import Link from "next/link";
 import FollowButton from "./follow-button.component";
 
 const stripePromise = loadStripe(
@@ -170,6 +169,43 @@ export default function ProfileInfo({ profileId }
         }
     }
 
+    const onMessageClick = async () => {
+        if (profile) {
+            if (!profile.chatId) {
+                try {
+                    showSpinner(true);
+                    const { chatId } = await chatClientService.createNewChat(profileId);
+                    profile.chatId = chatId;
+                } catch (error) {
+                    promptAlert({
+                        title: "Chat Failed",
+                        message: "Unable to chat now. Please try again."
+                    })
+
+                    return;
+                } finally {
+                    showSpinner(false);
+                }
+            }
+
+            router.push(`/chat/${profile.chatId}`);
+        }
+    }
+
+    useEffect(() => {
+        showSpinner(isLoading)
+
+        if (!isLoading && !profile) {
+            promptAlert({
+                title: "Failed to Load Profile",
+                message: "Unable to load profile",
+                onClose: () => router.replace("/")
+            });
+
+            return notFound();
+        }
+    }, [isLoading])
+
     return (
         <Elements stripe={stripePromise} options={{
             mode: "subscription",
@@ -202,11 +238,9 @@ export default function ProfileInfo({ profileId }
                         <SubscribeButton fullWidth disabled={isShowingSpinner} profile={profile} onClick={onSubscribeClick} />
                     }
 
-                    <Link href={`/chat?profile=${profileId}`}>
-                        <IconButton color="secondary">
-                            <Chat />
-                        </IconButton>
-                    </Link>
+                    <IconButton color="secondary" onClick={onMessageClick}>
+                        <Chat />
+                    </IconButton>
                 </Stack>
             </div>
 

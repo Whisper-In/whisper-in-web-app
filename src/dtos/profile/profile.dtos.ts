@@ -2,6 +2,7 @@ import { IPriceTierDto } from "../user/user.dtos";
 
 export interface IProfileDto {
     id: string;
+    chatId?: string;
     name: string;
     aboutMe?: string;
     email?: string;

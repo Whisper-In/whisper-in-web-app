@@ -1,24 +1,26 @@
 "use client"
 import ChatListItem from "./chat-list-item.component";
-import { IUserChatRawDto } from "@/dtos/chats/chats.dtos";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useGetChatMessages, useGetUserChats } from "@/store/hooks/chat.hooks";
 import { fetchChats } from "@/store/thunks/chats.thunks";
-import { Box, List, ListItem, Typography } from "@mui/material";
+import { Box, CircularProgress, List, ListItem, Stack, Typography } from "@mui/material";
 import { useEffect } from "react";
 
 export default function ChatList({ className }: { className?: string }) {
-    const me = useAppSelector((state) => state.user.me);
-    const chats = useAppSelector((state) => state.chats.chats);
+    const { data: chats, isLoading, mutate: updateChats } = useGetUserChats();
 
-    const dispatch = useAppDispatch();
+    if (isLoading) {
+        return (
+            <Stack justifyContent="center"
+                alignItems="center"
+                width="100%"
+                height="100%">
+                <CircularProgress />
+            </Stack>
+        )
+    }
 
-    useEffect(() => {
-        if (me) {
-            dispatch(fetchChats());
-        }
-    }, [me]);
-
-    if (!chats.length) {
+    if (!chats?.length) {
         return (
             <Typography sx={{
                 mt: 2,

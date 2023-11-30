@@ -6,14 +6,14 @@ import classNames from "classnames";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function BackButton({ className }
-    : { className?: string }) {
+export default function BackButton({ relative }
+    : { relative?: boolean }) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
     const onBack = () => {
         console.log(window.history.length)
-        if(window.history.length) {
+        if (window.history.length) {
             router.back();
         } else {
             router.replace("/")
@@ -22,8 +22,10 @@ export default function BackButton({ className }
 
     return (
         <button className={classNames(
-            "w-fit drop-shadow-md absolute top-14 left-5",
-            className
+            "w-fit drop-shadow-md",
+            {
+                "absolute top-14 left-5": !relative
+            }
         )} onClick={onBack}>
             <FontAwesomeIcon icon={faArrowLeft} fontSize={25} />
         </button >
