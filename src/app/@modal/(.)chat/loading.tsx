@@ -1,5 +1,5 @@
 import Modal from "../../_components/modal.component";
-import Loading from "@/app/chat/(chatid)/loading";
+import Loading from "@/app/chat/[chatId]/loading";
 
 export default function ChatModalLoading() {
     return (

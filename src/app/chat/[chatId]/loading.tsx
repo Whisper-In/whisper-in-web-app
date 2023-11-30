@@ -2,7 +2,7 @@ import Header from "@/app/_components/header.component";
 import BackButton from "@/app/_components/back-button.component";
 import { Skeleton } from "@mui/material";
 import classNames from "classnames";
-import ChatInputBar from "./[chatId]/_components/input-bar.component";
+import ChatInputBar from "./_components/input-bar.component";
 
 export default function Loading() {
     return (

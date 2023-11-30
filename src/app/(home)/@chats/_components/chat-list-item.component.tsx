@@ -6,7 +6,7 @@ import { convertToMessageDate } from "@/utils/datetime.util";
 import { Avatar, Box, ListItem, ListItemButton, Typography } from "@mui/material";
 import Link from "next/link";
 
-export default function ChatPage({ chat }
+export default function ChatListItem({ chat }
     : { chat: Chat }) {
     const me = useAppSelector((state) => state.user.me)!;
     const profile = chat.profiles.findLast((profile) => profile?.id != me?._id);
