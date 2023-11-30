@@ -31,7 +31,8 @@ export const useGetRecommendedPosts = (size: number, showFollowingOnly?: boolean
         fetcher,
         {
             revalidateAll: false,
-            revalidateOnFocus: false
+            revalidateOnFocus: false,
+            revalidateIfStale: false
         });
 }
 

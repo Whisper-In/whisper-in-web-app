@@ -7,7 +7,7 @@ import StatItem from "./stat-item.component";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useEffect, useState } from "react";
 import { ICreatePaymentSheetDto } from "@/dtos/payment/payment.dtos";
-import { Avatar, CircularProgress, Drawer, Modal } from "@mui/material";
+import { Avatar, Button, CircularProgress, Drawer, IconButton, Modal, Stack } from "@mui/material";
 import PaymentForm from "@/app/_components/payment-form.component";
 import * as chatClientService from "@/store/services/chat/chat.service";
 import * as userClientService from "@/store/services/user/user.service";
@@ -16,6 +16,9 @@ import { useAlertPrompt } from "@/app/_components/alert-prompt.component";
 import { useRouter } from "next/navigation";
 import { useSpinner } from "@/app/_components/spinner.component";
 import { useGetProfile } from "@/store/hooks/profile.hooks";
+import { Chat } from "@mui/icons-material";
+import Link from "next/link";
+import FollowButton from "./follow-button.component";
 
 const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -25,6 +28,7 @@ export default function ProfileInfo({ profileId }
     : { profileId: string }) {
     const { data: profile, isLoading, mutate: updateProfile } = useGetProfile(profileId);
     const me = useAppSelector((state) => state.user.me)!;
+
     const [isPaymentFormOpen, setIsPaymentFormOpen] = useState(false);
     const { isShowingSpinner, showSpinner } = useSpinner();
     const dispatch = useAppDispatch();
@@ -129,6 +133,43 @@ export default function ProfileInfo({ profileId }
         }
     }
 
+    const followUser = () => {
+        showSpinner(true);
+        userClientService.followUser(profileId).then(() => {
+            updateProfile();
+        }).catch(() => {
+            promptAlert({
+                title: "Unable to Follow User",
+                message: "Oops, failed to follow User. Please try again later."
+            });
+        }).finally(() => {
+            showSpinner(false);
+        });
+    }
+
+    const unfollowUser = () => {
+        showSpinner(true);
+
+        userClientService.unfollowUser(profileId).then(() => {
+            updateProfile();
+        }).catch(() => {
+            promptAlert({
+                title: "Unable to Unfollow User",
+                message: "Oops, failed to unfollow User. Please try again later."
+            });
+        }).finally(() => {
+            showSpinner(false);
+        });
+    }
+
+    const onFollowClick = () => {
+        if (profile?.isFollowing) {
+            unfollowUser();
+        } else {
+            followUser();
+        }
+    }
+
     return (
         <Elements stripe={stripePromise} options={{
             mode: "subscription",
@@ -148,10 +189,25 @@ export default function ProfileInfo({ profileId }
                     <StatItem label="Likes" value={profile?.totalLikeCount ?? 0} />
                 </div>
 
-                {
-                    me?._id != profile?.id && profile?.isSubscriptionOn &&
-                    <SubscribeButton disabled={isShowingSpinner} profile={profile} onClick={onSubscribeClick} />
-                }
+                <Stack direction="row"
+                    spacing={1}
+                    width="100%">
+                    <FollowButton fullWidth
+                        disabled={isShowingSpinner}
+                        profile={profile}
+                        onClick={onFollowClick} />
+
+                    {
+                        me?._id != profile?.id && profile?.isSubscriptionOn &&
+                        <SubscribeButton fullWidth disabled={isShowingSpinner} profile={profile} onClick={onSubscribeClick} />
+                    }
+
+                    <Link href={`/chat?profile=${profileId}`}>
+                        <IconButton color="secondary">
+                            <Chat />
+                        </IconButton>
+                    </Link>
+                </Stack>
             </div>
 
             {

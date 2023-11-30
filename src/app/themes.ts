@@ -14,12 +14,20 @@ declare module '@mui/material/styles' {
 const commonComponents: Components<Omit<Theme, "components">> = {
     MuiContainer: {
         defaultProps: {
-            maxWidth: "sm",
+            maxWidth: "xs",
             disableGutters: true
         },
         styleOverrides: {
             root: ({ theme }) => ({
                 backgroundColor: theme.palette.background.default
+            })
+        }
+    },
+    MuiButton: {
+        styleOverrides: {
+            root: ({ theme }) => ({
+                fontSize: "1rem",
+                textTransform: "none"
             })
         }
     }
@@ -55,6 +63,9 @@ export const darkTheme = createTheme({
     palette: {
         mode: "dark",
         primary: lightTheme.palette.primary,
+        secondary: {
+            main: grey[400]
+        },
         background: {
             default: "#121212",
             paper: "#121212"

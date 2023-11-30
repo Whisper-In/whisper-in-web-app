@@ -10,6 +10,7 @@ export interface IProfileDto {
     priceTiers: IPriceTierDto[];
     isSubscriptionOn?: boolean;
     isSubscribed?: boolean;
+    isFollowing?: boolean;
     isSubscriptionExpired?: boolean;
     isBlocked?: boolean;
     postCount?: number;

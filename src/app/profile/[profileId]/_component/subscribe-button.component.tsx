@@ -1,12 +1,19 @@
 "use client"
 
 import { IProfileDto } from "@/dtos/profile/profile.dtos";
+import { Button, ButtonProps, Stack, Typography } from "@mui/material";
 import classNames from "classnames";
 
-export default function SubscribeButton({ className, profile, disabled, onClick }
-    : {
-        className?: string, profile?: IProfileDto, disabled?: boolean, onClick?: () => void
-    }) {
+export default function SubscribeButton({
+    profile,
+    disabled,
+    onClick,
+    ...props
+}: {
+    profile?: IProfileDto,
+    disabled?: boolean,
+    onClick?: () => void
+} & ButtonProps) {
 
     const priceTier = profile?.priceTiers?.length ? profile?.priceTiers[0] : null;
 
@@ -17,24 +24,26 @@ export default function SubscribeButton({ className, profile, disabled, onClick 
     }
 
     return (
-        <button disabled={disabled} onClick={_onClick} className={classNames(
-            "rounded-full w-full px-5 py-3 text-white flex justify-center",
-            {
-                "bg-primary text-left": !profile?.isSubscribed,
-                "bg-secondary text-center": profile?.isSubscribed
-            },
-            className
-        )}>
+        <Button {...props}
+            variant="outlined"
+            disabled={disabled}
+            onClick={_onClick}
+            color={!profile?.isSubscribed ? "primary" : "secondary"}>
             {
                 !profile?.isSubscribed ?
-                    <>
-                        <div className="grow text-left">Subscribe</div>
-
-                        <div className="font-bold">{(priceTier?.price ?? 0) > 0 ? `$${(priceTier!.price).toFixed(2)}` : "FREE"}</div>
-                    </>
+                    <Stack direction="row" spacing={2}>
+                        <Typography>
+                            Subscribe
+                        </Typography>
+                        <Typography fontWeight={700}>
+                            ${(priceTier?.price || 0).toFixed(2)}
+                        </Typography>
+                    </Stack>
                     :
-                    <div>Subscribed</div>
+                    <Typography>
+                        Subscribed
+                    </Typography>
             }
-        </button>
+        </Button>
     );
 }

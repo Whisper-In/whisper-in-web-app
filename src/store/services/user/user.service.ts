@@ -124,3 +124,23 @@ export const cancelPaymentSubscription = async (profileId: string) => {
         throw error;
     }
 }
+
+export const followUser = async (profileId: string) => {
+    try {
+        const results = await axios.post(`${route}/follow/${profileId}`);
+
+        return results.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const unfollowUser = async (profileId: string) => {
+    try {
+        const results = await axios.delete(`${route}/follow/${profileId}`);
+
+        return results.data;
+    } catch (error) {
+        throw error;
+    }
+}
