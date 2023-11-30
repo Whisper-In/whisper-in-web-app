@@ -18,7 +18,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
                 <AlertPromptProvider>
                     <SpinnerProvider>
                         <ShareModalProvider>
-                            <AppThemeProvider>
+                            <AppThemeProvider options={{ key: "mui" }}>
                                 {children}
                             </AppThemeProvider>
                         </ShareModalProvider>
