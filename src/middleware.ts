@@ -5,25 +5,31 @@ export function middleware(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     let initialPathName = request.nextUrl.pathname;
 
+    let response = NextResponse.next();
+
     if (!initialPathName.startsWith("/api")) {
         request.nextUrl.pathname = CheckTokenURL(request.nextUrl.pathname, token);
 
         //request.nextUrl.pathname = CheckBrowser(request);
-    }
-    
-    let response = NextResponse.next();
 
-    if (request.nextUrl.pathname != initialPathName) {
-        const newURL = new URL(request.nextUrl.pathname, request.nextUrl.origin)
-        searchParams.forEach((value, key) => {
-            newURL.searchParams.append(key, value);
-        });
+        if (request.nextUrl.pathname != initialPathName) {
+            const newURL = new URL(request.nextUrl.pathname, request.nextUrl.origin)
+            searchParams.forEach((value, key) => {
+                newURL.searchParams.append(key, value);
+            });
 
-        response = NextResponse.redirect(newURL);
-    }
+            response = NextResponse.redirect(newURL);
+        }
+    } else {
+        if (token) {
+            request.headers.append("Authorization", `Bearer ${token}`);
 
-    if (token) {
-        response.headers.append("Authorization", `Bearer ${token}`);
+            response = NextResponse.next({
+                request: {
+                    headers: request.headers
+                }
+            });
+        }
     }
 
     return response;
