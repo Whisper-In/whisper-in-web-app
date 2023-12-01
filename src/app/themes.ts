@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material";
+import { Components, Theme, createTheme } from "@mui/material";
 import { grey } from "@mui/material/colors";
 
 declare module '@mui/material/styles' {
@@ -11,6 +11,40 @@ declare module '@mui/material/styles' {
     }
 }
 
+const commonComponents: Components<Omit<Theme, "components">> = {
+    MuiContainer: {
+        defaultProps: {
+            maxWidth: "md",
+            disableGutters: true
+        },
+        styleOverrides: {
+            root: ({ theme }) => ({
+                backgroundColor: theme.palette.background.default
+            })
+        }
+    },
+    MuiButton: {
+        styleOverrides: {
+            root: ({ theme }) => ({
+                fontSize: "1rem",
+                textTransform: "none"
+            })
+        }
+    },
+    MuiDrawer: {
+        defaultProps: {
+            PaperProps: {
+                sx: {
+                    left: "50%",
+                    translate: "-50% 0",
+                    maxWidth: "100vw",
+                    width: (theme) => theme.breakpoints.values.md,
+                }
+            }
+        }
+    }
+}
+
 
 export const lightTheme = createTheme({
     palette: {
@@ -19,12 +53,16 @@ export const lightTheme = createTheme({
             default: "#fff",
             paper: "#fff"
         },
+        secondary: {
+            main: grey[600]
+        },
         container: {
             main: grey[300],
             contrastText: grey[600]
         }
     },
     components: {
+        ...commonComponents,
         MuiAppBar: {
             styleOverrides: {
                 colorPrimary: {
@@ -40,9 +78,12 @@ export const darkTheme = createTheme({
     palette: {
         mode: "dark",
         primary: lightTheme.palette.primary,
+        secondary: {
+            main: grey[400]
+        },
         background: {
             default: "#121212",
-            paper: "#121212"    
+            paper: "#121212"
         },
         container: {
             main: grey[900],
@@ -50,6 +91,7 @@ export const darkTheme = createTheme({
         }
     },
     components: {
+        ...commonComponents,
         MuiAppBar: {
             styleOverrides: {
                 colorPrimary: {

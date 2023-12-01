@@ -2,12 +2,11 @@ import { ICreatePaymentSheetDto } from "@/dtos/payment/payment.dtos";
 import { IUserProfileDto } from "@/dtos/user/user.dtos";
 import axios from "axios";
 
-
 const route = "/api/user";
 
 export async function createUserSubscription(profileId: string, tier?: number, subscriptionId?: string) {
     try {
-        const result = await axios.post(`${route}/create-subscription`, {
+        const result = await axios.post(`${route}/subscription`, {
             profileId,
             tier,
             subscriptionId
@@ -118,6 +117,26 @@ export const cancelPaymentSubscription = async (profileId: string) => {
         const results = await axios.post(`${route}/cancel-subscription`, {
             profileId
         });
+
+        return results.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const followUser = async (profileId: string) => {
+    try {
+        const results = await axios.post(`${route}/follow/${profileId}`);
+
+        return results.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const unfollowUser = async (profileId: string) => {
+    try {
+        const results = await axios.delete(`${route}/follow/${profileId}`);
 
         return results.data;
     } catch (error) {

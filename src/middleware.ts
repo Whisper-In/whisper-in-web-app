@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse, userAgent } from "next/server";
-import { getCookieCallback } from "./utils/cookies.util";
 
 export function middleware(request: NextRequest) {
     const token = request.cookies.get("token")?.value;
@@ -9,9 +8,9 @@ export function middleware(request: NextRequest) {
     if (!initialPathName.startsWith("/api")) {
         request.nextUrl.pathname = CheckTokenURL(request.nextUrl.pathname, token);
 
-        request.nextUrl.pathname = CheckBrowser(request);
+        //request.nextUrl.pathname = CheckBrowser(request);
     }
-
+    
     let response = NextResponse.next();
 
     if (request.nextUrl.pathname != initialPathName) {

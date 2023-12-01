@@ -9,28 +9,24 @@ export interface IUserChatProfileDto {
     name: string;
     avatar?: string;
     isBlocked?: boolean;
-}
-
-export interface IUserChatRawDto {
-    _id: string;
-    chatId: string;
-    features: string[];
-    profiles: IUserChatProfileDto[];
-    isAudioOn: boolean;
-    lastMessage: IUserChatMessageDto;
+    isSubscriptionOn: boolean;
 }
 
 export interface IUserChatDto {
-    chatId: string;
-    features: ChatFeature[];
-    lastMessage: ChatMessage;
-    profiles: IUserChatProfileDto[];
-}
-export interface IUserChatMessageDto {
     _id: string;
+    chatId: string;
+    features: ["AUDIO" | "VIDEO"];
+    profile: IUserChatProfileDto;
+    isAudioOn: boolean;    
+    lastMessage: IUserChatMessageDto;
+}
+
+export interface IUserChatMessageDto {
+    messageId: string;
     chatId: string;
     message: string;
     sender: string;
+    isSender?: boolean;
     isAudio?: boolean;
     createdAt?: string;
     updatedAt?: string;

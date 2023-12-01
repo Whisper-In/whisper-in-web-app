@@ -18,7 +18,7 @@ export default function Callback() {
                 user                
             }
 
-            window.opener.postMessage(message, `${location.origin}/mobile/signin`);
+            window.opener.postMessage(message, `${location.origin}/signin`);
         }
     }, []);
 

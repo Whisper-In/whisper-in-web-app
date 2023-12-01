@@ -8,7 +8,7 @@ export type ChatMessage = {
 };
 
 export type ChatProfile = {
-    id: string;
+    _id: string;
     name: string;
     avatar?: string;
     isBlocked?: boolean;
@@ -22,7 +22,7 @@ export type Chat = {
     chatId: string;
     isAudioOn?: boolean;
     features?: number[];
-    profiles: ChatProfile[];
+    profile: ChatProfile;
     lastMessage?: ChatMessage;
     messages: ChatMessage[];
     totalMessages?: number;

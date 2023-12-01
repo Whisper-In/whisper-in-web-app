@@ -2,6 +2,7 @@ import { IPriceTierDto } from "../user/user.dtos";
 
 export interface IProfileDto {
     id: string;
+    chatId?: string;
     name: string;
     aboutMe?: string;
     email?: string;
@@ -10,11 +11,13 @@ export interface IProfileDto {
     priceTiers: IPriceTierDto[];
     isSubscriptionOn?: boolean;
     isSubscribed?: boolean;
+    isFollowing?: boolean;
     isSubscriptionExpired?: boolean;
     isBlocked?: boolean;
     postCount?: number;
     followerCount?: number;
     totalLikeCount?: number;
+    isMe?:boolean;
 }
 
 export interface IProfileSearchDto {

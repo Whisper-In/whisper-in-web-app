@@ -1,5 +1,5 @@
 export type LoadChatsProfile = {
-  id: string;
+  _id: string;
   name: string;
   avatar?: string;
   isBlocked?: boolean;
@@ -9,7 +9,7 @@ export type LoadChatsActionPayload = {
   chatId: string;
   isAudioOn:boolean;
   lastMessage: ChatMessageActionPayload;
-  profiles: LoadChatsProfile[]
+  profile: LoadChatsProfile
 };
 
 export type LoadChatsAction = {

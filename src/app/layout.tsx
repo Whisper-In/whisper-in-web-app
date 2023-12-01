@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 import { config } from "@fortawesome/fontawesome-svg-core"
 import "@fortawesome/fontawesome-svg-core/styles.css"
 import { Providers } from '@/store/provider'
-import AppThemeProvider from './theme-provider'
+import { Container } from '@mui/material'
 
 config.autoAddCss = false;
 
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode
 }) {
@@ -38,10 +38,17 @@ export default function RootLayout({
         height: "100dvh",
         width: "100vw",
         position: "fixed",
-        overflow: "hidden"
+        overflow: "hidden",
+        backgroundColor: "black"
       }}>
         <Providers>
-          {children}
+          <Container sx={{
+            position: "relative",
+            height: "100%",
+            width: "100%"
+          }}>
+            {children}
+          </Container>
         </Providers>
       </body>
     </html>
