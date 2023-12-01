@@ -1,6 +1,6 @@
 "use client"
 
-import { CircularProgress, Drawer } from "@mui/material";
+import { CircularProgress, Drawer, Link, Typography } from "@mui/material";
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { ICreatePaymentSheetDto } from "@/dtos/payment/payment.dtos";
 import * as userClientService from "@/store/services/user/user.service";
@@ -114,6 +114,9 @@ export default function PaymentForm({
                 </div>
             }
             <form onSubmit={onSubmit} className="p-5">
+                <Typography fontStyle="italic">
+                    <b>Disclaimer:</b> This is a test payment. Please use the test cards listed on <Link href="https://stripe.com/docs/testing" target="_blank">Stripe</Link>. For example, Card No.: 4242 4242 4242 4242, Expiration: 01/28, CVC: 123.
+                </Typography>
                 <PaymentElement className="mb-5" />
 
                 <button type="submit" disabled={isSubmitting}

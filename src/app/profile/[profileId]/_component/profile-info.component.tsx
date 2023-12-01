@@ -1,13 +1,13 @@
 "use client"
 
-import { CardElement, Elements, PaymentElement } from "@stripe/react-stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import SubscribeButton from "./subscribe-button.component";
 import StatItem from "./stat-item.component";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { useEffect, useState } from "react";
 import { ICreatePaymentSheetDto } from "@/dtos/payment/payment.dtos";
-import { Avatar, Button, CircularProgress, Drawer, IconButton, Modal, Stack } from "@mui/material";
+import { Avatar, Collapse, IconButton, Stack } from "@mui/material";
 import PaymentForm from "@/app/_components/payment-form.component";
 import * as chatClientService from "@/store/services/chat/chat.service";
 import * as userClientService from "@/store/services/user/user.service";
@@ -18,14 +18,19 @@ import { useSpinner } from "@/app/_components/spinner.component";
 import { useGetProfile } from "@/store/hooks/profile.hooks";
 import { Chat } from "@mui/icons-material";
 import FollowButton from "./follow-button.component";
+import { useScrollVertical } from "@/hooks/scroll.hook";
 
 const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 )
 
-export default function ProfileInfo({ profileId }
-    : { profileId: string }) {
+export default function ProfileInfo({
+    profileId
+}: {
+    profileId: string
+}) {
     const { data: profile, isLoading, mutate: updateProfile } = useGetProfile(profileId);
+    const scrollDirection = useScrollVertical();
 
     const [isPaymentFormOpen, setIsPaymentFormOpen] = useState(false);
     const { isShowingSpinner, showSpinner } = useSpinner();
@@ -206,54 +211,56 @@ export default function ProfileInfo({ profileId }
     }, [isLoading])
 
     return (
-        <Elements stripe={stripePromise} options={{
-            mode: "subscription",
-            amount: (priceTier?.price ?? 0) * 100,
-            currency: "usd",
-            setup_future_usage: "off_session"
-        }}>
-            <div className="flex flex-col items-center gap-3 pt-14 px-5 mb-3">
-                <Avatar src={profile?.avatar} sx={{ width: 96, height: 96 }} />
+        <Collapse in={scrollDirection != "DOWN"}>
+            <Elements stripe={stripePromise} options={{
+                mode: "subscription",
+                amount: (priceTier?.price ?? 0) * 100,
+                currency: "usd",
+                setup_future_usage: "off_session"
+            }}>
+                <div className="flex flex-col items-center gap-3 pt-14 px-5 mb-3">
+                    <Avatar src={profile?.avatar} sx={{ width: 96, height: 96 }} />
 
-                <div className="text-lg italic">
-                    @{profile?.userName}
-                </div>
-                <div className="flex justify-center gap-12 mb-3">
-                    <StatItem label="Posts" value={profile?.postCount ?? 0} />
-                    <StatItem label="Followers" value={profile?.followerCount ?? 0} />
-                    <StatItem label="Likes" value={profile?.totalLikeCount ?? 0} />
+                    <div className="text-lg italic">
+                        @{profile?.userName}
+                    </div>
+                    <div className="flex justify-center gap-12 mb-3">
+                        <StatItem label="Posts" value={profile?.postCount ?? 0} />
+                        <StatItem label="Followers" value={profile?.followerCount ?? 0} />
+                        <StatItem label="Likes" value={profile?.totalLikeCount ?? 0} />
+                    </div>
+
+                    <Stack direction="row"
+                        spacing={1}
+                        width="100%">
+                        <FollowButton fullWidth
+                            disabled={isShowingSpinner}
+                            profile={profile}
+                            onClick={onFollowClick} />
+
+                        {
+                            !profile?.isMe && profile?.isSubscriptionOn &&
+                            <SubscribeButton fullWidth disabled={isShowingSpinner} profile={profile} onClick={onSubscribeClick} />
+                        }
+
+                        <IconButton color="secondary" onClick={onMessageClick}>
+                            <Chat />
+                        </IconButton>
+                    </Stack>
                 </div>
 
-                <Stack direction="row"
-                    spacing={1}
-                    width="100%">
-                    <FollowButton fullWidth
-                        disabled={isShowingSpinner}
+                {
+                    profile &&
+                    <PaymentForm
+                        open={isPaymentFormOpen}
                         profile={profile}
-                        onClick={onFollowClick} />
-
-                    {
-                        !profile?.isMe && profile?.isSubscriptionOn &&
-                        <SubscribeButton fullWidth disabled={isShowingSpinner} profile={profile} onClick={onSubscribeClick} />
-                    }
-
-                    <IconButton color="secondary" onClick={onMessageClick}>
-                        <Chat />
-                    </IconButton>
-                </Stack>
-            </div>
-
-            {
-                profile &&
-                <PaymentForm
-                    open={isPaymentFormOpen}
-                    profile={profile}
-                    onClose={onPaymentClose}
-                    onPaymentInitlialized={onPaymentInitlialized}
-                    onPaymentCompleted={onPaymentCompleted}
-                    onPaymentFailed={onPaymentFailed}
-                    onPaymentEnded={onPaymentClose} />
-            }
-        </Elements>
+                        onClose={onPaymentClose}
+                        onPaymentInitlialized={onPaymentInitlialized}
+                        onPaymentCompleted={onPaymentCompleted}
+                        onPaymentFailed={onPaymentFailed}
+                        onPaymentEnded={onPaymentClose} />
+                }
+            </Elements>
+        </Collapse>
     )
 }

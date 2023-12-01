@@ -1,11 +1,8 @@
-import { notFound } from "next/navigation";
-import StatItem from "./_component/stat-item.component";
-import SubscribeButton from "./_component/subscribe-button.component";
-import * as profileService from "@/store/services/profile/profile.service";
-import { Tab, Tabs } from "@mui/material";
 import PostTabs from "./_component/post-tabs.component";
 import BackButton from "@/app/_components/back-button.component";
 import ProfileInfo from "./_component/profile-info.component";
+import { createContext, useContext } from "react";
+import { ScrollDirection } from "@/hooks/scroll.hook";
 
 export default async function Profile({
     params,

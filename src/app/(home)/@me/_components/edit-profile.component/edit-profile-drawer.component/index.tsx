@@ -1,6 +1,5 @@
-import Header from "@/app/_components/header.component";
-import { Box, Button, Drawer, DrawerProps, useFormControl } from "@mui/material";
-import { forwardRef, useState, useImperativeHandle, useRef, HTMLInputTypeAttribute } from "react";
+import { Box, Button, Drawer, DrawerProps, Paper, Stack, Toolbar, Typography } from "@mui/material";
+import { forwardRef, useState, useImperativeHandle, HTMLInputTypeAttribute } from "react";
 import EditInput from "./edit-input.component";
 import { Validation } from "@/utils/form.util";
 import EditAudio from "./edit-audio.component";
@@ -96,31 +95,43 @@ const EditProfileDrawer = forwardRef<EditProfileDrawerElement>((props: DrawerPro
     }
 
     return (
-        <Drawer
-            variant="persistent"
+        <Drawer PaperProps={{
+            sx: {
+                left: "50%",
+                translate: "-50% 0",
+                maxWidth: "100vw",
+                width: (theme) => theme.breakpoints.values.md,
+            }
+        }}
+            variant="temporary"
             open={drawerState.open}
-            anchor="right"
+            anchor="bottom"
             onClose={handleClose}
             {...props}>
-
-            <Box sx={{ width: "100%" }}>
-                <Header title={drawerState.title}
-                    titleAlignment="center"
-                    leftComponent={
+            <Paper elevation={5}>
+                <Toolbar>
+                    <Stack width="100%"
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="space-between">
                         <Button color="primary"
                             onClick={handleClose}>
                             Cancel
                         </Button>
-                    }
-                    rightComponent={
+                        <Typography fontWeight={700}>
+                            {drawerState.title}
+                        </Typography>
+
                         <Button color="error"
                             disabled={error != undefined || isShowingSpinner}
                             onClick={handleSave}>
                             Save
                         </Button>
-                    }
-                />
+                    </Stack>
+                </Toolbar>
+            </Paper>
 
+            <Box pb={2} maxWidth="100vw">
                 {
                     drawerState.open &&
                     (
@@ -135,7 +146,7 @@ const EditProfileDrawer = forwardRef<EditProfileDrawerElement>((props: DrawerPro
                     )
                 }
             </Box>
-        </Drawer>
+        </Drawer >
     );
 });
 

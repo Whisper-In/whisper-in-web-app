@@ -3,7 +3,6 @@ import { isScrollEnded } from "@/utils/component.util";
 import classNames from "classnames";
 import Link from "next/link";
 import React from "react";
-
 export default function PostList({
     className,
     posts,
@@ -13,7 +12,6 @@ export default function PostList({
     posts?: IPostDto[],
     onScrollEnd?: () => void
 }) {
-
     const onScroll = (event: React.UIEvent) => {
         if (onScrollEnd) {
             if (isScrollEnded(event)) {
@@ -29,7 +27,8 @@ export default function PostList({
         )}>
             {
                 posts?.length ?
-                    <div className="absolute top-0 left-0 bottom-0 right-0 overflow-y-auto" onScroll={onScroll}>
+                    <div className="absolute top-0 left-0 bottom-0 right-0 overflow-y-auto"
+                        onScroll={onScroll}>
                         <div className="grid grid-cols-3 gap-[2px]">
                             {
                                 posts.map((post, index) =>

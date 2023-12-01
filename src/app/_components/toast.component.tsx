@@ -34,7 +34,7 @@ export function ToastProvider({ children }: PropsWithChildren) {
     }
 
     useEffect(() => {
-        if (open && props?.duration) {
+        if (open && props?.duration != undefined) {
             clearTimeout(timeout);
 
             const duration = props?.duration == ToastDuration.LONG ? LONG_DURATION : SHORT_DURATION;
@@ -47,7 +47,7 @@ export function ToastProvider({ children }: PropsWithChildren) {
 
     return (
         <ToastContext.Provider value={{ showToast }}>
-            <Toast open={open} onClose={!props?.duration ? () => setOpen(false) : undefined} {...props}>
+            <Toast open={open} onClose={!props?.duration == undefined ? () => setOpen(false) : undefined} {...props}>
                 {props?.message}
             </Toast>
 

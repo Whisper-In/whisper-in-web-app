@@ -2,17 +2,17 @@
 
 import { PostType } from "@/dtos/content/post.dtos"
 import { Tab, Tabs } from "@mui/material"
-import { SyntheticEvent, useEffect, useState } from "react"
+import { SyntheticEvent, useState } from "react"
 import classNames from "classnames"
 import PostList from "./post-list.component"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faImage, faPhotoFilm, faVideo } from "@fortawesome/free-solid-svg-icons"
+import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons"
 import { useGetPosts } from "@/store/hooks/content.hooks"
 
 export default function PostTabs({ className, profileId }
     : { className?: string, profileId?: string }) {
     const [tab, setTab] = useState<PostType>(PostType.PHOTO);
-    const postsPerLoad = 12;
+    const postsPerLoad = 18;
     const {
         data: photoPosts,
         size: photoPostsSize,

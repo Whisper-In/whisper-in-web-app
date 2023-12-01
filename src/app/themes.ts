@@ -14,7 +14,7 @@ declare module '@mui/material/styles' {
 const commonComponents: Components<Omit<Theme, "components">> = {
     MuiContainer: {
         defaultProps: {
-            maxWidth: "xs",
+            maxWidth: "md",
             disableGutters: true
         },
         styleOverrides: {
@@ -29,6 +29,18 @@ const commonComponents: Components<Omit<Theme, "components">> = {
                 fontSize: "1rem",
                 textTransform: "none"
             })
+        }
+    },
+    MuiDrawer: {
+        defaultProps: {
+            PaperProps: {
+                sx: {
+                    left: "50%",
+                    translate: "-50% 0",
+                    maxWidth: "100vw",
+                    width: (theme) => theme.breakpoints.values.md,
+                }
+            }
         }
     }
 }

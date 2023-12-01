@@ -1,18 +1,16 @@
 "use client"
 
 import Header from "@/app/_components/header.component";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, Container, Drawer } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Drawer, Stack } from "@mui/material";
+import { useEffect } from "react";
 import { GetProfileListItems, GetSubscriptionListItems } from "./profile-list-items";
-import { fetchUserProfile } from "@/store/thunks/user.thunks";
 import { useAlertPrompt } from "@/app/_components/alert-prompt.component";
 import { Validator } from "@/utils/form.util";
 import EditAvatar from "./avatar.component";
 import EditProfileInfo from "./profile-info.component";
-import * as configClientService from "@/store/services/business/config.service";
 import { useGetUserProfile } from "@/store/hooks/user.hooks";
 import { useGetMinSubscriptionFee } from "@/store/hooks/business.hooks";
 
@@ -20,7 +18,7 @@ export default function EditProfile({ open, handleClose }
     : { open: boolean, handleClose?: () => void }) {
     const { promptAlert } = useAlertPrompt();
 
-    const {data: minSubscriptionFee} = useGetMinSubscriptionFee();
+    const { data: minSubscriptionFee } = useGetMinSubscriptionFee();
 
     const { data: me, mutate: updateUserProfile } = useGetUserProfile();
 
@@ -71,8 +69,7 @@ export default function EditProfile({ open, handleClose }
     }, [open]);
 
     return (
-        <Drawer
-            variant="persistent"
+        <Drawer variant="persistent"
             hideBackdrop={true}
             open={open}
             onClose={_handleClose}
@@ -85,17 +82,18 @@ export default function EditProfile({ open, handleClose }
                 }
             />
 
-            <Container sx={{
-                overflowY: "auto",
-                paddingY: 5
-            }}>
+            <Stack maxWidth="100vw"
+                sx={{
+                    overflowY: "auto",
+                    paddingY: 5,
+                }}>
                 <EditAvatar me={me} onChange={updateUserProfile} />
 
                 <EditProfileInfo me={me}
                     profileListItems={profileListItems}
                     subscriptionListItems={subscriptionListItems}
                     onChange={updateUserProfile} />
-            </Container>
+            </Stack>
         </Drawer>
     )
 }
