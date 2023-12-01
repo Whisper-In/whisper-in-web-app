@@ -166,7 +166,7 @@ export default function Post({
 
             {
                 post.isCreator &&
-                <button className="absolute top-5 pt-sat right-5" onClick={onDelete}>
+                <button className="absolute top-14 pt-sat right-5" onClick={onDelete}>
                     <Delete fontSize="large" />
                 </button>
             }

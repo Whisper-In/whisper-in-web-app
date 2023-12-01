@@ -41,6 +41,9 @@ export const lightTheme = createTheme({
             default: "#fff",
             paper: "#fff"
         },
+        secondary: {
+            main: grey[600]
+        },
         container: {
             main: grey[300],
             contrastText: grey[600]

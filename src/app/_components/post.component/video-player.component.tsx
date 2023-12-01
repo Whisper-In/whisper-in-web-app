@@ -4,30 +4,37 @@ import { useIsInViewport } from "@/hooks/viewport.hook";
 import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 
-export default function VideoPlayer({ className, src, poster }
-    : { className?: string, src: string, poster?: string }) {
-    const ref = useRef<HTMLVideoElement>(null);
-    const isInViewPort = useIsInViewport(ref);
+export type VideoPlayerProps = {
+    className?: string,
+    src?: string,
+    poster?: string
+}
+
+const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(({ className, src, poster }: VideoPlayerProps, ref) => {
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const isInViewPort = useIsInViewport(videoRef);
     const [isPlaying, setIsPlaying] = useState(false);
 
+    useImperativeHandle(ref, () => videoRef.current!, []);
+
     useEffect(() => {
-        if (ref.current) {
+        if (videoRef.current) {
             if (isInViewPort) {
-                ref.current.play().catch(() => { });
+                videoRef.current.play().catch(() => { });
             } else {
-                ref.current.currentTime = 0;
-                ref.current.pause();
+                videoRef.current.currentTime = 0;
+                videoRef.current.pause();
             }
         }
     }, [isInViewPort]);
 
     const onClick = () => {
-        if (ref.current?.paused || ref.current?.ended) {
-            ref.current?.play();
+        if (videoRef.current?.paused || videoRef.current?.ended) {
+            videoRef.current?.play();
         } else {
-            ref.current?.pause();
+            videoRef.current?.pause();
         }
     }
 
@@ -49,10 +56,10 @@ export default function VideoPlayer({ className, src, poster }
                     icon={faPlay} fontSize={80} />
             }
 
-            <video ref={ref}
+            <video ref={videoRef}
                 controls={false}
                 playsInline={true}
-                className="w-full h-full object-contain"
+                className="h-full bject-contain"
                 loop={true}
                 src={src}
                 poster={poster}
@@ -61,4 +68,8 @@ export default function VideoPlayer({ className, src, poster }
                 onPlay={() => setIsPlaying(true)} />
         </div>
     );
-}
+});
+
+VideoPlayer.displayName = "VideoPlayer";
+
+export default VideoPlayer;

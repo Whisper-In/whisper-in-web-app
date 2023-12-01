@@ -4,7 +4,7 @@ import Header from "@/app/_components/header.component";
 import VideoPlayer from "@/app/_components/post.component/video-player.component";
 import { PostType } from "@/dtos/content/post.dtos";
 import { Check, ChevronRight, Clear, Delete, Save } from "@mui/icons-material";
-import { Box, Button, Drawer, TextField, Typography } from "@mui/material";
+import { Box, Button, Drawer, Paper, Stack, TextField, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 
 export default function PostEditor({ src, type, onCancel, onSave }
@@ -15,92 +15,65 @@ export default function PostEditor({ src, type, onCancel, onSave }
         onSave?: (description?: string) => void
     }) {
     const [description, setDescription] = useState<string | undefined>();
-    const [openDrawer, setOpenDrawer] = useState(false);
+    const videoPlayerRef = useRef<HTMLVideoElement>(null);
 
     const DESCRIPTION_MAX_SIZE = 250;
 
-    const handleSave = () => {
+    const handleSave = () => {        
         if (onSave) {
+            videoPlayerRef.current?.pause();
             onSave(description);
         }
     }
 
     return (
-        <>
-            <Box sx={{
-                width: "100%",
-                height: "100%",
-                position: "relative"
-            }}>
-                <Box sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    width: "100%",
-                    position: "absolute",
-                    padding: 2,
-                    top: 26,
-                    zIndex: 1
-                }}>
-                    <Button sx={{ color: "white" }}
-                        onClick={onCancel}>
-                        <Clear fontSize="large" />
-                    </Button>
-
-                    <Button sx={{ color: "white" }}
-                        onClick={() => setOpenDrawer(true)}>
-                        <Check fontSize="large" />
-                    </Button>
-                </Box>
+        <Stack alignItems="center" width="100%" height="100%">
+            <Box flexGrow={1} overflow="hidden">
                 {
                     type == PostType.PHOTO ?
-                        <img className="w-full h-full object-cover"
+                        <img className="w-full h-full object-contain"
                             src={src} />
-                        :
-                        <VideoPlayer className="w-full h-full" src={src} />
+                        :                        
+                        <VideoPlayer ref={videoPlayerRef} className="w-full h-full" src={src} />
                 }
-
-                <div className="absolute w-full bottom-0 left-0 h-[200px] bg-gradient-to-t from-black/80 to-black/0s"></div>
             </Box>
 
-            <Drawer open={openDrawer}
-                title="Description"
-                anchor="bottom"
-                onClose={() => setOpenDrawer(false)}>
+            <Paper component={Stack}
+                width="100%"
+                spacing={2}
+                px={1} py={2}>
+                <Typography fontWeight={700}>
+                    Add a Description (Optional)
+                </Typography>
+
+                <TextField sx={{ width: "100%" }}
+                    variant="standard"
+                    inputProps={{
+                        maxLength: DESCRIPTION_MAX_SIZE
+                    }}
+                    maxRows={10}
+                    onChange={(e) => setDescription(e.currentTarget.value)}
+                    multiline={true} />
+
                 <Box sx={{
-                    padding: 2
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end"
                 }}>
-                    <Box sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                    }}>
-                        <Typography fontWeight={700}>
-                            Add a Description (Optional)
-                        </Typography>
-
-                        <Button onClick={handleSave}>
-                            Done
-                        </Button>
-                    </Box>
-
-                    <TextField sx={{ width: "100%" }}
-                        variant="standard"
-                        inputProps={{
-                            maxLength: DESCRIPTION_MAX_SIZE
-                        }}
-                        maxRows={10}
-                        onChange={(e) => setDescription(e.currentTarget.value)}
-                        multiline={true} />
-
-                    <Box sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "flex-end"
-                    }}>
-                        {description?.length ?? 0}/{DESCRIPTION_MAX_SIZE}
-                    </Box>
+                    {description?.length ?? 0}/{DESCRIPTION_MAX_SIZE}
                 </Box>
-            </Drawer>
-        </>
+
+                <Stack direction="row" justifyContent="right" spacing={2}>
+                    <Button sx={{ color: "white" }}
+                        onClick={onCancel}>
+                        Cancel
+                    </Button>
+
+                    <Button onClick={handleSave}>
+                        Done
+                    </Button>
+                </Stack>
+            </Paper>
+        </Stack>
     );
 }
