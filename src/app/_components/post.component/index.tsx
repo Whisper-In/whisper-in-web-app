@@ -29,11 +29,9 @@ export default function Post({
     const { data: post, isLoading, mutate: updatePost } = useGetPostDetails(postId);
 
     const likePromptRef = useRef<LikePromptType>(null);
-    const [clickCount, setClickCount] = useState(0);
-    const [showLike, setShowLike] = useState(false);
+    const [clickCount, setClickCount] = useState(0);    
     const { setShowShareModal } = useShareModal();
-    const router = useRouter();
-    const me = useAppSelector((state) => state.user.me);
+    const router = useRouter();    
     const { showSpinner } = useSpinner();
     const { promptAlert } = useAlertPrompt();
 
@@ -167,7 +165,7 @@ export default function Post({
             </div>
 
             {
-                me?._id == post.creator._id &&
+                post.isCreator &&
                 <button className="absolute top-5 pt-sat right-5" onClick={onDelete}>
                     <Delete fontSize="large" />
                 </button>

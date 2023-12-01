@@ -96,7 +96,7 @@ export const fetchChatCompletion = createAsyncThunk<
             props.contactId,
             chatGPTResult.message,
             props.chatId,
-            chatGPTResult._id
+            chatGPTResult.messageId
           );
         } catch (error) {
           //ignore the error here
@@ -107,7 +107,7 @@ export const fetchChatCompletion = createAsyncThunk<
         chatId: props.chatId,
         sender: props.contactId,
         message: chatGPTResult.message,
-        messageId: chatGPTResult._id,
+        messageId: chatGPTResult.messageId,
         isAudio: chatGPTResult.isAudio,
         createdAt: chatGPTResult.createdAt,
         updatedAt: chatGPTResult.updatedAt

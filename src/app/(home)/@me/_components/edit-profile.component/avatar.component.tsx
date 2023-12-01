@@ -2,17 +2,15 @@ import { UserProfile } from "@/store/types/user.types";
 import { Avatar, Box, Button } from "@mui/material";
 import { useRef } from "react";
 import { useSpinner } from "@/app/_components/spinner.component";
-import { useAppDispatch } from "@/store/hooks";
-import { updateUserAvatar } from "@/store/thunks/user.thunks";
 import { useAlertPrompt } from "@/app/_components/alert-prompt.component";
-import { setUser } from "@/store/slices/user.slice";
+import { IUserProfileDto } from "@/dtos/user/user.dtos";
+import { updateUserAvatar } from "@/store/services/user/user.service";
 
-export default function EditAvatar({ me }: { me: UserProfile }) {
+export default function EditAvatar({ me, onChange }: { me?: IUserProfileDto, onChange?: () => void }) {
     const avatarInputRef = useRef<HTMLInputElement>(null);
     const avatarRef = useRef<HTMLDivElement>(null);
     const { showSpinner } = useSpinner();
     const { promptAlert } = useAlertPrompt();
-    const dispatch = useAppDispatch();
 
     const handleChangeAvatar = () => {
         if (avatarInputRef.current) {
@@ -25,8 +23,13 @@ export default function EditAvatar({ me }: { me: UserProfile }) {
             const avatar = e.currentTarget.files.item(0);
 
             showSpinner(true);
-            
-            dispatch(updateUserAvatar(avatar!))
+
+            updateUserAvatar(avatar!)
+                .then(() => {
+                    if (onChange) {
+                        onChange();
+                    }
+                })
                 .catch((error) => {
                     promptAlert({
                         title: "Update Avatar Failed",
@@ -49,7 +52,7 @@ export default function EditAvatar({ me }: { me: UserProfile }) {
             gap: 2,
             marginBottom: 2
         }}>
-            <Avatar          
+            <Avatar
                 sx={{ width: 96, height: 96 }}
                 src={me?.avatar} />
 

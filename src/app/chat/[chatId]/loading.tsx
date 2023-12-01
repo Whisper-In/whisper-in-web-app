@@ -8,12 +8,10 @@ export default function Loading() {
     return (
         <main className="h-full w-full flex flex-col">
             <Header>
-                <div className="flex gap-5 items-center">
-                    <div className="flex grow items-center gap-5">
-                        <BackButton />
-                        <Skeleton variant="circular" width={40} height={40} />
-                        <Skeleton variant="text" width={100} />
-                    </div>
+                <div className="flex grow items-center gap-5">
+                    <BackButton relative />
+                    <Skeleton variant="circular" width={40} height={40} />
+                    <Skeleton variant="text" width={100} />
                 </div>
             </Header>
 

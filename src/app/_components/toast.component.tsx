@@ -1,6 +1,7 @@
 "use client"
 
-import { Alert, AlertProps, Box, Drawer } from "@mui/material";
+import { Close } from "@mui/icons-material";
+import { Alert, AlertProps, Box, Drawer, IconButton, Snackbar, duration } from "@mui/material";
 import { PropsWithChildren, createContext, useEffect, useState, useContext } from "react";
 
 export enum ToastDuration {
@@ -11,8 +12,8 @@ const LONG_DURATION = 3000;
 const SHORT_DURATION = 1000;
 
 export type ToastProps = {
-    message: string,
-    duration: ToastDuration
+    message: string | React.ReactNode,
+    duration?: ToastDuration
 } & AlertProps
 
 const ToastContext = createContext<{ showToast: (props: ToastProps) => void }>({
@@ -33,7 +34,7 @@ export function ToastProvider({ children }: PropsWithChildren) {
     }
 
     useEffect(() => {
-        if (open) {
+        if (open && props?.duration) {
             clearTimeout(timeout);
 
             const duration = props?.duration == ToastDuration.LONG ? LONG_DURATION : SHORT_DURATION;
@@ -46,7 +47,7 @@ export function ToastProvider({ children }: PropsWithChildren) {
 
     return (
         <ToastContext.Provider value={{ showToast }}>
-            <Toast open={open} {...props}>
+            <Toast open={open} onClose={!props?.duration ? () => setOpen(false) : undefined} {...props}>
                 {props?.message}
             </Toast>
 
@@ -55,21 +56,17 @@ export function ToastProvider({ children }: PropsWithChildren) {
     )
 }
 
-export default function Toast({ children, open, ...props }
-    : { open: boolean } & AlertProps & PropsWithChildren) {
+export default function Toast({ children, open, onClose, ...props }
+    : { open: boolean, } & AlertProps & PropsWithChildren) {
     return (
-        <Drawer
-            PaperProps={{
-                sx: {
-                    m: 1,
-                    backgroundColor: "transparent"
-                }
-            }}
-            open={open}
-            anchor="bottom">
-            <Alert severity="info" {...props}>
+        <Snackbar open={open}>
+            <Alert severity="info" action={onClose ?
+                <IconButton onClick={onClose}>
+                    <Close fontSize="small" />
+                </IconButton> : undefined
+            } {...props}>
                 {children}
             </Alert>
-        </Drawer>
+        </Snackbar>
     )
 }

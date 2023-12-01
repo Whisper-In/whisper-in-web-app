@@ -3,27 +3,27 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText, Switch, SxProps, Theme, Typography, useTheme } from "@mui/material";
 import { ProfileItemType } from "./profile-list-items";
-import { UserProfile } from "@/store/types/user.types";
 import { useRef } from "react";
 import EditProfileDrawer, { EditProfileDrawerElement } from "./edit-profile-drawer.component";
 import { ToastDuration, useToast } from "@/app/_components/toast.component";
-import { useAppDispatch } from "@/store/hooks";
-import { updateUserProfile } from "@/store/thunks/user.thunks";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { IUserProfileDto } from "@/dtos/user/user.dtos";
+import { updateUserProfile } from "@/store/services/user/user.service";
 
 export default function EditProfileInfo({
     me,
     profileListItems,
-    subscriptionListItems
+    subscriptionListItems,
+    onChange
 }: {
-    me: UserProfile,
+    me?: IUserProfileDto,
     profileListItems: ProfileItemType[],
-    subscriptionListItems: ProfileItemType[]
+    subscriptionListItems: ProfileItemType[],
+    onChange?: () => void
 }) {
     const editProfileDrawerRef = useRef<EditProfileDrawerElement>(null);
     const theme = useTheme();
     const { showToast } = useToast();
-    const dispatch = useAppDispatch();
     const isSubscriptionOn = Boolean(me?.isSubscriptionOn);
 
     const listItemTextSX: SxProps<Theme> = {
@@ -50,13 +50,17 @@ export default function EditProfileInfo({
         editProfileDrawerRef.current?.open({
             ...item,
             title: item.label,
-            onSave: item.onSave
+            onSave: item.onSave,
+            onChange: onChange
         });
     }
 
     const onSubscriptionChange = () => {
         const newMe = { ...me!, isSubscriptionOn: !me?.isSubscriptionOn };
-        dispatch(updateUserProfile(newMe));
+        updateUserProfile(newMe).then(() => {
+            if (onChange)
+                onChange()
+        });
     }
 
     return (
@@ -84,7 +88,7 @@ export default function EditProfileInfo({
                 <Divider />
                 {/* Subscriptions */}
                 <ListItemButton onClick={onSubscriptionChange}>
-                    <ListItemText primary="Enable Subscriptions" />
+                    <ListItemText primary="Enable Auto-Reply" />
                     <ListItemIcon>
                         <Switch checked={isSubscriptionOn} />
                     </ListItemIcon>

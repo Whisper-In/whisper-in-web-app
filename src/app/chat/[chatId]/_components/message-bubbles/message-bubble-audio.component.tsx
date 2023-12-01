@@ -12,6 +12,7 @@ import { ChatMessage } from "@/store/states/chats.states";
 import { getTextToSpeechStoreInIDB } from "@/store/services/chat/eleven-labs.service";
 import { setCurrentPlayingAudio } from "@/store/slices/app.slice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { IUserChatMessageDto } from "@/dtos/chats/chats.dtos";
 
 const WAVEFORM_BARS = 65;
 const WAVEFORM_WIDTH = 200;
@@ -21,7 +22,7 @@ const WAVEFORM_AMPLIFICATION = 2;
 const MAX_PROGRESS = 100;
 
 export function MessageBubbleAudio({ className, message, chatId, isUser }
-    : { className?: string, message: ChatMessage, chatId: string, isUser?: boolean }) {
+    : { className?: string, message: IUserChatMessageDto, chatId: string, isUser?: boolean }) {
     const theme = useTheme();
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -38,7 +39,7 @@ export function MessageBubbleAudio({ className, message, chatId, isUser }
 
     const messageTime = convertToMessageTime(message.updatedAt!);
 
-    const audio = useLiveQuery(async () =>
+    const audio = useLiveQuery(async () =>    
         await idb.audios
             .where(['chatId', 'messageId'])
             .equals([chatId, message.messageId!])
@@ -118,30 +119,6 @@ export function MessageBubbleAudio({ className, message, chatId, isUser }
         context.fillRect(0, 0, WAVEFORM_WIDTH * progress, WAVEFORM_HEIGHT);
     }
 
-    useEffect(() => {
-        if (audio) {
-            const blob = new Blob([audio.arrayBuffer!], { type: "audio/mpeg" });
-            const url = URL.createObjectURL(blob);
-
-            setAudioURL(url);
-
-            getWaveformChannelData(audio.arrayBuffer);
-        }
-    }, [audio]);
-
-    useEffect(() => {
-        if (audioContext && canvasRef.current) {
-            drawWaveform();
-        }
-    }, [channelData]);
-
-    useEffect(() => {
-        if(currentPlayingAudio != `${chatId}|${message.messageId}`) {
-            stopAudio();
-        }
-    },[currentPlayingAudio]);
-
-
     const toggleAudio = async () => {
         if (!audio) {
             setLoadingAudio(true);
@@ -214,6 +191,34 @@ export function MessageBubbleAudio({ className, message, chatId, isUser }
 
         setAudioTime(time / 60);
     }
+
+    useEffect(() => {
+        console.log("message:", message, chatId)
+    }, [message]);
+
+    useEffect(() => {
+        if (audio) {
+            const blob = new Blob([audio.arrayBuffer!], { type: "audio/mpeg" });
+            const url = URL.createObjectURL(blob);
+
+            setAudioURL(url);
+
+            getWaveformChannelData(audio.arrayBuffer);
+        }
+    }, [audio]);
+
+    useEffect(() => {
+        if (audioContext && canvasRef.current) {
+            drawWaveform();
+        }
+    }, [channelData]);
+
+    useEffect(() => {
+        if(currentPlayingAudio != `${chatId}|${message.messageId}`) {
+            stopAudio();
+        }
+    },[currentPlayingAudio]);
+
 
     return (
         <MessageBubbleWrapper className={classNames(

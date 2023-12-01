@@ -22,6 +22,7 @@ export interface IUserProfileDto {
   totalLikeCount?: number;
   priceTiers?: IPriceTierDto[];
   aiDescription?: string;
+  isSubscriptionOn?: boolean;
 }
 
 export interface IPriceTierDto {

@@ -24,12 +24,15 @@ export const useGetRecommendedPosts = (size: number, showFollowingOnly?: boolean
         });
 }
 
-export const useGetPosts = (profileId: string, postType: string, itemsPerLoad: number) => {
+export const useGetPosts = (profileId: string | undefined, postType: string, itemsPerLoad: number) => {
     const params = new URLSearchParams({
-        profileId,
         postType,
         itemsPerLoad: itemsPerLoad.toString()
     });
+
+    if (profileId) {
+        params.append("profileId", profileId);
+    }
 
     return useSWRInfinite<IPostDto[]>(
         (pageIndex, previousData) => getKey(route, pageIndex, previousData, params),

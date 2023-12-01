@@ -4,7 +4,6 @@ import { CircularProgress, Drawer } from "@mui/material";
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { ICreatePaymentSheetDto } from "@/dtos/payment/payment.dtos";
 import * as userClientService from "@/store/services/user/user.service";
-import { useAppSelector } from "@/store/hooks";
 import { IProfileDto } from "@/dtos/profile/profile.dtos";
 import { useState } from "react";
 
@@ -25,17 +24,11 @@ export default function PaymentForm({
     onPaymentFailed?: (error: string) => void,
     onPaymentEnded?: () => void
 }) {
-    const me = useAppSelector((state) => state.user.me)!;
     const stripe = useStripe();
     const elements = useElements();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const priceTier = profile.priceTiers?.length ? profile.priceTiers[0] : undefined;
-
-    if (!me) {
-        return null;
-    }
-
 
     const initializePaymentSheetResult = async () => {
         try {

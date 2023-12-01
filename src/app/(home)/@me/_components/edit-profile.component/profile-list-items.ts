@@ -131,7 +131,7 @@ export const GetSubscriptionListItems = ({ me, minSubscriptionFee, dispatch }
             validations: [{
                 pattern: /acct_[\w\d_]+/gi,
                 customErrors: {
-                    pattern: "Add a valid Stripe account id."
+                    pattern: "Add a valid Stripe account id to receive subscription payments. Eg. acct_xxxxx"
                 }
             }],
             value: me?.stripeConnectedAccountId,
@@ -146,36 +146,36 @@ export const GetSubscriptionListItems = ({ me, minSubscriptionFee, dispatch }
                 maxLength: 250
             }],
             value: me?.aiDescription,
-            placeholder: "How do you want the AI to represent you?",
+            placeholder: "Describe your AI personality",
             onSave: (value) => dispatch(updateUserProfile({ ...me!, aiDescription: value }))
         },
-        {
-            label: "Audio",
-            variant: "audio",
-            hideValue: true,
-            value: me?.voiceSampleURL,
-            placeholder: !me?.voiceSampleURL ? "Upload 5 minutes of your voice sample" : "Update your voice sample",
-            validations: [{
-                min: 60 * 5,
-                max: 60 * 20,
-                customErrors: {
-                    min: "Audio sample has to be at least 5 minutes long.",
-                    max: "Audio sample cannnot be more than 20 minutes long."
-                }
-            }],
-            onSave: async (value) => {
-                try {
-                    let file: File | undefined;
-                    if (value) {
-                        const blob = await fetch(value).then(result => result.blob());
-                        file = new File([blob], "voice-sample");
-                    }
+        // {
+        //     label: "Audio",
+        //     variant: "audio",
+        //     hideValue: true,
+        //     value: me?.voiceSampleURL,
+        //     placeholder: !me?.voiceSampleURL ? "Upload 5 minutes of your voice sample" : "Update your voice sample",
+        //     validations: [{
+        //         min: 60 * 5,
+        //         max: 60 * 20,
+        //         customErrors: {
+        //             min: "Audio sample has to be at least 5 minutes long.",
+        //             max: "Audio sample cannnot be more than 20 minutes long."
+        //         }
+        //     }],
+        //     onSave: async (value) => {
+        //         try {
+        //             let file: File | undefined;
+        //             if (value) {
+        //                 const blob = await fetch(value).then(result => result.blob());
+        //                 file = new File([blob], "voice-sample");
+        //             }
 
-                    //Send to update voice api
-                    await dispatch(updateUserVoice(file));
-                } catch (error) {
-                    throw error;
-                }
-            }
-        }
+        //             //Send to update voice api
+        //             await dispatch(updateUserVoice(file));
+        //         } catch (error) {
+        //             throw error;
+        //         }
+        //     }
+        // }
     ]

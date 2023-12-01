@@ -8,25 +8,28 @@ import Link from "next/link";
 
 export default function ChatListItem({ chat }
     : { chat: IUserChatDto }) {
-    const me = useAppSelector((state) => state.user.me)!;
     const profile = chat.profile;
 
     const lastMessage = chat.lastMessage?.message;
     const messageDateTime = chat.lastMessage?.createdAt;
 
     return (
-        <ListItem disablePadding={true} suppressHydrationWarning={true}>
+        <ListItem disablePadding={true}
+            suppressHydrationWarning={true}>
             <ListItemButton sx={{
                 display: "flex",
-                alignItems: "stretch",
-                padding: 2,
+                cursor: "pointer",
+                alignItems: "center",
+                my: 1,
+                px: 2,
+                py: 0,
                 gap: 2
             }}>
                 <Link href={`/profile/${profile?._id}`}>
                     <Avatar src={profile?.avatar} sx={{ width: 50, height: 50 }} />
                 </Link>
 
-                <Link href={`/chat/${chat.chatId}`} className="grow">
+                <Link href={`/chat/${chat.chatId}`} className="grow py-4" >
                     <div className="flex items-center">
                         <label className="grow font-bold text-lg">{profile?.name}</label>
                         <label className="text-sm">{convertToMessageDate(messageDateTime)}</label>

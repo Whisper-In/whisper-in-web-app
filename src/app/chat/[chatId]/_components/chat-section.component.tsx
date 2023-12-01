@@ -14,17 +14,19 @@ import Link from "next/link";
 import { useGetChatDetail, useGetChatMessages } from "@/store/hooks/chat.hooks";
 import { setChatAudioReply } from "@/store/services/chat/chat.service";
 import * as chatService from "@/store/services/chat/chat.service";
+import { ToastDuration, useToast } from "@/app/_components/toast.component";
 
 const REPLY_MINDELAY = 1000;
-const REPLY_MAXDELAY = 10000;
+const REPLY_MAXDELAY = 5000;
 
 export default function ChatSection({ chatId }: { chatId: string }) {
     const { data: chat, isLoading: isChatLoading, mutate: updateChat } = useGetChatDetail(chatId);
+    const { showToast } = useToast();
 
     const messageCount = 50;
     const { data, isLoading: isMessagesLoading, mutate: updateChatMessages, size, setSize, } = useGetChatMessages(chatId, messageCount);
 
-    const hasAudioFeature = chat?.features.includes("AUDIO");
+    const hasAudioFeature = chat?.features?.includes("AUDIO");
     const profile = chat?.profile
 
     const [isReplying, setIsReplying] = useState(false);
@@ -77,6 +79,18 @@ export default function ChatSection({ chatId }: { chatId: string }) {
         }
     }
 
+    useEffect(() => {
+        if (!isChatLoading) {
+            if (!chat?.profile.isSubscriptionOn) {
+                showToast({
+                    message: `${chat?.profile.name} does not have auto-reply turned on.`,                    
+                    severity: "info",
+                    duration: ToastDuration.LONG
+                })
+            }
+        }
+    }, [isChatLoading])
+
     return (
         <>
             <Header>
@@ -108,7 +122,6 @@ export default function ChatSection({ chatId }: { chatId: string }) {
                 isLoading={isMessagesLoading} />
 
             <ChatInputBar onSend={onSend} />
-
         </>
     )
 }

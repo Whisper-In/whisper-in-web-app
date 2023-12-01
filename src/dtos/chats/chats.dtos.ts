@@ -22,7 +22,7 @@ export interface IUserChatDto {
 }
 
 export interface IUserChatMessageDto {
-    _id: string;
+    messageId: string;
     chatId: string;
     message: string;
     sender: string;

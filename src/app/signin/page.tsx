@@ -4,7 +4,7 @@ import Image from "next/image"
 import GoogleSignInButton from "./_components/google-signin-button.component"
 import AppleSignInButton from "./_components/apple-signIn-button.component copy"
 import * as authClientService from "@/store/services/auth/auth.service"
-import { Alert } from "@mui/material"
+import { Alert, Link } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { setUser } from "@/store/slices/user.slice"
 import { useEffect } from "react"
@@ -23,30 +23,34 @@ export default function SignIn() {
 
     const login = async (loginUrl: string) => {
         showSpinner(true);
-        authClientService.login(loginUrl).then(({ user }) => {
-            dispatch(fetchUserProfile());
-        }).catch((error) => {
-            console.log("Sign In Error:", error)
-            authClientService.logout(dispatch);
-
-            promptAlert({
-                title: "Login Failed",
-                message: "Opps, login failed. Please try again."
-            });
-        }).finally(() => {
-            showSpinner(false);
-        });
-    }
-
-    useEffect(() => {
-        if (me) {
+        authClientService.login(loginUrl).finally(() => {
             const cookie = convertClientCookieToObject(document.cookie);
 
             if (cookie["token"] != null) {
-                router.refresh();
+                router.replace("/");
+
+                promptAlert({
+                    title: "DISCLAIMER",
+                    message: (
+                        <div>
+                            <p>This app is for demonstration purposes only. The content in this app was obtained from <Link href="https://www.kaggle.com/datasets/thecoderenroute/instagram-posts-dataset" target="_blank">Kaggle.com</Link>.
+                            </p>
+                            <p>All rights are reserved to the respective owners of the content.</p>
+                        </div>
+                    )
+                })
+            } else {
+                authClientService.logout(dispatch);
+
+                promptAlert({
+                    title: "Login Failed",
+                    message: "Opps, login failed. Please try again."
+                });
             }
-        }
-    }, [me])
+
+            showSpinner(false);
+        });
+    }
 
     return (
         <main className="flex flex-col items-center w-full h-full gap-5 py-48">
@@ -57,7 +61,7 @@ export default function SignIn() {
             <div className="flex flex-col gap-5">
                 <GoogleSignInButton onClick={() => login("/google/login")} />
 
-                <AppleSignInButton onClick={() => login("/apple/login")} />
+                {/* <AppleSignInButton onClick={() => login("/apple/login")} /> */}
             </div>
         </main>
     )

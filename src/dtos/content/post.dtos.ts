@@ -16,6 +16,7 @@ export interface IPostDto {
     postType: string;
     description: string;
     creator: ICreatorProfileDto;
+    isCreator?: boolean;
     creatorModel: string;
     likeCount: number;
     isLiked?: boolean;

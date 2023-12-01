@@ -2,7 +2,6 @@ import { ICreatePaymentSheetDto } from "@/dtos/payment/payment.dtos";
 import { IUserProfileDto } from "@/dtos/user/user.dtos";
 import axios from "axios";
 
-
 const route = "/api/user";
 
 export async function createUserSubscription(profileId: string, tier?: number, subscriptionId?: string) {

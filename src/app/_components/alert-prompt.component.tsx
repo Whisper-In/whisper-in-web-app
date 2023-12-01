@@ -5,7 +5,7 @@ import { PropsWithChildren, createContext, useContext, useState } from "react";
 
 export type AlertPromptType = {
     title?: string,
-    message: string,
+    message: string | React.ReactNode, 
     showOk?: boolean,
     okText?: string,
     onOk?: () => void

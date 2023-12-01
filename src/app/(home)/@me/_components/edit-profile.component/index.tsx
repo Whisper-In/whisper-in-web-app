@@ -4,7 +4,7 @@ import Header from "@/app/_components/header.component";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, Drawer } from "@mui/material";
+import { Box, Container, Drawer } from "@mui/material";
 import { useEffect, useState } from "react";
 import { GetProfileListItems, GetSubscriptionListItems } from "./profile-list-items";
 import { fetchUserProfile } from "@/store/thunks/user.thunks";
@@ -13,13 +13,17 @@ import { Validator } from "@/utils/form.util";
 import EditAvatar from "./avatar.component";
 import EditProfileInfo from "./profile-info.component";
 import * as configClientService from "@/store/services/business/config.service";
-
+import { useGetUserProfile } from "@/store/hooks/user.hooks";
+import { useGetMinSubscriptionFee } from "@/store/hooks/business.hooks";
 
 export default function EditProfile({ open, handleClose }
     : { open: boolean, handleClose?: () => void }) {
     const { promptAlert } = useAlertPrompt();
-    const [minSubscriptionFee, setMinSubscriptionFee] = useState(0);
-    const me = useAppSelector((state) => state.user.me)!;
+
+    const {data: minSubscriptionFee} = useGetMinSubscriptionFee();
+
+    const { data: me, mutate: updateUserProfile } = useGetUserProfile();
+
     const dispatch = useAppDispatch();
 
     const profileListItems = GetProfileListItems({ me, dispatch });
@@ -30,7 +34,7 @@ export default function EditProfile({ open, handleClose }
             for (let item of subscriptionListItems) {
                 if (item.variant == "audio" || !item.value?.length && !item.required) {
                     continue;
-                } 
+                }
 
                 const error = Validator(item.value, item.validations);
 
@@ -60,48 +64,38 @@ export default function EditProfile({ open, handleClose }
 
     useEffect(() => {
         if (open) {
-            dispatch(fetchUserProfile());
+            updateUserProfile();
         } else {
 
         }
     }, [open]);
 
-    useEffect(() => {
-        configClientService.getMinSubscriptionFee().then((result) => {
-            setMinSubscriptionFee(Number.parseFloat(result.configValue));
-        }).catch((error) => {
-            console.log("Failed to retrieve minimum subscription fee.");
-        });
-    }, [])
-
     return (
-        <>
-            <Drawer variant="persistent"
-                hideBackdrop={true}
-                open={open}
-                onClose={_handleClose}
-                anchor="right">
-                <Header title="Edit Profile"
-                    leftComponent={
-                        <button onClick={_handleClose}>
-                            <FontAwesomeIcon icon={faClose} fontSize={25} />
-                        </button>
-                    }
-                />
+        <Drawer
+            variant="persistent"
+            hideBackdrop={true}
+            open={open}
+            onClose={_handleClose}
+            anchor="right">
+            <Header title="Edit Profile"
+                leftComponent={
+                    <button onClick={_handleClose}>
+                        <FontAwesomeIcon icon={faClose} fontSize={25} />
+                    </button>
+                }
+            />
 
-                <Box sx={{
-                    width: "100vw",
-                    height: "100%",
-                    overflowY: "auto",
-                    paddingY: 5
-                }}>
-                    <EditAvatar me={me} />
+            <Container sx={{
+                overflowY: "auto",
+                paddingY: 5
+            }}>
+                <EditAvatar me={me} onChange={updateUserProfile} />
 
-                    <EditProfileInfo me={me}
-                        profileListItems={profileListItems}
-                        subscriptionListItems={subscriptionListItems} />
-                </Box>
-            </Drawer>
-        </>
+                <EditProfileInfo me={me}
+                    profileListItems={profileListItems}
+                    subscriptionListItems={subscriptionListItems}
+                    onChange={updateUserProfile} />
+            </Container>
+        </Drawer>
     )
 }

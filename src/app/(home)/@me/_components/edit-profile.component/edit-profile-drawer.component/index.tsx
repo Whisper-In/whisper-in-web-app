@@ -64,6 +64,10 @@ const EditProfileDrawer = forwardRef<EditProfileDrawerElement>((props: DrawerPro
                 await drawerState.onSave(drawerState.value);
             }
 
+            if (drawerState.onChange) {
+                drawerState.onChange();
+            }
+
             handleClose();
         } catch (error) {
             promptAlert({
@@ -99,24 +103,24 @@ const EditProfileDrawer = forwardRef<EditProfileDrawerElement>((props: DrawerPro
             onClose={handleClose}
             {...props}>
 
-            <Header title={drawerState.title}
-                titleAlignment="center"
-                leftComponent={
-                    <Button color="primary"
-                        onClick={handleClose}>
-                        Cancel
-                    </Button>
-                }
-                rightComponent={
-                    <Button color="error"
-                        disabled={error != undefined || isShowingSpinner}
-                        onClick={handleSave}>
-                        Save
-                    </Button>
-                }
-            />
+            <Box sx={{ width: "100%" }}>
+                <Header title={drawerState.title}
+                    titleAlignment="center"
+                    leftComponent={
+                        <Button color="primary"
+                            onClick={handleClose}>
+                            Cancel
+                        </Button>
+                    }
+                    rightComponent={
+                        <Button color="error"
+                            disabled={error != undefined || isShowingSpinner}
+                            onClick={handleSave}>
+                            Save
+                        </Button>
+                    }
+                />
 
-            <Box sx={{ width: "100vw" }}>
                 {
                     drawerState.open &&
                     (

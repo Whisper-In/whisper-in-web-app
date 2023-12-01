@@ -3,7 +3,6 @@
 import { PostType } from "@/dtos/content/post.dtos"
 import { Tab, Tabs } from "@mui/material"
 import { SyntheticEvent, useEffect, useState } from "react"
-import * as postService from "@/store/services/content/post.service"
 import classNames from "classnames"
 import PostList from "./post-list.component"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -19,14 +18,14 @@ export default function PostTabs({ className, profileId }
         size: photoPostsSize,
         setSize: setPhotoPostsSize,
         isLoading: isPhotoPostsLoading
-    } = useGetPosts(profileId!, PostType[PostType.PHOTO], postsPerLoad);
+    } = useGetPosts(profileId, PostType[PostType.PHOTO], postsPerLoad);
 
     const {
         data: videoPosts,
         size: videoPostsSize,
         setSize: setVideoPostsSize,
         isLoading: isVideoPostsLoading
-    } = useGetPosts(profileId!, PostType[PostType.VIDEO], postsPerLoad);
+    } = useGetPosts(profileId, PostType[PostType.VIDEO], postsPerLoad);
 
     const onTabChange = (event: SyntheticEvent<Element, Event>, value: PostType) => {
         setTab(value);

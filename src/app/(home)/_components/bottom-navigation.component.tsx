@@ -5,7 +5,8 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { BottomNavigation as MatBottomNavigation, BottomNavigationAction, Paper, useTheme, ThemeProvider, CssBaseline, ScopedCssBaseline } from "@mui/material";
 import classNames from "classnames";
-import { PropsWithChildren, useState } from "react";
+import { useRouter } from "next/navigation";
+import { PropsWithChildren, useEffect, useState } from "react";
 
 export function TabScreen({ children, hidden }: PropsWithChildren & { hidden?: boolean }) {
     return (
@@ -30,14 +31,29 @@ export type Tab = {
 }
 
 export default function BottomNavigation({ tabs }: { tabs: Tab[] }) {
-    const [tab, setTab] = useState(tabs[0]);
+    const [tab, setTab] = useState<Tab | undefined>(undefined);
+    const router = useRouter();
 
     const currentTheme = useTheme();
     const tabTheme = tab?.darkTheme ? darkTheme : currentTheme;
 
     const onTabChange = (event: React.SyntheticEvent, newValue: Tab) => {
         setTab(newValue);
+        router.push(`#${newValue.tabValue}`);
     }
+
+    useEffect(() => {
+        const hash = location.hash.replace("#", "");
+        if (hash != tab?.tabValue) {
+            const newTab = tabs.find((t) => t.tabValue == hash);
+
+            if (newTab) {
+                setTab(newTab);
+            } else {
+                setTab(tabs[0]);
+            }
+        }
+    }, []);    
 
     return (
         <ThemeProvider theme={tabTheme}>
@@ -45,9 +61,9 @@ export default function BottomNavigation({ tabs }: { tabs: Tab[] }) {
                 <div className="h-full overflow-hidden">
                     {
                         tabs.map((t, index) => {
-                            if (!t.destroyOnHide || tab.tabValue == t.tabValue) {
+                            if (!t.destroyOnHide || tab?.tabValue == t.tabValue) {
                                 return (
-                                    <TabScreen key={index} hidden={tab.tabValue != t.tabValue}>
+                                    <TabScreen key={index} hidden={tab?.tabValue != t.tabValue}>
                                         {t.screen}
                                     </TabScreen>
                                 )

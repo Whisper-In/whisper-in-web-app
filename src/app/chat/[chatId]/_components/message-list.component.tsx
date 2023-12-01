@@ -76,7 +76,7 @@ export default function MessageList({
                                 message={message} isUser={message.isSender} />
 
                             if (message.isAudio && message.isSender) {
-                                messageBubble = <MessageBubbleAudio chatId={message.chatId}
+                                messageBubble = <MessageBubbleAudio chatId={chatId}
                                     message={message} isUser={message.isSender} />
                             }
 

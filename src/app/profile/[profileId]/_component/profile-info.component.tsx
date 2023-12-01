@@ -26,7 +26,6 @@ const stripePromise = loadStripe(
 export default function ProfileInfo({ profileId }
     : { profileId: string }) {
     const { data: profile, isLoading, mutate: updateProfile } = useGetProfile(profileId);
-    const me = useAppSelector((state) => state.user.me)!;
 
     const [isPaymentFormOpen, setIsPaymentFormOpen] = useState(false);
     const { isShowingSpinner, showSpinner } = useSpinner();
@@ -234,7 +233,7 @@ export default function ProfileInfo({ profileId }
                         onClick={onFollowClick} />
 
                     {
-                        me?._id != profile?.id && profile?.isSubscriptionOn &&
+                        !profile?.isMe && profile?.isSubscriptionOn &&
                         <SubscribeButton fullWidth disabled={isShowingSpinner} profile={profile} onClick={onSubscribeClick} />
                     }
 

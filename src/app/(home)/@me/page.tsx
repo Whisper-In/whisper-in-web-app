@@ -1,10 +1,7 @@
 import SettingsMenu from "./_components/settings-menu.component";
 import dynamic from "next/dynamic";
 import MyPostTabs from "./_components/post-tabs.component";
-
-const MyProfileInfo = dynamic(
-    () => import("./_components/profile-info.component"),
-    { ssr: false })
+import MyProfileInfo from "./_components/profile-info.component";
 
 export default async function Me() {
     return (
