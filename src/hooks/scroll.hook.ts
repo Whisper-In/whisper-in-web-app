@@ -6,7 +6,7 @@ export function useScrollVertical() {
     const [scrollDirection, setScrollDirection] = useState<"UP" | "DOWN" | undefined>(undefined);
 
     useEffect(() => {
-        if (document.body) {
+        if (document?.body) {
             document.body.addEventListener("wheel", (e) => {
                 if (e.deltaY > 0) {
                     setScrollDirection("DOWN");
