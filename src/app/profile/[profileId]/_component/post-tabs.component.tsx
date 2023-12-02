@@ -39,7 +39,7 @@ export default function PostTabs({ className, profileId }
     useEffect(() => {
         showSpinner(isPhotoPostsLoading || isVideoPostsLoading);
 
-        const onScrollEnd = () => {            
+        const onScrollEnd = () => {
             if (tab == PostType.PHOTO) {
                 if (!isPhotoPostsLoading) {
                     setPhotoPostsSize(photoPostsSize + 1);
@@ -74,21 +74,13 @@ export default function PostTabs({ className, profileId }
                 <Tab icon={<FontAwesomeIcon icon={faVideo} fontSize={20} />} value={PostType.VIDEO} />
             </Tabs>
 
-            <PostList className={classNames(
-                "grow",
-                {
-                    "hidden": tab != PostType.PHOTO
-                }
-            )} posts={photoPosts?.flat()}
+            <PostList isHidden={tab != PostType.PHOTO}
+                posts={photoPosts?.flat()}
                 isLoading={isPhotoPostsLoading} />
 
 
-            <PostList className={classNames(
-                "grow",
-                {
-                    "hidden": tab != PostType.VIDEO
-                }
-            )} posts={videoPosts?.flat()}
+            <PostList isHidden={tab != PostType.VIDEO}
+                posts={videoPosts?.flat()}
                 isLoading={isVideoPostsLoading} />
         </div>
     )

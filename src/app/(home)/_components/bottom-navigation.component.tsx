@@ -31,7 +31,7 @@ export type Tab = {
     tabLabel?: string,
     darkTheme?: boolean,
     destroyOnHide?: boolean,
-    disableBottomPadding?: boolean
+    disableBottomPadding?: boolean,
 }
 
 export default function BottomNavigation({ tabs }: { tabs: Tab[] }) {

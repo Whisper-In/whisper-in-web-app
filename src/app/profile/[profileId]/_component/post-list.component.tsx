@@ -1,16 +1,20 @@
 import { IPostDto, PostType } from "@/dtos/content/post.dtos";
 import { isScrollEnded } from "@/utils/component.util";
+import { Box, Stack, alpha } from "@mui/material";
 import classNames from "classnames";
 import Link from "next/link";
 import React from "react";
+
 export default function PostList({
     className,
     posts,
-    isLoading
+    isLoading,
+    isHidden
 }: {
     className?: string,
     posts?: IPostDto[],
     isLoading?: boolean
+    isHidden?: boolean
 }) {
 
     if (isLoading) {
@@ -18,10 +22,7 @@ export default function PostList({
     }
 
     return (
-        <div className={classNames(
-            "flex justify-center items-center",
-            className
-        )}>
+        <Stack flexGrow={1} display={isHidden ? "none" : undefined}>
             {
                 posts?.length ?
                     <div className="grid grid-cols-3 gap-[2px]">
@@ -31,9 +32,11 @@ export default function PostList({
                                     scroll={false}
                                     href={`/post/${post._id}`}
                                     className="flex align-center">
-                                    <img className="object-cover w-full"
-                                        style={{
-                                            aspectRatio: 1 / 1.25
+                                    <Box component="img"
+                                        className="object-contain w-full"
+                                        sx={{
+                                            aspectRatio: 1 / 1.25,
+                                            backgroundColor: (theme) => alpha(theme.palette.text.primary, 0.05)
                                         }}
                                         src={post.thumbnailURL ?? post.postURL}
                                     />
@@ -42,8 +45,10 @@ export default function PostList({
                         }
                     </div>
                     :
-                    <span className="opacity-30">No Posts.</span>
+                    <Stack flexGrow={1} justifyContent="center" alignItems="center">
+                        <span className="opacity-30">No Posts.</span>
+                    </Stack>
             }
-        </div>
+        </Stack>
     );
 }

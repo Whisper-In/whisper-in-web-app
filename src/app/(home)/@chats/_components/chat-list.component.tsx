@@ -24,10 +24,11 @@ export default function ChatList({ className }: { className?: string }) {
         return (
             <Typography sx={{
                 mt: 2,
+                mx: 5,
                 textAlign: "center",
                 opacity: 0.3
             }}>
-                No chats.
+                No chats. Subscribe to any users and start chatting with their AI now.
             </Typography>
         )
     }

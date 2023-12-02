@@ -4,7 +4,7 @@ import Image from "next/image"
 import GoogleSignInButton from "./_components/google-signin-button.component"
 import AppleSignInButton from "./_components/apple-signIn-button.component copy"
 import * as authClientService from "@/store/services/auth/auth.service"
-import { Alert, Link } from "@mui/material"
+import { Alert, Link, Stack } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { setUser } from "@/store/slices/user.slice"
 import { useEffect } from "react"
@@ -32,11 +32,10 @@ export default function SignIn() {
                 promptAlert({
                     title: "DISCLAIMER",
                     message: (
-                        <div>
-                            <p>This app is for demonstration purposes only. The content in this app was obtained from <Link href="https://www.kaggle.com/datasets/thecoderenroute/instagram-posts-dataset" target="_blank">Kaggle.com</Link>.
-                            </p>
-                            <p>All rights are reserved to the respective owners of the content.</p>
-                        </div>
+                        <Stack spacing={1}>
+                            <p>This app is for demonstration purposes only. The content in this app was obtained from <Link href="https://www.kaggle.com/datasets/thecoderenroute/instagram-posts-dataset" target="_blank">Kaggle.com</Link>.</p>
+                            <p>All rights reserved to the respective owners of the content.</p>
+                        </Stack>
                     )
                 })
             } else {
@@ -53,16 +52,17 @@ export default function SignIn() {
     }
 
     return (
-        <main className="flex flex-col items-center w-full h-full gap-5 py-48">
-            <div className="grow">
-                <Image src="/icons/icon-full.png" width={250} height={0} alt="" />
-            </div>
+        <Stack flexGrow={1}
+            gap={10}
+            justifyContent="center"
+            alignItems="center">
+            <Image src="/icons/icon-full.png" width={250} height={0} alt="" />
 
-            <div className="flex flex-col gap-5">
+            <Stack gap={2}>
                 <GoogleSignInButton onClick={() => login("/google/login")} />
 
                 {/* <AppleSignInButton onClick={() => login("/apple/login")} /> */}
-            </div>
-        </main>
+            </Stack>
+        </Stack>
     )
 }
