@@ -1,7 +1,7 @@
 import Carousel from "@/app/_components/carousel.component";
 import Post from "@/app/_components/post.component";
 import { IPostDto } from "@/dtos/content/post.dtos";
-import { CircularProgress, Stack, Typography } from "@mui/material";
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import classNames from "classnames";
 
 export default function PostFeed({
@@ -41,13 +41,12 @@ export default function PostFeed({
 
                 {
                     isValidating &&
-                    < CircularProgress sx={{
-                        position: "absolute",
-                        bottom: 3,
-                        left: "50%",
-                        transform: "translateX(-50%)"
-                    }}
-                size={30} />
+                    <Stack position="absolute"
+                        bottom={10}                        
+                        width="100%"
+                        alignItems="center">
+                        <CircularProgress size={30} />
+                    </Stack>
                 }
             </Stack>
         );
