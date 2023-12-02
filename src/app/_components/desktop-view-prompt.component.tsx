@@ -10,7 +10,7 @@ export default function DesktoViewPrompt() {
     useEffect(() => {
         if (!isMobile(navigator.userAgent)) {
             showToast({
-                message: "View it on your mobile device for the better viewing experience."
+                message: "View it on your mobile device for a better viewing experience."
             });
         }
     }, []);
