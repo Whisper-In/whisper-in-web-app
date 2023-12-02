@@ -30,7 +30,7 @@ export default function Home() {
 
     const onForYouScrollEnd = (() => {
         if (recommendedType == "FORYOU") {
-            if (!isForYouPostsLoading) {
+            if (!isFollowingPostsValidating) {
                 forYouPostsSetSize(forYouPostsSize + 1);
             }
         }
@@ -38,7 +38,7 @@ export default function Home() {
 
     const onFollowingScrollEnd = (() => {
         if (recommendedType == "FOLLOWING") {
-            if (!isFollowingPostsLoading) {
+            if (!isFollowingPostsValidating) {
                 followingPostsSetSize(followingPostsSize + 1);
             }
         }
