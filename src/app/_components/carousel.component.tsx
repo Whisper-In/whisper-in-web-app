@@ -24,9 +24,9 @@ export default function Carousel<T>({
         setDebugText(`Carousell Scroll: ${event.currentTarget.scrollTop}/${event.currentTarget.scrollHeight}`);
 
         if (onSrollEnd) {
-            setDebugText("Carousell Scroll Ended");
-
             if (isScrollEnded(event)) {
+                setDebugText("Carousell Scroll Ended");
+
                 console.log("Scroll Ended")
                 onSrollEnd();
             }
