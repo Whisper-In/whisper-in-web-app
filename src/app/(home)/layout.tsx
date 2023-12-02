@@ -16,7 +16,6 @@ export default function MobileHomeLayout(props: {
         screen: props.children,
         darkTheme: true,
         disableBottomPadding: true,
-        tabLabel: "Feed"
       },
       {
         tabValue: "explore",
