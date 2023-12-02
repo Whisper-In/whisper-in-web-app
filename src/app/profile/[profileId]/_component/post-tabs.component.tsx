@@ -1,7 +1,7 @@
 "use client"
 
 import { PostType } from "@/dtos/content/post.dtos"
-import { CircularProgress, Stack, Tab, Tabs } from "@mui/material"
+import { Stack, Tab, Tabs } from "@mui/material"
 import { SyntheticEvent, useEffect, useState } from "react"
 import PostList from "./post-list.component"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -69,17 +69,13 @@ export default function PostTabs({ className, profileId }
 
             <PostList isHidden={tab != PostType.PHOTO}
                 posts={photoPosts?.flat()}
-                isLoading={isPhotoPostsLoading} />
-
+                isLoading={isPhotoPostsLoading}
+                isValidating={isPhotoPostsValidating} />
 
             <PostList isHidden={tab != PostType.VIDEO}
                 posts={videoPosts?.flat()}
-                isLoading={isVideoPostsLoading} />
-
-            {
-                (isPhotoPostsValidating || isVideoPostsValidating) &&
-                <CircularProgress sx={{ alignSelf: "center", mt: 3 }} size={30} />
-            }
+                isLoading={isVideoPostsLoading}
+                isValidating={isVideoPostsValidating} />
         </Stack>
     )
 }

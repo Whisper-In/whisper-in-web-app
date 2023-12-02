@@ -1,12 +1,11 @@
 "use client"
 
 import { isScrollEnded } from "@/utils/component.util";
+import { Typography } from "@mui/material";
 import classNames from "classnames";
-import { PropsWithChildren, useState } from "react";
+import { useState } from "react";
 
-enum Direction {
-    x, y
-}
+const debugMode = true;
 
 export default function Carousel<T>({
     className,
@@ -19,8 +18,14 @@ export default function Carousel<T>({
     children: React.ReactElement[],
     onSrollEnd?: () => void
 }) {
+    const [debugText, setDebugText] = useState("");
+
     const onSroll = (event: React.UIEvent<HTMLDivElement>) => {
+        setDebugText(`Carousell Scroll: ${event.currentTarget.scrollTop}/${event.currentTarget.scrollHeight}`);
+
         if (onSrollEnd) {
+            setDebugText("Carousell Scroll Ended");
+
             if (isScrollEnded(event)) {
                 console.log("Scroll Ended")
                 onSrollEnd();
@@ -42,6 +47,17 @@ export default function Carousel<T>({
                     <div key={index} className="w-full h-full snap-always snap-center">
                         {child}
                     </div>)
+            }
+
+            {
+                debugMode &&
+                <Typography sx={{
+                    position: "fixed",
+                    top: 10,
+                    left: 10
+                }}>
+                    {debugText}
+                </Typography>
             }
         </div>
     );

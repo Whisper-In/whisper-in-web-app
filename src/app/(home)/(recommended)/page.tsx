@@ -5,7 +5,7 @@ import RecommendedTypesNav from "../_components/recommended-types.component";
 import classNames from "classnames";
 import PostFeed from "../_components/post-feed.component";
 import { useGetRecommendedPosts } from "@/store/hooks/content.hooks";
-import { Box, Stack, Toolbar } from "@mui/material";
+import { Box, Stack, Toolbar, Typography } from "@mui/material";
 
 export type RecommendedTypes = "FOLLOWING" | "FORYOU";
 
@@ -46,7 +46,7 @@ export default function Home() {
     return (
         <Stack component="main"
             height={"100dvh"}
-            overflow="hidden">
+            overflow="hidden">            
             <Box bgcolor="black"
                 position="relative"
                 flexGrow={1}
