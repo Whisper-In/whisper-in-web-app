@@ -25,8 +25,14 @@ export default function ChatListItem({ chat }
                 py: 0,
                 gap: 2
             }}>
-                <Link href={`/profile/${profile?._id}`}>
-                    <Avatar src={profile?.avatar} sx={{ width: 50, height: 50 }} />
+                <Link href={`/profile/${profile?._id}`} style={{
+                    paddingTop: 10,
+                    paddingBottom: 10,
+                }}>
+                    <Avatar src={profile?.avatar} sx={{
+                        width: 50,
+                        height: 50
+                    }} />
                 </Link>
 
                 <Link href={`/chat/${chat.chatId}`} className="grow py-4" >

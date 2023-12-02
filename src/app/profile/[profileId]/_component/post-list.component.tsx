@@ -6,46 +6,40 @@ import React from "react";
 export default function PostList({
     className,
     posts,
-    onScrollEnd
+    isLoading
 }: {
     className?: string,
     posts?: IPostDto[],
-    onScrollEnd?: () => void
+    isLoading?: boolean
 }) {
-    const onScroll = (event: React.UIEvent) => {
-        if (onScrollEnd) {
-            if (isScrollEnded(event)) {
-                onScrollEnd();
-            }
-        }
+
+    if (isLoading) {
+        return <></>
     }
 
     return (
         <div className={classNames(
-            "relative flex justify-center items-center",
+            "flex justify-center items-center",
             className
         )}>
             {
                 posts?.length ?
-                    <div className="absolute top-0 left-0 bottom-0 right-0 overflow-y-auto"
-                        onScroll={onScroll}>
-                        <div className="grid grid-cols-3 gap-[2px]">
-                            {
-                                posts.map((post, index) =>
-                                    <Link key={index}
-                                        scroll={false}
-                                        href={`/post/${post._id}`}
-                                        className="flex align-center">
-                                        <img className="object-cover w-full"
-                                            style={{
-                                                aspectRatio: 1 / 1.25
-                                            }}
-                                            src={post.thumbnailURL ?? post.postURL}
-                                        />
-                                    </Link>
-                                )
-                            }
-                        </div>
+                    <div className="grid grid-cols-3 gap-[2px]">
+                        {
+                            posts.map((post, index) =>
+                                <Link key={index}
+                                    scroll={false}
+                                    href={`/post/${post._id}`}
+                                    className="flex align-center">
+                                    <img className="object-cover w-full"
+                                        style={{
+                                            aspectRatio: 1 / 1.25
+                                        }}
+                                        src={post.thumbnailURL ?? post.postURL}
+                                    />
+                                </Link>
+                            )
+                        }
                     </div>
                     :
                     <span className="opacity-30">No Posts.</span>

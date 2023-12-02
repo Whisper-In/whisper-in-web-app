@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { RecommendedTypes } from "../page";
+import { RecommendedTypes } from "../(recommended)/page";
 
 export default function RecommendedTypesNav({ className, currentRecommendedType, onRecommendTypeChange }
     : {

@@ -1,8 +1,6 @@
 "use client"
 
-import { useAppSelector } from "@/store/hooks";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Search } from "@mui/icons-material";
 import { TextField } from "@mui/material";
 import classNames from "classnames";
 
@@ -23,7 +21,7 @@ export default function SearchInput({ className, onChange }
                 }}
                 onChange={onChange}
                 InputProps={{
-                    startAdornment: <FontAwesomeIcon className="mr-3" icon={faSearch} fontSize={20} />
+                    startAdornment: <Search sx={{ m: 1 }} />
                 }}
             />
         </div>

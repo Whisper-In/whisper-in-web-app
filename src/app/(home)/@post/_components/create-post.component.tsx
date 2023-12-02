@@ -1,6 +1,6 @@
 "use client"
 
-import { Box, Button, useTheme } from "@mui/material";
+import { Box, Button, Stack, Toolbar, useTheme } from "@mui/material";
 import { AddAPhoto } from "@mui/icons-material";
 import { ChangeEventHandler, useRef, useState } from "react";
 import { PostType } from "@/dtos/content/post.dtos";
@@ -10,7 +10,7 @@ import { useSpinner } from "@/app/_components/spinner.component";
 import { useAlertPrompt } from "@/app/_components/alert-prompt.component";
 import * as postClientService from "@/store/services/content/post.service";
 
-export default function CreatePost() {        
+export default function CreatePost() {
     const [file, setFile] = useState<File>();
     const [mediaType, setMediaType] = useState<PostType>(PostType.PHOTO);
     const [mediaURL, setMediaURL] = useState<string | undefined>();
@@ -32,9 +32,9 @@ export default function CreatePost() {
         setMediaURL(undefined);
     }
 
-    const handleSubmit = async (description?: string) => {    
+    const handleSubmit = async (description?: string) => {
         try {
-            if(!file) {
+            if (!file) {
                 throw "Uploaded file is missing."
             }
 
@@ -59,24 +59,23 @@ export default function CreatePost() {
     }
 
     return (
-        <Box sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-            width: "100%",
-            height: "100%",
-        }}>
-            {
-                !mediaURL ?
-                    <AddPostButton onChange={handleUpload} />
-                    :
-                    <PostEditor src={mediaURL}
-                        type={mediaType}
-                        onSave={handleSubmit}
-                        onCancel={handleCancel} />
-            }
-        </Box>
+        <Stack height="100dvh">
+            <Stack justifyContent="center"
+                alignItems="center"
+                flexGrow={1}
+                overflow="hidden">
+                {
+                    !mediaURL ?
+                        <AddPostButton onChange={handleUpload} />
+                        :
+                        <PostEditor src={mediaURL}
+                            type={mediaType}
+                            onSave={handleSubmit}
+                            onCancel={handleCancel} />
+                }
+            </Stack>
+
+            <Toolbar />
+        </Stack>
     )
 }

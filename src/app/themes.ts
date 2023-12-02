@@ -42,6 +42,20 @@ const commonComponents: Components<Omit<Theme, "components">> = {
                 }
             }
         }
+    },
+    MuiBottomNavigation: {
+        styleOverrides: {
+            root: ({ theme }) => ({
+                width: theme.breakpoints.values.md
+            })
+        }
+    },
+    MuiTabs: {
+        styleOverrides: {
+            root: ({ theme }) => ({
+                backgroundColor: theme.palette.background.default
+            })
+        }
     }
 }
 

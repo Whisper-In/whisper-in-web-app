@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export type AppState = {
     darkMode: boolean;
+    lastDesktopPrompt?: number;
     currentPlayingAudio?: string;
 };
 
@@ -19,6 +20,11 @@ export const appSlice = createSlice({
 
             return state;
         },
+        setLastDesktopPrompt: (state: AppState, action: { payload: number }) => {
+            state.lastDesktopPrompt = action.payload;
+
+            return state;
+        },
         setCurrentPlayingAudio: (state: AppState, action: { payload: string | undefined }) => {
             state.currentPlayingAudio = action.payload;
 
@@ -29,6 +35,7 @@ export const appSlice = createSlice({
 
 export const {
     setDarkMode,
+    setLastDesktopPrompt,
     setCurrentPlayingAudio
 } = appSlice.actions;
 

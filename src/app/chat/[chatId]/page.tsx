@@ -1,9 +1,10 @@
+import { Stack } from "@mui/material";
 import ChatSection from "./_components/chat-section.component";
 
 export default async function Chat({ params }: { params: { chatId: string } }) {
     return (
-        <main className="h-full w-full flex flex-col">
+        <Stack flexGrow={1}>
             <ChatSection chatId={params.chatId} />
-        </main>
+        </Stack>
     )
 }

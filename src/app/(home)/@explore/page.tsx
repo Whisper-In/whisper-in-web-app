@@ -15,9 +15,6 @@ export default function Explore() {
     const onSearchInput = (event: React.SyntheticEvent<HTMLInputElement>) => {
         const query = event.currentTarget.value;
 
-        console.log(event.target)
-        console.log(query)
-
         searchProfiles(query).then((results) => {
             setSearchResults(results);
         }).catch((error) => {

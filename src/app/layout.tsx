@@ -4,7 +4,8 @@ import { Inter } from 'next/font/google'
 import { config } from "@fortawesome/fontawesome-svg-core"
 import "@fortawesome/fontawesome-svg-core/styles.css"
 import { Providers } from '@/store/provider'
-import { Container } from '@mui/material'
+import { Container, Stack } from '@mui/material'
+import DesktoViewPrompt from './_components/desktop-view-prompt.component'
 
 config.autoAddCss = false;
 
@@ -34,21 +35,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className} style={{
-        height: "100dvh",
-        width: "100vw",
-        position: "fixed",
-        overflow: "hidden",
-        backgroundColor: "black"
-      }}>
+      <body className={inter.className}
+        style={{
+          backgroundColor: "black"
+        }}>
         <Providers>
-          <Container sx={{
-            position: "relative",
-            height: "100%",
-            width: "100%"
-          }}>
-            {children}
+          <Container>
+            <Stack minHeight="100dvh"
+              position="relative">
+              {children}
+            </Stack>
           </Container>
+
+          <DesktoViewPrompt />
         </Providers>
       </body>
     </html>

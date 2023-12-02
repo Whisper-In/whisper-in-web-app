@@ -1,6 +1,6 @@
 import { IUserChatDto, IUserChatMessageDto, IUserChatMessagesResultDto } from "@/dtos/chats/chats.dtos";
 import useSWRInfinite from "swr/infinite";
-import { fetcher, getKey } from "./fetcher";
+import { fetcher, getKey, getKeyForObject } from "./fetcher";
 import useSWR from "swr";
 
 const route = "/api/chats";
@@ -21,7 +21,7 @@ export const useGetChatMessages = (chatId: string, messageCount: number) => {
     });
 
     return useSWRInfinite<IUserChatMessagesResultDto>(
-        (pageIndex, previousData) => getKey(`${route}/chat-messages/${chatId}`, pageIndex, previousData, params),
+        (pageIndex, previousData) => getKeyForObject(`${route}/chat-messages/${chatId}`, pageIndex, previousData, "messages", params),
         fetcher,
         {
             revalidateAll: false

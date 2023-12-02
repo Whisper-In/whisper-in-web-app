@@ -1,7 +1,7 @@
 import { IConfig } from "@/dtos/business/config.dtos";
 import axios from "axios";
 
-const route = "api/business/configuration";
+const route = "api/configuration";
 
 export async function getMinSubscriptionFee() {
     try {

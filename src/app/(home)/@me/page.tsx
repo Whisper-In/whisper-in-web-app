@@ -1,14 +1,13 @@
-import SettingsMenu from "./_components/settings-menu.component";
-import dynamic from "next/dynamic";
-import MyPostTabs from "./_components/post-tabs.component";
+import { Stack } from "@mui/material";
 import MyProfileInfo from "./_components/profile-info.component";
+import PostTabs from "@/app/profile/[profileId]/_component/post-tabs.component";
 
 export default async function Me() {
     return (
-        <main className="h-full flex flex-col relative">
+        <Stack flexGrow={1}>
             <MyProfileInfo />
 
-            <MyPostTabs />
-        </main>
+            <PostTabs className="grow" />
+        </Stack>
     );
 }

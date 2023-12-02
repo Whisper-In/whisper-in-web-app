@@ -1,4 +1,6 @@
 "use client"
+
+import { useSpinner } from "@/app/_components/spinner.component";
 import ChatListItem from "./chat-list-item.component";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useGetChatMessages, useGetUserChats } from "@/store/hooks/chat.hooks";
@@ -8,16 +10,14 @@ import { useEffect } from "react";
 
 export default function ChatList({ className }: { className?: string }) {
     const { data: chats, isLoading, mutate: updateChats } = useGetUserChats();
+    const { showSpinner } = useSpinner();
 
-    if (isLoading) {
-        return (
-            <Stack justifyContent="center"
-                alignItems="center"
-                width="100%"
-                height="100%">
-                <CircularProgress />
-            </Stack>
-        )
+    useEffect(() => {
+        showSpinner(isLoading);
+    }, [isLoading])
+
+    if(isLoading) {
+        return null;
     }
 
     if (!chats?.length) {

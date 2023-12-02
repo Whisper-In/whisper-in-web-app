@@ -1,23 +1,20 @@
 import PostTabs from "./_component/post-tabs.component";
 import BackButton from "@/app/_components/back-button.component";
 import ProfileInfo from "./_component/profile-info.component";
-import { createContext, useContext } from "react";
-import { ScrollDirection } from "@/hooks/scroll.hook";
+import { Stack } from "@mui/material";
 
 export default async function Profile({
-    params,
-    searchParams
+    params
 }: {
-    params: { profileId: string },
-    searchParams: { [key: string]: string },
+    params: { profileId: string }
 }) {
     return (
-        <main className="w-full h-full flex flex-col">
+        <Stack flexGrow={1}>
             <BackButton />
 
             <ProfileInfo profileId={params.profileId} />
 
             <PostTabs className="grow" profileId={params.profileId} />
-        </main>
+        </Stack>
     );
 }

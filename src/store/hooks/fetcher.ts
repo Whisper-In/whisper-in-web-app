@@ -13,3 +13,15 @@ export const getKey = <T>(url: string, pageIndex: number, previousData: T[], par
 
     return `${url}?${params}`;
 }
+
+export const getKeyForObject = <T>(url: string, pageIndex: number, previousData: any, dataKey: string, params: URLSearchParams) => {
+    if (previousData && !previousData[dataKey]?.length) return null;
+
+    if (params.has("pageIndex")) {
+        params.set("pageIndex", pageIndex.toString());
+    } else {
+        params.append("pageIndex", pageIndex.toString());
+    }
+
+    return `${url}?${params}`;
+}

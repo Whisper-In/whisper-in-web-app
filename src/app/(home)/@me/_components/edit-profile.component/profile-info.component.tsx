@@ -3,7 +3,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText, Switch, SxProps, Theme, Typography, useTheme } from "@mui/material";
 import { ProfileItemType } from "./profile-list-items";
-import { useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import EditProfileDrawer, { EditProfileDrawerElement } from "./edit-profile-drawer.component";
 import { ToastDuration, useToast } from "@/app/_components/toast.component";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
@@ -19,12 +19,12 @@ export default function EditProfileInfo({
     me?: IUserProfileDto,
     profileListItems: ProfileItemType[],
     subscriptionListItems: ProfileItemType[],
-    onChange?: () => void
+    onChange?: (data?: IUserProfileDto) => void
 }) {
     const editProfileDrawerRef = useRef<EditProfileDrawerElement>(null);
     const theme = useTheme();
     const { showToast } = useToast();
-    const isSubscriptionOn = Boolean(me?.isSubscriptionOn);
+    const [isSubscriptionOn, setIsSubscriptionOn] = useState(me?.isSubscriptionOn);
 
     const listItemTextSX: SxProps<Theme> = {
         display: "flex",
@@ -55,13 +55,15 @@ export default function EditProfileInfo({
         });
     }
 
-    const onSubscriptionChange = () => {
-        const newMe = { ...me!, isSubscriptionOn: !me?.isSubscriptionOn };
+    useEffect(() => {
+        const newMe = { ...me!, isSubscriptionOn };
+        
         updateUserProfile(newMe).then(() => {
-            if (onChange)
+            if (onChange) {
                 onChange()
+            }
         });
-    }
+    }, [isSubscriptionOn])
 
     return (
         <>
@@ -87,7 +89,7 @@ export default function EditProfileInfo({
                 }
                 <Divider />
                 {/* Subscriptions */}
-                <ListItemButton onClick={onSubscriptionChange}>
+                <ListItemButton onClick={() => setIsSubscriptionOn(!isSubscriptionOn)}>
                     <ListItemText primary="Enable Auto-Reply" />
                     <ListItemIcon>
                         <Switch checked={isSubscriptionOn} />

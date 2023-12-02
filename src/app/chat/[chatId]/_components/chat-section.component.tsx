@@ -18,13 +18,20 @@ import { ToastDuration, useToast } from "@/app/_components/toast.component";
 
 const REPLY_MINDELAY = 1000;
 const REPLY_MAXDELAY = 5000;
+const MESSAGE_COUNT = 15;
 
 export default function ChatSection({ chatId }: { chatId: string }) {
     const { data: chat, isLoading: isChatLoading, mutate: updateChat } = useGetChatDetail(chatId);
+
     const { showToast } = useToast();
 
-    const messageCount = 50;
-    const { data, isLoading: isMessagesLoading, mutate: updateChatMessages, size, setSize, } = useGetChatMessages(chatId, messageCount);
+    const { data,
+        isLoading: isMessagesLoading,
+        isValidating: isMessageValidating,
+        mutate: updateChatMessages,
+        size,
+        setSize
+    } = useGetChatMessages(chatId, MESSAGE_COUNT);
 
     const hasAudioFeature = chat?.features?.includes("AUDIO");
     const profile = chat?.profile
@@ -44,8 +51,9 @@ export default function ChatSection({ chatId }: { chatId: string }) {
         } finally {
             const delay = Math.random() * REPLY_MAXDELAY + REPLY_MINDELAY;
             setTimeout(() => {
-                updateChatMessages();
-                setIsReplying(false);
+                updateChatMessages().then(() => {
+                    setIsReplying(false);
+                });
             }, delay);
         }
     }
@@ -54,7 +62,7 @@ export default function ChatSection({ chatId }: { chatId: string }) {
         if (!chat || !message?.length) {
             return
         }
-
+        
         chatService.insertNewChatMessage(chatId, message).then(() => {
             updateChatMessages();
 
@@ -74,7 +82,7 @@ export default function ChatSection({ chatId }: { chatId: string }) {
     }
 
     const onMessageListScrollEnd = () => {
-        if (!isMessagesLoading) {
+        if (!isMessageValidating) {
             setSize(size + 1)
         }
     }
@@ -83,7 +91,7 @@ export default function ChatSection({ chatId }: { chatId: string }) {
         if (!isChatLoading) {
             if (!chat?.profile.isSubscriptionOn) {
                 showToast({
-                    message: `${chat?.profile.name} does not have auto-reply turned on.`,                    
+                    message: `${chat?.profile.name} does not have auto-reply turned on.`,
                     severity: "info",
                     duration: ToastDuration.LONG
                 })
@@ -119,6 +127,7 @@ export default function ChatSection({ chatId }: { chatId: string }) {
                 isTyping={isReplying}
                 messagesList={data}
                 onScrollEnd={onMessageListScrollEnd}
+                isValidating={isMessageValidating}
                 isLoading={isMessagesLoading} />
 
             <ChatInputBar onSend={onSend} />

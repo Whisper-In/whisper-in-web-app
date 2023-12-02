@@ -47,7 +47,7 @@ export function ToastProvider({ children }: PropsWithChildren) {
 
     return (
         <ToastContext.Provider value={{ showToast }}>
-            <Toast open={open} onClose={!props?.duration == undefined ? () => setOpen(false) : undefined} {...props}>
+            <Toast open={open} onClose={props?.duration == undefined ? () => setOpen(false) : undefined} {...props}>
                 {props?.message}
             </Toast>
 
@@ -59,12 +59,8 @@ export function ToastProvider({ children }: PropsWithChildren) {
 export default function Toast({ children, open, onClose, ...props }
     : { open: boolean, } & AlertProps & PropsWithChildren) {
     return (
-        <Snackbar open={open}>
-            <Alert severity="info" action={onClose ?
-                <IconButton onClick={onClose}>
-                    <Close fontSize="small" />
-                </IconButton> : undefined
-            } {...props}>
+        <Snackbar open={open} anchorOrigin={{ horizontal: "center", vertical: "bottom" }}>
+            <Alert severity="info" onClose={onClose} {...props}>
                 {children}
             </Alert>
         </Snackbar>

@@ -18,7 +18,6 @@ import { useSpinner } from "@/app/_components/spinner.component";
 import { useGetProfile } from "@/store/hooks/profile.hooks";
 import { Chat } from "@mui/icons-material";
 import FollowButton from "./follow-button.component";
-import { useScrollVertical } from "@/hooks/scroll.hook";
 
 const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -30,7 +29,6 @@ export default function ProfileInfo({
     profileId: string
 }) {
     const { data: profile, isLoading, mutate: updateProfile } = useGetProfile(profileId);
-    const scrollDirection = useScrollVertical();
 
     const [isPaymentFormOpen, setIsPaymentFormOpen] = useState(false);
     const { isShowingSpinner, showSpinner } = useSpinner();
@@ -211,56 +209,60 @@ export default function ProfileInfo({
     }, [isLoading])
 
     return (
-        <Collapse in={scrollDirection != "DOWN"}>
-            <Elements stripe={stripePromise} options={{
-                mode: "subscription",
-                amount: (priceTier?.price ?? 0) * 100,
-                currency: "usd",
-                setup_future_usage: "off_session"
-            }}>
-                <div className="flex flex-col items-center gap-3 pt-14 px-5 mb-3">
-                    <Avatar src={profile?.avatar} sx={{ width: 96, height: 96 }} />
+        <Elements stripe={stripePromise} options={{
+            mode: "subscription",
+            amount: (priceTier?.price ?? 0) * 100,
+            currency: "usd",
+            setup_future_usage: "off_session"
+        }}>
+            <div className="flex flex-col items-center gap-3 pt-14 px-5 mb-3">
+                <Avatar src={profile?.avatar} sx={{ width: 96, height: 96 }} />
 
-                    <div className="text-lg italic">
-                        @{profile?.userName}
-                    </div>
-                    <div className="flex justify-center gap-12 mb-3">
-                        <StatItem label="Posts" value={profile?.postCount ?? 0} />
-                        <StatItem label="Followers" value={profile?.followerCount ?? 0} />
-                        <StatItem label="Likes" value={profile?.totalLikeCount ?? 0} />
-                    </div>
+                <div className="text-lg italic">
+                    @{profile?.userName}
+                </div>
+                <div className="flex justify-center gap-12 mb-3">
+                    <StatItem label="Posts" value={profile?.postCount ?? 0} />
+                    <StatItem label="Followers" value={profile?.followerCount ?? 0} />
+                    <StatItem label="Likes" value={profile?.totalLikeCount ?? 0} />
+                </div>
 
-                    <Stack direction="row"
-                        spacing={1}
-                        width="100%">
+                <Stack direction="row"
+                    spacing={1}
+                    width="100%">
+                    {
+                        !profile?.isMe &&
                         <FollowButton fullWidth
                             disabled={isShowingSpinner}
                             profile={profile}
                             onClick={onFollowClick} />
+                    }
 
-                        {
-                            !profile?.isMe && profile?.isSubscriptionOn &&
-                            <SubscribeButton fullWidth disabled={isShowingSpinner} profile={profile} onClick={onSubscribeClick} />
-                        }
+                    {
+                        !profile?.isMe && profile?.isSubscriptionOn &&
+                        <SubscribeButton fullWidth disabled={isShowingSpinner} profile={profile} onClick={onSubscribeClick} />
+                    }
 
+                    {
+                        !profile?.isMe &&
                         <IconButton color="secondary" onClick={onMessageClick}>
                             <Chat />
                         </IconButton>
-                    </Stack>
-                </div>
+                    }
+                </Stack>
+            </div>
 
-                {
-                    profile &&
-                    <PaymentForm
-                        open={isPaymentFormOpen}
-                        profile={profile}
-                        onClose={onPaymentClose}
-                        onPaymentInitlialized={onPaymentInitlialized}
-                        onPaymentCompleted={onPaymentCompleted}
-                        onPaymentFailed={onPaymentFailed}
-                        onPaymentEnded={onPaymentClose} />
-                }
-            </Elements>
-        </Collapse>
+            {
+                profile &&
+                <PaymentForm
+                    open={isPaymentFormOpen}
+                    profile={profile}
+                    onClose={onPaymentClose}
+                    onPaymentInitlialized={onPaymentInitlialized}
+                    onPaymentCompleted={onPaymentCompleted}
+                    onPaymentFailed={onPaymentFailed}
+                    onPaymentEnded={onPaymentClose} />
+            }
+        </Elements>
     )
 }

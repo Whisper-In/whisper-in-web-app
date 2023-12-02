@@ -40,7 +40,7 @@ export default function PostFeed({ className,
     }
     else {
         return (
-            <div className={classNames(["flex w-full h-full justify-center items-center", className])}>
+            <div className={classNames(["flex w-full h-full justify-center items-center overflow-y-auto", className])}>
                 <Typography color="GrayText"
                     textAlign="center"
                     px={10}>
