@@ -3,12 +3,10 @@
 import { PostType } from "@/dtos/content/post.dtos"
 import { CircularProgress, Stack, Tab, Tabs } from "@mui/material"
 import { SyntheticEvent, useEffect, useState } from "react"
-import classNames from "classnames"
 import PostList from "./post-list.component"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons"
 import { useGetPosts } from "@/store/hooks/content.hooks"
-import { useSpinner } from "@/app/_components/spinner.component"
 
 const POSTS_PER_LOAD = 12;
 

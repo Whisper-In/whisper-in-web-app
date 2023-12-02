@@ -18,10 +18,9 @@ export const useGetRecommendedPosts = (size: number, showFollowingOnly?: boolean
         (pageIndex, previousData) => getKey(`${route}/recommended`, pageIndex, previousData, params),
         fetcher,
         {
+            revalidateFirstPage: false,
             revalidateAll: false,
             revalidateOnFocus: false,
-            revalidateIfStale: false,
-            keepPreviousData: true            
         });
 }
 

@@ -194,9 +194,7 @@ export default function ProfileInfo({
         }
     }
 
-    useEffect(() => {
-        showSpinner(isLoading)
-
+    useEffect(() => {        
         if (!isLoading && !profile) {
             promptAlert({
                 title: "Failed to Load Profile",

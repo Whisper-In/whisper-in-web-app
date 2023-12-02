@@ -16,6 +16,10 @@ export default function PostFeed({ className,
     placeholder?: string,
     isLoading?: boolean
 }) {
+    if(isLoading) {
+        return null;
+    }
+    
     if (posts?.length) {
         return (
             <Carousel className={classNames(className)}

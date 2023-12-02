@@ -11,7 +11,7 @@ export type RecommendedTypes = "FOLLOWING" | "FORYOU";
 
 export default function Home() {
     const [recommendedType, setRecommendedType] = useState<RecommendedTypes>("FORYOU");
-    const postsPerLoad = 10;
+    const postsPerLoad = 30;
 
     const {
         data: forYouPosts,
