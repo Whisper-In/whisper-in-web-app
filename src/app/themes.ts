@@ -46,7 +46,8 @@ const commonComponents: Components<Omit<Theme, "components">> = {
     MuiBottomNavigation: {
         styleOverrides: {
             root: ({ theme }) => ({
-                width: theme.breakpoints.values.md
+                width: "100vw",
+                maxWidth: theme.breakpoints.values.md
             })
         }
     },
