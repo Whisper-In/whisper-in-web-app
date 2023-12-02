@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 import classNames from "classnames";
 import { useState } from "react";
 
-const debugMode = true;
+const debugMode = false;
 
 export default function Carousel<T>({
     className,
