@@ -1,21 +1,20 @@
 "use client"
 
 import classNames from "classnames"
-import { useRef, useEffect, useState, useContext } from "react"
+import { useRef, useEffect, useState } from "react"
 import InfoGroup from "./info-group.component";
 import ButtonGroup from "./button-group.component";
 import LikePrompt, { LikePromptType } from "./like-prompt.component";
-import { IPostDto, PostType } from "@/dtos/content/post.dtos";
+import { PostType } from "@/dtos/content/post.dtos";
 import * as postService from "@/store/services/content/post.service";
 import VideoPlayer from "./video-player.component";
 import { useRouter } from "next/navigation";
 import { useShareModal } from "@/app/_components/share-modal.component";
 import { Delete } from "@mui/icons-material";
-import { useAppSelector } from "@/store/hooks";
 import { useSpinner } from "../spinner.component";
 import { useAlertPrompt } from "../alert-prompt.component";
 import { useGetPostDetails } from "@/store/hooks/content.hooks";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 
 export default function Post({
     className,
@@ -29,9 +28,9 @@ export default function Post({
     const { data: post, isLoading, mutate: updatePost } = useGetPostDetails(postId);
 
     const likePromptRef = useRef<LikePromptType>(null);
-    const [clickCount, setClickCount] = useState(0);    
+    const [clickCount, setClickCount] = useState(0);
     const { setShowShareModal } = useShareModal();
-    const router = useRouter();    
+    const router = useRouter();
     const { showSpinner } = useSpinner();
     const { promptAlert } = useAlertPrompt();
 
@@ -118,37 +117,31 @@ export default function Post({
         })
     }
 
+    useEffect(() => {
+        showSpinner(isLoading);
+    }, [isLoading])
+
     if (isLoading) {
-        return (
-            <Box width="100%"
-                height="100%"
-                position="relative">
-                <CircularProgress sx={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%)"
-                }} />
-            </Box>
-        )
+        return null;
     }
 
     if (!post) {
         return (
-            <Box width="100%"
-                height="100%"
-                display="flex"
+            <Stack flexGrow={1}
                 justifyContent="center"
                 alignItems="center">
                 <Typography>
                     Unable to load post.
                 </Typography>
-            </Box>
+            </Stack>
         )
     }
 
     return (
-        <div className="w-full h-full relative">
+        <Stack flexGrow={1}            
+            height="100%"
+            position="relative"
+            justifyContent="center">
             <div className="w-full h-full" onClick={onClick}>
                 {
                     post.postType == PostType[PostType.PHOTO] ?
@@ -183,6 +176,6 @@ export default function Post({
                     hideAvatar={hideAvatar}
                 />
             </div>
-        </div>
+        </Stack>
     )
 }

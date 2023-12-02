@@ -1,7 +1,7 @@
 "use client"
 
 import { PostType } from "@/dtos/content/post.dtos"
-import { Tab, Tabs } from "@mui/material"
+import { CircularProgress, Stack, Tab, Tabs } from "@mui/material"
 import { SyntheticEvent, useEffect, useState } from "react"
 import classNames from "classnames"
 import PostList from "./post-list.component"
@@ -22,14 +22,16 @@ export default function PostTabs({ className, profileId }
         data: photoPosts,
         size: photoPostsSize,
         setSize: setPhotoPostsSize,
-        isLoading: isPhotoPostsLoading
+        isLoading: isPhotoPostsLoading,
+        isValidating: isPhotoPostsValidating
     } = useGetPosts(profileId, PostType[PostType.PHOTO], POSTS_PER_LOAD);
 
     const {
         data: videoPosts,
         size: videoPostsSize,
         setSize: setVideoPostsSize,
-        isLoading: isVideoPostsLoading
+        isLoading: isVideoPostsLoading,
+        isValidating: isVideoPostsValidating
     } = useGetPosts(profileId, PostType[PostType.VIDEO], POSTS_PER_LOAD);
 
     const onTabChange = (event: SyntheticEvent<Element, Event>, value: PostType) => {
@@ -41,11 +43,11 @@ export default function PostTabs({ className, profileId }
 
         const onScrollEnd = () => {
             if (tab == PostType.PHOTO) {
-                if (!isPhotoPostsLoading) {
+                if (!isPhotoPostsValidating) {
                     setPhotoPostsSize(photoPostsSize + 1);
                 }
             } else if (tab == PostType.VIDEO) {
-                if (!isVideoPostsLoading) {
+                if (!isVideoPostsValidating) {
                     setVideoPostsSize(videoPostsSize + 1);
                 }
             }
@@ -59,10 +61,7 @@ export default function PostTabs({ className, profileId }
     }, [isPhotoPostsLoading, isVideoPostsLoading, tab]);
 
     return (
-        <div className={classNames(
-            className,
-            "flex flex-col"
-        )}>
+        <Stack flexGrow={1}>
             <Tabs variant="fullWidth"
                 sx={{
                     position: "sticky",
@@ -82,6 +81,11 @@ export default function PostTabs({ className, profileId }
             <PostList isHidden={tab != PostType.VIDEO}
                 posts={videoPosts?.flat()}
                 isLoading={isVideoPostsLoading} />
-        </div>
+
+            {
+                ((photoPostsSize > 1 && isPhotoPostsValidating) || (videoPostsSize > 1 && isVideoPostsValidating)) &&
+                <CircularProgress sx={{ alignSelf: "center", mt: 3 }} size={30} />
+            }
+        </Stack>
     )
 }
