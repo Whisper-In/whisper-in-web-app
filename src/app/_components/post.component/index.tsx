@@ -14,7 +14,7 @@ import { Delete } from "@mui/icons-material";
 import { useSpinner } from "../spinner.component";
 import { useAlertPrompt } from "../alert-prompt.component";
 import { useGetPostDetails } from "@/store/hooks/content.hooks";
-import { Stack, Typography } from "@mui/material";
+import { CircularProgress, Stack, Typography } from "@mui/material";
 
 export default function Post({
     className,
@@ -117,17 +117,21 @@ export default function Post({
         })
     }
 
-    useEffect(() => {
-        showSpinner(isLoading);
-    }, [isLoading])
-
     if (isLoading) {
-        return null;
+        return (
+            <Stack flexGrow={1}
+                height="100%"
+                justifyContent="center"
+                alignItems="center">
+                <CircularProgress />
+            </Stack>
+        )
     }
 
     if (!post) {
         return (
             <Stack flexGrow={1}
+                height="100%"
                 justifyContent="center"
                 alignItems="center">
                 <Typography>
@@ -138,7 +142,7 @@ export default function Post({
     }
 
     return (
-        <Stack flexGrow={1}            
+        <Stack flexGrow={1}
             height="100%"
             position="relative"
             justifyContent="center">

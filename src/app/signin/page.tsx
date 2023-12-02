@@ -2,17 +2,13 @@
 
 import Image from "next/image"
 import GoogleSignInButton from "./_components/google-signin-button.component"
-import AppleSignInButton from "./_components/apple-signIn-button.component copy"
 import * as authClientService from "@/store/services/auth/auth.service"
-import { Alert, Link, Stack } from "@mui/material"
+import { Link, Stack } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
-import { setUser } from "@/store/slices/user.slice"
-import { useEffect } from "react"
 import { useAlertPrompt } from "@/app/_components/alert-prompt.component"
 import { useRouter } from "next/navigation"
 import { convertClientCookieToObject } from "@/utils/cookies.util"
 import { useSpinner } from "@/app/_components/spinner.component"
-import { fetchUserProfile } from "@/store/thunks/user.thunks"
 
 export default function SignIn() {
     const me = useAppSelector((state) => state.user.me);

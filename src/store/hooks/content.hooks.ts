@@ -20,7 +20,8 @@ export const useGetRecommendedPosts = (size: number, showFollowingOnly?: boolean
         {
             revalidateAll: false,
             revalidateOnFocus: false,
-            revalidateIfStale: false
+            revalidateIfStale: false,
+            keepPreviousData: true            
         });
 }
 

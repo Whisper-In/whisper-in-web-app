@@ -15,8 +15,6 @@ const POSTS_PER_LOAD = 12;
 export default function PostTabs({ className, profileId }
     : { className?: string, profileId?: string }) {
     const [tab, setTab] = useState<PostType>(PostType.PHOTO);
-    const { showSpinner } = useSpinner();
-
 
     const {
         data: photoPosts,
@@ -39,8 +37,6 @@ export default function PostTabs({ className, profileId }
     }
 
     useEffect(() => {
-        showSpinner(isPhotoPostsLoading || isVideoPostsLoading);
-
         const onScrollEnd = () => {
             if (tab == PostType.PHOTO) {
                 if (!isPhotoPostsValidating) {
@@ -83,7 +79,7 @@ export default function PostTabs({ className, profileId }
                 isLoading={isVideoPostsLoading} />
 
             {
-                ((photoPostsSize > 1 && isPhotoPostsValidating) || (videoPostsSize > 1 && isVideoPostsValidating)) &&
+                (isPhotoPostsValidating || isVideoPostsValidating) &&
                 <CircularProgress sx={{ alignSelf: "center", mt: 3 }} size={30} />
             }
         </Stack>

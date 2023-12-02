@@ -1,6 +1,6 @@
 "use client"
 
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Stack, alpha } from "@mui/material";
 import { PropsWithChildren, createContext, useContext, useState } from "react";
 
 const SpinnerContext = createContext<{ isShowingSpinner: boolean, showSpinner: (isShow: boolean) => void }>({
@@ -31,8 +31,16 @@ export default function Spinner({ show }: { show: boolean }) {
     }
 
     return (
-        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black/30 z-[99999]">
+        <Stack width="100vw"
+            height="100vh"
+            position="fixed"
+            zIndex={99999}
+            justifyContent="center"
+            alignItems="center"
+            sx={{
+                backgroundColor: alpha("#000", 0.2),
+            }}>
             <CircularProgress />
-        </div>
+        </Stack >
     )
 }
