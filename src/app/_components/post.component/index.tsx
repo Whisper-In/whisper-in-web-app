@@ -144,18 +144,19 @@ export default function Post({
     return (
         <Stack flexGrow={1}
             height="100%"
+            maxHeight="100vh"
+            overflow="hidden"
             position="relative"
             justifyContent="center">
             <div className="w-full h-full" onClick={onClick}>
                 {
                     post.postType == PostType[PostType.PHOTO] ?
                         <img className={classNames(
-                            "w-full h-full object-contain",
-                            className
+                            "w-full h-full max-h-screen object-contain object-top"
                         )}
                             src={post.postURL} />
                         :
-                        <VideoPlayer className="w-full h-full object-contain"
+                        <VideoPlayer className="w-full h-full max-h-screen object-contain object-top"
                             src={post.postURL}
                             poster={post?.thumbnailURL} />
                 }
