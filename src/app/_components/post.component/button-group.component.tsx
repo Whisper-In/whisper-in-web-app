@@ -7,8 +7,9 @@ import Link from "next/link";
 
 export default function ButtonGroup({ className, post, onLikeClick, onShareClick, hideAvatar }
     : {
-        className?: string, post: IPostDto,
-        onLikeClick?: () => void,        
+        className?: string,
+        post: IPostDto,
+        onLikeClick?: () => void,
         onShareClick?: () => void,
         hideAvatar?: boolean
     }) {
@@ -21,7 +22,8 @@ export default function ButtonGroup({ className, post, onLikeClick, onShareClick
                 !hideAvatar &&
                 <Link className="relative mb-5" href={`/profile/${post.creator._id}`}>
                     <Avatar src={post.creator.avatar}
-                        sx={{ width: 70, height: 70, border: 4 }} />
+                        sx={{ width: 70, height: 70, border: 4 }}
+                        alt="avatar" />
 
                     {
                         !post.creator.isFollowing &&
@@ -31,7 +33,7 @@ export default function ButtonGroup({ className, post, onLikeClick, onShareClick
                 </Link>
             }
 
-            <button onClick={onLikeClick}>
+            <button aria-label="like" onClick={onLikeClick}>
                 <FontAwesomeIcon className={classNames({
                     "text-rose-600": post.isLiked
                 })} icon={faHeart} fontSize={40} />
@@ -39,7 +41,7 @@ export default function ButtonGroup({ className, post, onLikeClick, onShareClick
                 <div className="italic text-sm">{post.likeCount}</div>
             </button>
 
-            <button onClick={onShareClick}>
+            <button aria-label="share" onClick={onShareClick}>
                 <FontAwesomeIcon icon={faShare} fontSize={35} />
 
                 <div className="italic text-sm">Share</div>

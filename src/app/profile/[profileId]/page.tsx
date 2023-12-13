@@ -3,7 +3,7 @@ import BackButton from "@/app/_components/back-button.component";
 import ProfileInfo from "./_component/profile-info.component";
 import { Stack } from "@mui/material";
 
-export default async function Profile({
+export default function Profile({
     params
 }: {
     params: { profileId: string }

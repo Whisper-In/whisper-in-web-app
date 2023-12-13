@@ -5,7 +5,7 @@ import BackButton from "@/app/_components/back-button.component";
 import { useGetPostDetails } from "@/store/hooks/content.hooks";
 import { Stack } from "@mui/material";
 
-export default async function PostPage({ params, searchParams }
+export default function PostPage({ params, searchParams }
     : { params: { postId: string }, searchParams: { [key: string]: string | string[] } }) {
     const showAvatar = searchParams["showAvatar"] == "true";
 

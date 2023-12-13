@@ -5,7 +5,7 @@ import InfoButton from "./_components/info-button.component";
 
 const ChatList = dynamic(() => import("./_components/chat-list.component"), { ssr: false });
 
-export default async function Chats() {
+export default function Chats() {
     return (
         <Stack flexGrow={1}>
             <Header title="Chats" rightComponent={<InfoButton />} />

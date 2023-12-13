@@ -5,7 +5,7 @@ import { PropsWithChildren, createContext, useContext, useState } from "react";
 
 export type AlertPromptType = {
     title?: string,
-    message: string | React.ReactNode, 
+    message: string | React.ReactNode,
     showOk?: boolean,
     okText?: string,
     onOk?: () => void
@@ -103,13 +103,13 @@ export default function AlertPrompt({
             <DialogActions>
                 {
                     showOk &&
-                    <Button onClick={_onOk}>
+                    <Button onClick={_onOk} aria-label="ok-button">
                         {okText}
                     </Button>
                 }
                 {
                     showCancel &&
-                    <Button onClick={_onCancel}>
+                    <Button onClick={_onCancel} aria-label="cancel-button">
                         {cancelText}
                     </Button>
                 }

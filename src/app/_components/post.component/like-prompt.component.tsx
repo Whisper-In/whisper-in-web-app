@@ -26,14 +26,16 @@ const LikePrompt = forwardRef(({ className, size = 120 }
     }));
 
     return (
-        <FontAwesomeIcon className={classNames(
-            "text-rose-600 transition-all duration-200",
-            className,
-            {
-                "opacity-0 scale-0": !isPrompted,
-                "opacity-100 scale-100": isPrompted
-            }
-        )} icon={faHeart} fontSize={size} />
+        <FontAwesomeIcon aria-label="like-prompt"
+            className={classNames(
+                "text-rose-600 transition-all duration-200",
+                className,
+                {
+                    "opacity-0 scale-0": !isPrompted,
+                    "opacity-100 scale-100": isPrompted
+                }
+            )} icon={faHeart}
+            fontSize={size} />
     );
 });
 

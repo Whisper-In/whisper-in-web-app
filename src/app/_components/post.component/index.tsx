@@ -123,7 +123,9 @@ export default function Post({
                 height="100%"
                 justifyContent="center"
                 alignItems="center">
-                <CircularProgress />
+                <CircularProgress
+                    aria-busy={true}
+                    aria-describedby="loading-post" />
             </Stack>
         )
     }
@@ -148,10 +150,12 @@ export default function Post({
             overflow="hidden"
             position="relative"
             justifyContent="center">
-            <div className="w-full h-full" onClick={onClick}>
+            <div aria-label="post-container"
+                className="w-full h-full"
+                onClick={onClick}>
                 {
                     post.postType == PostType[PostType.PHOTO] ?
-                        <img className={classNames(
+                        <img aria-label="post-image" className={classNames(
                             "w-full h-full max-h-screen object-contain object-top"
                         )}
                             src={post.postURL} />

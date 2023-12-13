@@ -17,7 +17,7 @@ export default function InfoGroup({ className, post }
                 @{post.creator.userName}
             </label>
 
-            <p className={classNames({
+            <p aria-label="description" className={classNames({
                 "line-clamp-2": !showFullDescription,
                 "line-clamp-6": showFullDescription
             })} onClick={() => setShowFullDescription(!showFullDescription)}>

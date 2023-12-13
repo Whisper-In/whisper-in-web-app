@@ -40,8 +40,6 @@ export async function login(loginUrl: string) {
     });
 }
 
-export async function logout(dispatch: AppDispatch) {
-    dispatch(userLogout());
-
+export async function logout() {
     await axios.get(`${route}/logout`);
 }

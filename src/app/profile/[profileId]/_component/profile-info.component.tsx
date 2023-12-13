@@ -18,6 +18,7 @@ import { useSpinner } from "@/app/_components/spinner.component";
 import { useGetProfile } from "@/store/hooks/profile.hooks";
 import { Chat } from "@mui/icons-material";
 import FollowButton from "./follow-button.component";
+import Loading from "../loading";
 
 const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -194,17 +195,23 @@ export default function ProfileInfo({
         }
     }
 
-    useEffect(() => {        
+    useEffect(() => {
         if (!isLoading && !profile) {
             promptAlert({
                 title: "Failed to Load Profile",
                 message: "Unable to load profile",
                 onClose: () => router.replace("/")
             });
-
-            return notFound();
         }
     }, [isLoading])
+
+    if (!isLoading && !profile) {
+        return notFound();
+    }
+
+    if (isLoading) {
+        return Loading();
+    }
 
     return (
         <Elements stripe={stripePromise} options={{
