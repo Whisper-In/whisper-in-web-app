@@ -29,7 +29,8 @@ export default function PostFeed({
                 position="relative"
                 spacing={2}
                 height="100%"
-                display={isHidden ? "none" : undefined}>
+                display={isHidden ? "none" : undefined}
+                aria-label="post-feed-container">
                 <Carousel
                     direction="y"
                     onSrollEnd={onScrollEnd}>
@@ -42,10 +43,10 @@ export default function PostFeed({
                 {
                     isValidating &&
                     <Stack position="absolute"
-                        bottom={10}                        
+                        bottom={10}
                         width="100%"
                         alignItems="center">
-                        <CircularProgress size={30} />
+                        <CircularProgress size={30} aria-label="validating" aria-busy={true} />
                     </Stack>
                 }
             </Stack>

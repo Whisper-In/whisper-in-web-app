@@ -17,7 +17,8 @@ export default function RecommendedTypesNav({ className, currentRecommendedType,
                     {
                         "underline": currentRecommendedType == "FOLLOWING"
                     }
-                )}>
+                )}
+                aria-label="following-button">
                 Following
             </button>
 
@@ -27,7 +28,8 @@ export default function RecommendedTypesNav({ className, currentRecommendedType,
                     {
                         "underline": currentRecommendedType == "FORYOU"
                     }
-                )}>
+                )}
+                aria-label="foryou-button">
                 For You
             </button>
         </div>

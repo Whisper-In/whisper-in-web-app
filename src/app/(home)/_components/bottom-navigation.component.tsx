@@ -17,8 +17,7 @@ export function TabScreen({
     return (
         <Stack sx={{
             display: hidden ? "none" : undefined
-        }}
-            flexGrow={1}>
+        }} flexGrow={1}>
             {children}
         </Stack>
     )
@@ -88,6 +87,7 @@ export default function BottomNavigation({ tabs }: { tabs: Tab[] }) {
                         {
                             tabs.map((t, index) =>
                                 <BottomNavigationAction
+                                    aria-label={t.tabLabel || t.tabValue}
                                     disableRipple={true}
                                     key={index}
                                     value={t}
