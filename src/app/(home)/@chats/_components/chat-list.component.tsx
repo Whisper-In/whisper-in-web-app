@@ -6,7 +6,7 @@ import { List, Typography } from "@mui/material";
 
 export default function ChatList({ className }: { className?: string }) {
     const { data: chats, isLoading, mutate: updateChats } = useGetUserChats();
-
+        
     if(isLoading) {
         return null;
     }
@@ -22,10 +22,10 @@ export default function ChatList({ className }: { className?: string }) {
                 No chats. Subscribe to any users and start chatting with their AI now.
             </Typography>
         )
-    }
+    }    
 
     return (
-        <List disablePadding={true}>
+        <List disablePadding={true} role="list">
             {
                 chats.map((chat, idx) =>
                     <ChatListItem key={idx} chat={chat} />)

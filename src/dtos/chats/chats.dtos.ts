@@ -15,9 +15,9 @@ export interface IUserChatProfileDto {
 export interface IUserChatDto {
     _id: string;
     chatId: string;
-    features: ["AUDIO" | "VIDEO"];
+    features?: ("AUDIO" | "VIDEO")[];
     profile: IUserChatProfileDto;
-    isAudioOn: boolean;    
+    isAudioOn: boolean;
     lastMessage: IUserChatMessageDto;
 }
 

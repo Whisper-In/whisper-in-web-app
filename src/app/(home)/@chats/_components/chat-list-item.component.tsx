@@ -1,9 +1,8 @@
 "use client"
 
 import { IUserChatDto } from "@/dtos/chats/chats.dtos";
-import { useAppSelector } from "@/store/hooks";
 import { convertToMessageDate } from "@/utils/datetime.util";
-import { Avatar, Box, ListItem, ListItemButton, Typography } from "@mui/material";
+import { Avatar, ListItem, ListItemButton, Typography } from "@mui/material";
 import Link from "next/link";
 
 export default function ChatListItem({ chat }
@@ -32,7 +31,7 @@ export default function ChatListItem({ chat }
                     <Avatar src={profile?.avatar} sx={{
                         width: 50,
                         height: 50
-                    }} />
+                    }} aria-label="avatar" />
                 </Link>
 
                 <Link href={`/chat/${chat.chatId}`} className="grow py-4" >
