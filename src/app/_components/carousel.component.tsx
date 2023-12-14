@@ -26,22 +26,22 @@ export default function Carousel<T>({
         if (onSrollEnd) {
             if (isScrollEnded(event)) {
                 setDebugText("Carousell Scroll Ended");
-
-                console.log("Scroll Ended")
                 onSrollEnd();
             }
         }
     }
 
     return (
-        <div onScroll={onSroll} className={classNames(
-            className,
-            "snap-mandatory h-full",
-            {
-                "overflow-y-scroll snap-y": direction == "y",
-                "overflow-x-scroll snap-x": direction == "x"
-            }
-        )}>
+        <div aria-label="carousel"
+            onScroll={onSroll}
+            className={classNames(
+                className,
+                "snap-mandatory h-full",
+                {
+                    "overflow-y-scroll snap-y": direction == "y",
+                    "overflow-x-scroll snap-x": direction == "x"
+                }
+            )}>
             {
                 children.map((child, index) =>
                     <div key={index} className="w-full h-full snap-always snap-center">

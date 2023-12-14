@@ -1,7 +1,7 @@
 "use client"
 
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
-import { PropsWithChildren, createContext, useContext, useState } from "react";
+import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 
 export type AlertPromptType = {
     title?: string,

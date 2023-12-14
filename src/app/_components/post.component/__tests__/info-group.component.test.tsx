@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { createMockPost } from "../../../../../__mocks__/post.mock"
+import { createMockPost } from "../../../../../__mocks__/post.mocks"
 import InfoGroup from "../info-group.component";
 
 const mockPost = createMockPost();

@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import AlertPrompt from "../alert-prompt.component";
+import { act, render, renderHook, screen, waitFor } from "@testing-library/react";
+import AlertPrompt, { AlertPromptProvider, useAlertPrompt } from "../alert-prompt.component";
 import { vi } from "vitest";
 import userEvent from "@testing-library/user-event";
 

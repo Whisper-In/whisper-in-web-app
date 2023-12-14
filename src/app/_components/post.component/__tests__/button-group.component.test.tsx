@@ -1,6 +1,6 @@
 import { cleanup, render, screen } from "@testing-library/react"
 import ButtonGroup from "../button-group.component"
-import { createMockPost } from "../../../../../__mocks__/post.mock"
+import { createMockPost } from "../../../../../__mocks__/post.mocks"
 import { userEvent } from "@testing-library/user-event";
 import { vi } from "vitest";
 

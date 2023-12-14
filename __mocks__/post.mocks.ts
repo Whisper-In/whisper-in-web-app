@@ -1,5 +1,6 @@
 import { IPostDto, PostType } from "@/dtos/content/post.dtos";
 import { faker } from "@faker-js/faker";
+import path from "path";
 
 export const createMockPost = (): IPostDto => ({
     _id: faker.database.mongodbObjectId(),
@@ -13,4 +14,6 @@ export const createMockPost = (): IPostDto => ({
     description: faker.lorem.text(),
     likeCount: faker.number.int({ min: 0, max: 1000 }),
     postURL: faker.internet.url()
-})
+});
+
+export const mockPhotoPath = path.resolve(__dirname, "mockPhoto.jpg");
