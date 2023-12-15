@@ -15,11 +15,11 @@ describe("Chat List Item Component", () => {
     });
 
     it("should have avatar with a link to the profile page", () => {
-        const avatar = screen.getByLabelText("avatar");
+        const avatar = screen.getByAltText("avatar");
 
         expect(avatar).toBeInTheDocument();
 
-        const link = avatar.parentElement;
+        const link = avatar.parentElement?.parentElement;
         expect(link).toHaveAttribute("href", `/profile/${mockChat.profile._id}`);
     });
 

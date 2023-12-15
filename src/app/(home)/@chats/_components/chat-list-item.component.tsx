@@ -31,7 +31,7 @@ export default function ChatListItem({ chat }
                     <Avatar src={profile?.avatar} sx={{
                         width: 50,
                         height: 50
-                    }} aria-label="avatar" />
+                    }} alt="avatar" />
                 </Link>
 
                 <Link href={`/chat/${chat.chatId}`} className="grow py-4" >
