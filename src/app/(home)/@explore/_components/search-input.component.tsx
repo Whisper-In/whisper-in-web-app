@@ -18,6 +18,7 @@ export default function SearchInput({ className, onChange }
                 fullWidth={true}
                 inputProps={{
                     maxLength: 50,
+                    "aria-label": "search-input"
                 }}
                 onChange={onChange}
                 InputProps={{
