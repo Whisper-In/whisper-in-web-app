@@ -8,11 +8,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 export default function BackButton({ relative }
     : { relative?: boolean }) {
-    const router = useRouter();
-    const searchParams = useSearchParams();
+    const router = useRouter();    
 
-    const onBack = () => {
-        console.log(window.history.length)
+    const onBack = () => {        
         if (window.history.length) {
             router.back();
         } else {
@@ -22,7 +20,7 @@ export default function BackButton({ relative }
 
     return (
         <button className={classNames(
-            "w-fit drop-shadow-md",
+            "w-fit drop-shadow",
             {
                 "absolute top-14 left-5": !relative
             }

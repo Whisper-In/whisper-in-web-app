@@ -28,6 +28,7 @@ export default function Post({
     const { data: post, isLoading, mutate: updatePost } = useGetPostDetails(postId);
 
     const likePromptRef = useRef<LikePromptType>(null);
+    const videoPlayerRef = useRef<HTMLVideoElement>(null);
     const [clickCount, setClickCount] = useState(0);
     const { setShowShareModal } = useShareModal();
     const router = useRouter();
@@ -79,6 +80,7 @@ export default function Post({
 
     const deletePost = () => {
         showSpinner(true);
+
         const failPrompt = () => {
             promptAlert({
                 title: "Delete Post Failed",
@@ -86,9 +88,13 @@ export default function Post({
             });
         }
 
+        if(post?.postType == PostType[PostType.VIDEO]) {
+            videoPlayerRef.current?.pause();
+        }
+
         postService.deletePost(postId)
             .then((result) => {
-                if (result?.deletedCount > 0) {
+                if (result?._id == postId) {
                     promptAlert({
                         title: "Post Deleted",
                         message: "Post successfully delete.",
@@ -98,7 +104,7 @@ export default function Post({
                     failPrompt();
                 }
             })
-            .catch(() => {
+            .catch((err) => {                
                 failPrompt();
             })
             .finally(() => {
@@ -160,7 +166,7 @@ export default function Post({
                         )}
                             src={post.postURL} />
                         :
-                        <VideoPlayer className="w-full h-full max-h-screen object-contain object-top"
+                        <VideoPlayer ref={videoPlayerRef} className="w-full h-full max-h-screen object-contain object-top"
                             src={post.postURL}
                             poster={post?.thumbnailURL} />
                 }
@@ -168,7 +174,7 @@ export default function Post({
 
             {
                 post.isCreator &&
-                <button className="absolute top-14 pt-sat right-5" onClick={onDelete}>
+                <button className="absolute top-14 pt-sat right-5 drop-shadow" onClick={onDelete}>
                     <Delete fontSize="large" />
                 </button>
             }

@@ -1,7 +1,7 @@
 "use client"
 
 import { AddAPhoto } from "@mui/icons-material";
-import { Button } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { ChangeEventHandler, useRef } from "react";
 
 export default function AddPostButton({ onChange }
@@ -9,7 +9,7 @@ export default function AddPostButton({ onChange }
     const inputRef = useRef<HTMLInputElement>(null);
 
     return (
-        <>
+        <Stack alignItems="center" gap={1}>
             <AddAPhoto sx={{ fontSize: 60, opacity: 0.3 }} />
 
             <Button variant="outlined"
@@ -24,6 +24,6 @@ export default function AddPostButton({ onChange }
                 accept="image/*,video/*"
                 hidden={true}
                 onChange={onChange} />
-        </>
+        </Stack>
     );
 }

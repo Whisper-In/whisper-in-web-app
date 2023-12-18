@@ -77,7 +77,7 @@ export const deletePost = async (postId: string) => {
     try {
         const result = await axios.delete(`${route}/${postId}`);
 
-        return result.data as IDeletedResultDto;
+        return result.data as IPostDto;
     } catch (error) {
         throw error;
     }

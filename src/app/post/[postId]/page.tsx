@@ -1,19 +1,21 @@
-import { getPostDetails } from "@/store/services/content/post.service";
-import { notFound } from "next/navigation";
+"use client"
+
 import Post from "@/app/_components/post.component";
 import BackButton from "@/app/_components/back-button.component";
-import { useGetPostDetails } from "@/store/hooks/content.hooks";
-import { Stack } from "@mui/material";
+import { ScopedCssBaseline, Stack, ThemeProvider } from "@mui/material";
+import { darkTheme } from "@/app/themes";
 
 export default function PostPage({ params, searchParams }
     : { params: { postId: string }, searchParams: { [key: string]: string | string[] } }) {
     const showAvatar = searchParams["showAvatar"] == "true";
 
     return (
-        <Stack flexGrow={1}>
-            <Post postId={params.postId} hideAvatar={!showAvatar} />
+        <ThemeProvider theme={darkTheme}>
+            <ScopedCssBaseline component={Stack} flexGrow={1}>
+                <Post postId={params.postId} hideAvatar={!showAvatar} />
 
-            <BackButton/>
-        </Stack>
+                <BackButton />
+            </ScopedCssBaseline>
+        </ThemeProvider>
     );
 }
