@@ -35,7 +35,7 @@ export default function SignIn() {
                     )
                 })
             } else {
-                authClientService.logout(dispatch);
+                authClientService.logout();
 
                 promptAlert({
                     title: "Login Failed",
