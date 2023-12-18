@@ -66,7 +66,16 @@ export default function MessageList({
                 behavior: "instant"
             });
         }
-    }, [messages, isTyping]);
+    }, [messages]);
+
+    useEffect(() => {
+        if (isTyping) {
+            messageListRef.current?.scrollTo({
+                top: messageListRef.current.scrollHeight - scrollOffset,
+                behavior: "smooth"
+            });
+        }
+    }, [isTyping]);
 
     return (
         <div className={classNames(

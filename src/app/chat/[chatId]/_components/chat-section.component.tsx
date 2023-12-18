@@ -49,6 +49,8 @@ export default function ChatSection({ chatId }: { chatId: string }) {
             return;
         }
 
+        const start = Date.now();
+
         setIsReplying(true);
         try {
             await chatService.getChatCompletion(chat.chatId, profile._id, message);
@@ -56,11 +58,13 @@ export default function ChatSection({ chatId }: { chatId: string }) {
 
         } finally {
             const delay = Math.random() * REPLY_MAXDELAY + REPLY_MINDELAY;
+            const now = Date.now();
+
             setTimeout(() => {
                 updateChatMessages().then(() => {
                     setIsReplying(false);
                 });
-            }, delay);
+            }, Math.max(0, delay - now - start));
         }
     }
 
