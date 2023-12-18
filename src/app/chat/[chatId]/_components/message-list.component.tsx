@@ -4,7 +4,7 @@ import { Fragment, UIEventHandler, useEffect, useRef, useState } from "react";
 import { MessageBubbleAudio } from "./message-bubbles/message-bubble-audio.component";
 import { MessageBubbleTyping } from "./message-bubbles/message-bubble-typing.component";
 import { isScrollEnded } from "@/utils/component.util";
-import { Fab, IconButton, Typography } from "@mui/material";
+import { CircularProgress, Fab, IconButton, Typography } from "@mui/material";
 import { convertToMessageDateGroup, isDateEqual } from "@/utils/datetime.util";
 import { IUserChatMessagesResultDto } from "@/dtos/chats/chats.dtos";
 import { KeyboardDoubleArrowDown } from "@mui/icons-material";
@@ -115,6 +115,15 @@ export default function MessageList({
                                 </Fragment>
                             )
                         })
+                    }
+                    {
+                        isValidating &&
+                        <CircularProgress
+                            sx={{
+                                alignSelf: "center"
+                            }}
+                            size={30}
+                            aria-busy={true} />
                     }
                 </ div>
             </div>

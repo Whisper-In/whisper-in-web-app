@@ -30,6 +30,14 @@ describe("Message List Component", () => {
         }
     });
 
+    it("should show the loading spinner when loading messages", () => {
+        cleanup();
+        renderWithProviders(<MessageList isValidating={true} chatId="" />)
+
+        const loading = screen.getByRole("progressbar", { busy: true });
+        expect(loading).toBeInTheDocument();
+    })
+
     it("should call onScrollEnd when the scroll reached the top", async () => {
         const messageList = screen.getByRole("list");
 
@@ -95,7 +103,7 @@ describe("Message List Component", () => {
         const scrollToBottom = screen.getByRole("button", { name: "scroll-to-bottom-button" });
 
         await userEvent.click(scrollToBottom);
-        
+
         expect(messageList.scrollTop).toEqual(messageList.scrollHeight);
     });
 });

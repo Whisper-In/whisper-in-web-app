@@ -22,7 +22,9 @@ const REPLY_MAXDELAY = 3000;
 const MESSAGE_COUNT = 15;
 
 export default function ChatSection({ chatId }: { chatId: string }) {
-    const { data: chat, isLoading: isChatLoading, mutate: updateChat } = useGetChatDetail(chatId);
+    const { data: chat,
+        isLoading: isChatLoading,
+        mutate: updateChat } = useGetChatDetail(chatId);
 
     const { showToast } = useToast();
 
