@@ -17,9 +17,8 @@ describe("Search List Item Component", () => {
     });
 
     it("should redirect to the profile page", () => {
-        const avatar = screen.getByAltText("avatar");
+        const link = screen.getByRole("link");
 
-        const link = avatar?.parentElement?.parentElement;
         expect(link).toHaveAttribute("href", `/profile/${mockProfileSearch.id}`);
     });
 
