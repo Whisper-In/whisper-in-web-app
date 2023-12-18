@@ -4,16 +4,16 @@ import { Fragment, UIEventHandler, useEffect, useRef, useState } from "react";
 import { MessageBubbleAudio } from "./message-bubbles/message-bubble-audio.component";
 import { MessageBubbleTyping } from "./message-bubbles/message-bubble-typing.component";
 import { isScrollEnded } from "@/utils/component.util";
-import { Typography } from "@mui/material";
+import { Fab, IconButton, Typography } from "@mui/material";
 import { convertToMessageDateGroup, isDateEqual } from "@/utils/datetime.util";
 import { IUserChatMessagesResultDto } from "@/dtos/chats/chats.dtos";
+import { KeyboardDoubleArrowDown } from "@mui/icons-material";
 
-let prevScrollHeight = 0
 export default function MessageList({
     className,
     chatId,
     isTyping,
-    messagesList,
+    messageList,
     onScrollEnd,
     isValidating,
     isLoading
@@ -22,61 +22,48 @@ export default function MessageList({
         className?: string,
         chatId: string,
         isTyping?: boolean,
-        messagesList?: IUserChatMessagesResultDto[],
+        messageList?: IUserChatMessagesResultDto,
         onScrollEnd?: () => void,
         isValidating?: boolean,
         isLoading?: boolean
     }) {
+    const [scrollOffset, setScrollOffset] = useState<number>(0)
 
-    const totalMessages = messagesList?.at(0)?.totalMessages || 0;
-    const messages = messagesList?.flatMap((d) => d.messages) || [];
+    const messages = messageList?.messages || []
+    const totalMessages = messageList?.totalMessages || 0;
     const messageListRef = useRef<HTMLDivElement>(null);
-    const [scrollEnded, setScrollEnded] = useState(false);
+
+    const updateScrollOffset = () => {
+        setScrollOffset((messageListRef.current?.scrollHeight || 0) - (messageListRef.current?.scrollTop || 0));
+    }
 
     const onScroll: UIEventHandler<HTMLDivElement> = (e) => {
         if (isScrollEnded(e, true)) {
             if (onScrollEnd) {
                 onScrollEnd();
             }
-
-            setScrollEnded(true);
         }
+
+        updateScrollOffset();
+    }
+
+    const scrollToBottom = () => {
+        messageListRef.current?.scrollTo({
+            top: messageListRef.current.scrollHeight,
+            behavior: "smooth"
+        });
+
+        updateScrollOffset();
     }
 
     useEffect(() => {
-        if (!isLoading) {
+        if (messages.length) {
             messageListRef.current?.scrollTo({
-                top: messageListRef.current.scrollHeight,
+                top: messageListRef.current.scrollHeight - scrollOffset,
                 behavior: "instant"
             });
         }
-    }, [isLoading]);
-
-    useEffect(() => {
-        if (isValidating) {
-            prevScrollHeight = messageListRef.current?.scrollHeight || 0;
-        } else {
-            if (scrollEnded) {
-                messageListRef.current?.scrollTo({
-                    top: messageListRef.current?.scrollHeight - prevScrollHeight,
-                    behavior: "instant"
-                });
-
-                setScrollEnded(false);
-            }
-        }
-    }, [isValidating]);
-
-    useEffect(() => {
-        if (isTyping) {
-            if (messageListRef.current?.scrollTop == messageListRef.current?.scrollHeight) {
-                messageListRef.current?.scrollTo({
-                    top: messageListRef.current.scrollHeight,
-                    behavior: "smooth"
-                });
-            }
-        }
-    }, [isTyping])
+    }, [messages]);
 
     return (
         <div className={classNames(
@@ -131,6 +118,24 @@ export default function MessageList({
                     }
                 </ div>
             </div>
+
+            {
+                scrollOffset > (messageListRef.current?.clientHeight || 0) &&
+                <Fab
+                    aria-label="scroll-to-bottom-button"
+                    sx={{
+                        opacity: 0.3,
+                        position: "absolute",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        bottom: 5,
+                    }}
+                    size="small"
+                    onClick={scrollToBottom}
+                >
+                    <KeyboardDoubleArrowDown />
+                </Fab>
+            }
         </div>
     );
 }

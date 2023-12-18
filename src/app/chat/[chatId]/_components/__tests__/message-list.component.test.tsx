@@ -4,12 +4,13 @@ import MessageList from "../message-list.component";
 import { mockChatMessageList } from "../../../../../../__mocks__/chat.mocks";
 import { vi } from "vitest";
 import { convertToMessageDateGroup, isDateEqual } from "@/utils/datetime.util";
+import userEvent from "@testing-library/user-event";
 
 const onScrollEnd = vi.fn();
 
 describe("Message List Component", () => {
     beforeEach(() => {
-        renderWithProviders(<MessageList messagesList={[mockChatMessageList]}
+        renderWithProviders(<MessageList messageList={mockChatMessageList}
             isTyping={true}
             chatId={mockChatMessageList.chatId}
             onScrollEnd={onScrollEnd} />)
@@ -29,11 +30,13 @@ describe("Message List Component", () => {
         }
     });
 
-    it("should call onScrollEnd when the scroll reached the top", () => {
+    it("should call onScrollEnd when the scroll reached the top", async () => {
         const messageList = screen.getByRole("list");
 
-        fireEvent.scroll(messageList, {
-            scrollY: messageList.scrollHeight
+        await fireEvent.scroll(messageList, {
+            target: {
+                scrollTop: 0
+            }
         });
 
         expect(onScrollEnd).toHaveBeenCalled();
@@ -58,5 +61,41 @@ describe("Message List Component", () => {
                 expect(messageBubble?.parentElement?.parentElement?.nextSibling).toHaveTextContent(convertToMessageDateGroup(message.createdAt)!)
             }
         }
+    });
+
+    it("should hide the 'scroll to bottom' button if the scroll position is at the bottom", async () => {
+        const scrollToBottom = screen.queryByRole("button", { name: "scroll-to-bottom-button" });
+
+        expect(scrollToBottom).not.toBeInTheDocument();
+    })
+
+    it("should show the 'scroll to bottom' button if the scroll position is not at the bottom", async () => {
+        const messageList = screen.getByRole("list");
+
+        await fireEvent.scroll(messageList, {
+            target: {
+                scrollTop: messageList.scrollHeight / 2
+            }
+        });
+
+        const scrollToBottom = screen.queryByRole("button", { name: "scroll-to-bottom-button" });
+
+        expect(scrollToBottom).toBeInTheDocument();
+    });
+
+    it("should scroll to bottom when the 'scroll to bottom' button is clicked", async () => {
+        const messageList = screen.getByRole("list");
+
+        await fireEvent.scroll(messageList, {
+            target: {
+                scrollTop: messageList.scrollHeight / 2
+            }
+        });
+
+        const scrollToBottom = screen.getByRole("button", { name: "scroll-to-bottom-button" });
+
+        await userEvent.click(scrollToBottom);
+        
+        expect(messageList.scrollTop).toEqual(messageList.scrollHeight);
     });
 });

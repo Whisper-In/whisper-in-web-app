@@ -15,9 +15,10 @@ import { useGetChatDetail, useGetChatMessages } from "@/store/hooks/chat.hooks";
 import { setChatAudioReply } from "@/store/services/chat/chat.service";
 import * as chatService from "@/store/services/chat/chat.service";
 import { ToastDuration, useToast } from "@/app/_components/toast.component";
+import { IUserChatMessagesResultDto } from "@/dtos/chats/chats.dtos";
 
 const REPLY_MINDELAY = 1000;
-const REPLY_MAXDELAY = 5000;
+const REPLY_MAXDELAY = 3000;
 const MESSAGE_COUNT = 15;
 
 export default function ChatSection({ chatId }: { chatId: string }) {
@@ -25,13 +26,15 @@ export default function ChatSection({ chatId }: { chatId: string }) {
 
     const { showToast } = useToast();
 
-    const { data,
+    const { data: rawMessages,
         isLoading: isMessagesLoading,
         isValidating: isMessageValidating,
         mutate: updateChatMessages,
         size,
         setSize
     } = useGetChatMessages(chatId, MESSAGE_COUNT);
+
+    const [messageResult, setMessageResult] = useState<IUserChatMessagesResultDto>();
 
     const hasAudioFeature = chat?.features?.includes("AUDIO");
     const profile = chat?.profile
@@ -62,7 +65,26 @@ export default function ChatSection({ chatId }: { chatId: string }) {
         if (!chat || !message?.length) {
             return
         }
-        
+
+        const today = new Date();
+
+        setMessageResult({
+            chatId: chat._id,
+            totalMessages: messageResult?.totalMessages || 0,
+            messages: [
+                {
+                    chatId: chat._id,
+                    messageId: "",
+                    sender: "",
+                    isSender: true,
+                    message,
+                    createdAt: today.toISOString(),
+                    updatedAt: today.toISOString()
+                },
+                ...messageResult?.messages || [],
+            ]
+        })
+
         chatService.insertNewChatMessage(chatId, message).then(() => {
             updateChatMessages();
 
@@ -99,6 +121,18 @@ export default function ChatSection({ chatId }: { chatId: string }) {
         }
     }, [isChatLoading])
 
+    useEffect(() => {
+        if (rawMessages?.length) {
+            const result: IUserChatMessagesResultDto = {
+                chatId: rawMessages.at(0)!.chatId,
+                totalMessages: rawMessages.at(0)!.totalMessages,
+                messages: rawMessages.flatMap((m) => m.messages)
+            }
+
+            setMessageResult(result);
+        }
+    }, [rawMessages])
+
     return (
         <>
             <Header>
@@ -125,7 +159,7 @@ export default function ChatSection({ chatId }: { chatId: string }) {
             <MessageList className="grow"
                 chatId={chatId}
                 isTyping={isReplying}
-                messagesList={data}
+                messageList={messageResult}
                 onScrollEnd={onMessageListScrollEnd}
                 isValidating={isMessageValidating}
                 isLoading={isMessagesLoading} />
