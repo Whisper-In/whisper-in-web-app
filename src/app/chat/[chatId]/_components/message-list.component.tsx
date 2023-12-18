@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import MessageBubble from "./message-bubbles/message-bubble.component";
-import { Fragment, UIEventHandler, useEffect, useRef, useState } from "react";
+import { Fragment, UIEventHandler, useEffect, useMemo, useRef, useState } from "react";
 import { MessageBubbleAudio } from "./message-bubbles/message-bubble-audio.component";
 import { MessageBubbleTyping } from "./message-bubbles/message-bubble-typing.component";
 import { isScrollEnded } from "@/utils/component.util";
@@ -9,7 +9,7 @@ import { convertToMessageDateGroup, isDateEqual } from "@/utils/datetime.util";
 import { IUserChatMessagesResultDto } from "@/dtos/chats/chats.dtos";
 import { KeyboardDoubleArrowDown } from "@mui/icons-material";
 
-const SCROLL_TO_BOTTOM_BUTTON_THRESHOLD = 65;
+const SCROLL_TO_BOTTOM_THRESHOLD = 65;
 
 export default function MessageList({
     className,
@@ -58,6 +58,8 @@ export default function MessageList({
 
         updateScrollOffset();
     }
+
+    const isScrolled = useMemo(() => scrollOffset - (messageListRef.current?.clientHeight || 0) > SCROLL_TO_BOTTOM_THRESHOLD, [scrollOffset]);
 
     useEffect(() => {
         if (messages.length) {
@@ -129,7 +131,7 @@ export default function MessageList({
                         })
                     }
                     {
-                        isValidating &&
+                        isValidating && isScrolled &&
                         <CircularProgress
                             sx={{
                                 alignSelf: "center"
@@ -141,7 +143,7 @@ export default function MessageList({
             </div>
 
             {
-                scrollOffset - (messageListRef.current?.clientHeight || 0) > SCROLL_TO_BOTTOM_BUTTON_THRESHOLD &&
+                isScrolled &&
                 <Fab
                     aria-label="scroll-to-bottom-button"
                     sx={{
