@@ -162,11 +162,11 @@ export default function Post({
                 {
                     post.postType == PostType[PostType.PHOTO] ?
                         <img aria-label="post-image" className={classNames(
-                            "w-full h-full max-h-screen object-contain object-top"
+                            "w-full h-full max-h-screen object-contain object-center"
                         )}
                             src={post.postURL} />
                         :
-                        <VideoPlayer ref={videoPlayerRef} className="w-full h-full max-h-screen object-contain object-top"
+                        <VideoPlayer ref={videoPlayerRef} className="w-full h-full max-h-screen object-contain object-center"
                             src={post.postURL}
                             poster={post?.thumbnailURL} />
                 }
