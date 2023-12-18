@@ -16,7 +16,7 @@ export default function Loading() {
             </Header>
 
             <div className={classNames(
-                "h-full w-full flex flex-col",
+                "h-full w-full flex flex-col grow",
             )}>
                 <div className="grow"></div>
 

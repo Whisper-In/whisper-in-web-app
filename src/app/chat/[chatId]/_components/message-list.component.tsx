@@ -9,6 +9,8 @@ import { convertToMessageDateGroup, isDateEqual } from "@/utils/datetime.util";
 import { IUserChatMessagesResultDto } from "@/dtos/chats/chats.dtos";
 import { KeyboardDoubleArrowDown } from "@mui/icons-material";
 
+const SCROLL_TO_BOTTOM_BUTTON_THRESHOLD = 65;
+
 export default function MessageList({
     className,
     chatId,
@@ -34,7 +36,8 @@ export default function MessageList({
     const messageListRef = useRef<HTMLDivElement>(null);
 
     const updateScrollOffset = () => {
-        setScrollOffset((messageListRef.current?.scrollHeight || 0) - (messageListRef.current?.scrollTop || 0));
+        const tempScrollOffset = Math.floor((messageListRef.current?.scrollHeight || 0) - (messageListRef.current?.scrollTop || 0));
+        setScrollOffset(tempScrollOffset);
     }
 
     const onScroll: UIEventHandler<HTMLDivElement> = (e) => {
@@ -63,7 +66,7 @@ export default function MessageList({
                 behavior: "instant"
             });
         }
-    }, [messages]);
+    }, [messages, isTyping]);
 
     return (
         <div className={classNames(
@@ -129,7 +132,7 @@ export default function MessageList({
             </div>
 
             {
-                scrollOffset > (messageListRef.current?.clientHeight || 0) &&
+                scrollOffset - (messageListRef.current?.clientHeight || 0) > SCROLL_TO_BOTTOM_BUTTON_THRESHOLD &&
                 <Fab
                     aria-label="scroll-to-bottom-button"
                     sx={{
