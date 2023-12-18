@@ -7,20 +7,12 @@ import userEvent from "@testing-library/user-event";
 import { setupServer } from "msw/node";
 import { HttpResponse, delay, http } from "msw";
 import { ICreatePaymentSheetDto } from "@/dtos/payment/payment.dtos";
-import { faker } from "@faker-js/faker";
-import { mockElement, mockElements, mockStripe } from "../../../../__mocks__/payment.mocks";
+import { mockElements, mockPaymentSheet } from "../../../../__mocks__/payment.mocks";
+import { renderWithProviders } from "@/utils/test-utils";
 
 const server = setupServer(
     http.post("/api/user/payment-subscription", async (req) => {
-        await delay(100);
-
-        return HttpResponse.json<ICreatePaymentSheetDto>({
-            paymentIntent: faker.string.alphanumeric(10),
-            ephemeralKey: faker.string.alphanumeric(10),
-            publishableKey: faker.string.alphanumeric(20),
-            customer: faker.string.alphanumeric(10),
-            subscriptionId: faker.string.alphanumeric(10)
-        })
+        return HttpResponse.json<ICreatePaymentSheetDto>(mockPaymentSheet)
     })
 )
 
@@ -35,7 +27,7 @@ const onPaymentFailed = vi.fn();
 
 describe("Payment Form Component", () => {
     beforeEach(() => {
-        render(
+        renderWithProviders(
             <Elements stripe={new Promise(() => { })}>
                 <PaymentForm open={true}
                     profile={mockProfile}
@@ -61,6 +53,12 @@ describe("Payment Form Component", () => {
     });
 
     it("should show a loading spinner when submitting", async () => {
+        server.use(
+            http.post("/api/user/payment-subscription", async (req) => {
+                await delay("infinite");
+            })
+        )
+
         const submitButton = screen.getByRole("button", { name: "Submit" });
         await userEvent.click(submitButton);
 
@@ -69,6 +67,12 @@ describe("Payment Form Component", () => {
     });
 
     it("should disable the submit button when submitting", async () => {
+        server.use(
+            http.post("/api/user/payment-subscription", async (req) => {
+                await delay("infinite");
+            })
+        )
+
         const submitButton = screen.getByRole("button", { name: "Submit" });
         await userEvent.click(submitButton);
 

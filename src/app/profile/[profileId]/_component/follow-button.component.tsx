@@ -22,6 +22,7 @@ export default function FollowButton({
 
     return (
         <Button {...props}
+            aria-label="follow-button"
             variant="contained"
             disabled={disabled}
             onClick={_onClick}

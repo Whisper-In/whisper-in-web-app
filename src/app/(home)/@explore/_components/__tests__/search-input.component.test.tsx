@@ -15,24 +15,21 @@ afterEach(() => {
 });
 
 describe("Search Input Component", () => {
-    it("should have a maximum length of 50", async () => {
-        const input: HTMLInputElement = screen.getByLabelText("search-input");
+    const maxLength = 50;
+    it(`should have a maximum length of ${maxLength}`, async () => {
+        const textField: HTMLInputElement = screen.getByRole("textbox");
+        const testText = faker.string.alphanumeric(maxLength * 2);
 
-        const testText = faker.string.alphanumeric({
-            length: 100
-        });
-        await userEvent.click(input);
-        await userEvent.keyboard(testText);
+        await userEvent.type(textField, testText);        
 
-        const expectedText = testText.substring(0, 50);
-        expect(input.value).toEqual(expectedText)
+        const expectedText = testText.substring(0, maxLength);
+        expect(textField).toHaveDisplayValue(expectedText)
     });
 
     it("should call the onChange callback when the input changes", async () => {
-        const input: HTMLInputElement = screen.getByLabelText("search-input");
+        const textField: HTMLInputElement = screen.getByRole("textbox");
 
-        await userEvent.click(input);
-        await userEvent.keyboard("test");
+        await userEvent.type(textField, "test");
 
         expect(onChange).toHaveBeenCalled();
     });

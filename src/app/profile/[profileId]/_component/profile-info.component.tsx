@@ -221,11 +221,12 @@ export default function ProfileInfo({
             setup_future_usage: "off_session"
         }}>
             <div className="flex flex-col items-center gap-3 pt-14 px-5 mb-3">
-                <Avatar src={profile?.avatar} sx={{ width: 96, height: 96 }} />
+                <Avatar src={profile?.avatar} sx={{ width: 96, height: 96 }} alt="avatar" />
 
                 <div className="text-lg italic">
                     @{profile?.userName}
                 </div>
+
                 <div className="flex justify-center gap-12 mb-3">
                     <StatItem label="Posts" value={profile?.postCount ?? 0} />
                     <StatItem label="Followers" value={profile?.followerCount ?? 0} />
@@ -250,7 +251,9 @@ export default function ProfileInfo({
 
                     {
                         !profile?.isMe &&
-                        <IconButton color="secondary" onClick={onMessageClick}>
+                        <IconButton aria-label="chat-button"
+                            color="secondary"
+                            onClick={onMessageClick}>
                             <Chat />
                         </IconButton>
                     }

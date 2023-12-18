@@ -8,7 +8,7 @@ import { Chat } from "@mui/icons-material";
 
 export default function Loading() {
     return (
-        <main className="h-screen flex flex-col">
+        <main className="h-screen flex flex-col" role="progressbar" aria-busy={true}>
             <div className="flex flex-col items-center gap-3 pt-14 px-5 mb-3">
                 <Skeleton variant="circular" width={96} height={96} />
 

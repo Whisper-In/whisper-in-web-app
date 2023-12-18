@@ -40,7 +40,7 @@ export async function updateUserProfile(profile: IUserProfileDto) {
 
 export async function updateUserAvatar(avatar: File) {
     try {
-        const formData = new FormData();
+        const formData = new FormData();             
         formData.append("avatar", avatar);
 
         const result = await axios.put(
@@ -55,6 +55,7 @@ export async function updateUserAvatar(avatar: File) {
 
         return result.data;
     } catch (error) {
+        console.log(error)
         throw error;
     }
 }

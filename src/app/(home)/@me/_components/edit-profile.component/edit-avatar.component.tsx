@@ -38,9 +38,11 @@ export default function EditAvatar({ me, onChange }: { me?: IUserProfileDto, onC
                 })
                 .finally(() => {
                     showSpinner(false);
-                });
 
-            e.currentTarget.value = "";
+                    if (avatarInputRef.current) {
+                        avatarInputRef.current.value = "";
+                    }
+                });
         }
     }
 
@@ -52,15 +54,18 @@ export default function EditAvatar({ me, onChange }: { me?: IUserProfileDto, onC
             gap: 2,
             marginBottom: 2
         }}>
-            <Avatar
+            <Avatar alt="avatar"
                 sx={{ width: 96, height: 96 }}
                 src={me?.avatar} />
 
-            <Button variant="outlined" onClick={handleChangeAvatar}>
+            <Button variant="outlined"
+                aria-label="change-avatar"
+                onClick={handleChangeAvatar}>
                 Change Avatar
             </Button>
 
             <input ref={avatarInputRef}
+                aria-label="file-input"
                 onChange={updateAvatar}
                 type="file"
                 accept=".jpg,.jpeg,.png"

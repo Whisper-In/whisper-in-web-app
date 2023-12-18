@@ -12,11 +12,14 @@ export default function AddPostButton({ onChange }
         <>
             <AddAPhoto sx={{ fontSize: 60, opacity: 0.3 }} />
 
-            <Button variant="outlined" onClick={() => inputRef.current?.click()}>
+            <Button variant="outlined"
+                aria-label="upload-button"
+                onClick={() => inputRef.current?.click()}>
                 Upload
             </Button>
 
             <input ref={inputRef}
+                aria-label="file-input"
                 type="file"
                 accept="image/*,video/*"
                 hidden={true}

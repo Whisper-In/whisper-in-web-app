@@ -6,11 +6,11 @@ import { Clear } from "@mui/icons-material";
 import { Box, Button, CircularProgress, Fab, IconButton } from "@mui/material";
 import { ChangeEvent, ReactEventHandler, useEffect, useRef, useState } from "react";
 import { ToastDuration, useToast } from "@/app/_components/toast.component";
-import { EditInputProps } from ".";
+import { TextInputProps } from ".";
 import { Validator } from "@/utils/form.util";
 import { useAlertPrompt } from "@/app/_components/alert-prompt.component";
 
-export default function EditAudio(props: EditInputProps) {
+export default function AudioInput(props: TextInputProps) {
     const inputRef = useRef<HTMLInputElement>(null);
     const audioRef = useRef<HTMLAudioElement>(null);
     const [audioURL, setAudioURL] = useState(props.value);

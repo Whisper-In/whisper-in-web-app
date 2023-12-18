@@ -5,9 +5,9 @@ import CancelIcon from "@mui/icons-material/Cancel"
 import { grey } from "@mui/material/colors";
 import React, { useEffect, useRef, useState } from "react";
 import { Validator } from "@/utils/form.util";
-import { EditInputProps } from ".";
+import { TextInputProps } from ".";
 
-export default function EditInput(props: EditInputProps) {
+export default function TextInput(props: TextInputProps) {
     const ref = useRef<HTMLInputElement>(null);
     const [error, setError] = useState<string | undefined>();
 
@@ -29,7 +29,6 @@ export default function EditInput(props: EditInputProps) {
         }
 
         const error = Validator(props.value, props.validations);
-
         setError(error);
     }
 
@@ -70,6 +69,7 @@ export default function EditInput(props: EditInputProps) {
                 InputProps={{
                     endAdornment: (
                         <IconButton onClick={onClear}
+                            aria-label="clear-button"
                             sx={{
                                 color: grey[500]
                             }} >
@@ -88,7 +88,7 @@ export default function EditInput(props: EditInputProps) {
 
             {
                 props.maxLength &&
-                <Box sx={{ alignSelf: "flex-end" }}>
+                <Box aria-label="text-count" sx={{ alignSelf: "flex-end" }}>
                     {props.value?.length ?? 0}/{props.maxLength}
                 </Box>
             }

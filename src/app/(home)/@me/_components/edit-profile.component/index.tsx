@@ -6,11 +6,11 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Drawer, Stack } from "@mui/material";
 import { useEffect } from "react";
-import { GetProfileListItems, GetSubscriptionListItems } from "./profile-list-items";
+import { GetProfileListItems, GetSubscriptionListItems } from "./edit-profile-list-items";
 import { useAlertPrompt } from "@/app/_components/alert-prompt.component";
 import { Validator } from "@/utils/form.util";
-import EditAvatar from "./avatar.component";
-import EditProfileInfo from "./profile-info.component";
+import EditAvatar from "./edit-avatar.component";
+import EditProfileList from "./edit-profile-list.component";
 import { useGetUserProfile } from "@/store/hooks/user.hooks";
 import { useGetMinSubscriptionFee } from "@/store/hooks/business.hooks";
 
@@ -89,7 +89,7 @@ export default function EditProfile({ open, handleClose }
                 }}>
                 <EditAvatar me={me} onChange={updateUserProfile} />
 
-                <EditProfileInfo me={me}
+                <EditProfileList me={me}
                     profileListItems={profileListItems}
                     subscriptionListItems={subscriptionListItems}
                     onChange={updateUserProfile} />

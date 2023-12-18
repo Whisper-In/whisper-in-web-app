@@ -113,7 +113,7 @@ export default function PaymentForm({
                     <CircularProgress aria-busy={true} />
                 </div>
             }
-            <form onSubmit={onSubmit} className="p-5">
+            <form onSubmit={onSubmit} className="p-5" aria-label="payment-form">
                 <Stack spacing={1}>
                     <Typography fontStyle="italic">
                         <b>Disclaimer:</b> This is a test payment. Please use the test cards listed on <Link href="https://stripe.com/docs/testing" target="_blank">Stripe</Link>. For example, Card No.: 4242 4242 4242 4242, Expiration: 01/28, CVC: 123.

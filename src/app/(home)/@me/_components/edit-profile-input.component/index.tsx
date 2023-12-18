@@ -1,14 +1,14 @@
 import { Box, Button, Drawer, DrawerProps, Paper, Stack, Toolbar, Typography } from "@mui/material";
 import { forwardRef, useState, useImperativeHandle, HTMLInputTypeAttribute } from "react";
-import EditInput from "./edit-input.component";
+import TextInput from "./text-input.component";
 import { Validation } from "@/utils/form.util";
-import EditAudio from "./edit-audio.component";
+import AudioInput from "./audio-input.component";
 import { useSpinner } from "@/app/_components/spinner.component";
 import { useAlertPrompt } from "@/app/_components/alert-prompt.component";
 
 export type InputVariant = "text-field" | "audio" | HTMLInputTypeAttribute;
 
-export type EditInputProps = {
+export type TextInputProps = {
     value?: string,
     required?: boolean,
     min?: number,
@@ -20,27 +20,27 @@ export type EditInputProps = {
     validations?: Validation[]
 }
 
-export type EditProfileDrawerProps = {
+export type EditProfileInputDrawerProps = {
     title?: string,
     onSave?: (value?: any) => void
-} & EditInputProps
+} & TextInputProps
 
-export type EditProfileDrawerState = {
+export type EditProfileInputDrawerState = {
     open: boolean,
-} & EditProfileDrawerProps
+} & EditProfileInputDrawerProps
 
-export type EditProfileDrawerElement = {
-    open: (props: EditProfileDrawerProps) => void,
+export type EditProfileInputDrawerType = {
+    open: (props: EditProfileInputDrawerProps) => void,
     close: () => void
 }
 
-const EditProfileDrawer = forwardRef<EditProfileDrawerElement>((props: DrawerProps, ref) => {
-    const [drawerState, setDrawerState] = useState<EditProfileDrawerState>({ open: false });
+const EditProfileInputDrawer = forwardRef<EditProfileInputDrawerType>((props: DrawerProps, ref) => {
+    const [drawerState, setDrawerState] = useState<EditProfileInputDrawerState>({ open: false });
     const [error, setError] = useState<string | undefined>();
     const { isShowingSpinner, showSpinner } = useSpinner();
     const { promptAlert } = useAlertPrompt();
 
-    const handleOpen = (props: EditProfileDrawerProps) => {
+    const handleOpen = (props: EditProfileInputDrawerProps) => {
         setDrawerState({
             open: true,
             ...props
@@ -88,10 +88,17 @@ const EditProfileDrawer = forwardRef<EditProfileDrawerElement>((props: DrawerPro
             ...drawerState,
             value
         });
+
+        if (drawerState.onChange) {
+            drawerState.onChange(value);
+        }
     }
 
     const handleError = (error?: string) => {
         setError(error);
+        if (drawerState.onError) {
+            drawerState.onError(error);
+        }
     }
 
     return (
@@ -124,7 +131,8 @@ const EditProfileDrawer = forwardRef<EditProfileDrawerElement>((props: DrawerPro
 
                         <Button color="error"
                             disabled={error != undefined || isShowingSpinner}
-                            onClick={handleSave}>
+                            onClick={handleSave}
+                            aria-label="save-button">
                             Save
                         </Button>
                     </Stack>
@@ -136,11 +144,11 @@ const EditProfileDrawer = forwardRef<EditProfileDrawerElement>((props: DrawerPro
                     drawerState.open &&
                     (
                         drawerState.variant == "audio" ?
-                            <EditAudio {...drawerState}
+                            <AudioInput {...drawerState}
                                 onChange={handleInputChange}
                                 onError={handleError} />
                             :
-                            <EditInput {...drawerState}
+                            <TextInput {...drawerState}
                                 onChange={handleInputChange}
                                 onError={handleError} />
                     )
@@ -150,6 +158,6 @@ const EditProfileDrawer = forwardRef<EditProfileDrawerElement>((props: DrawerPro
     );
 });
 
-EditProfileDrawer.displayName = "EditProfileDrawer";
+EditProfileInputDrawer.displayName = "EditProfileDrawer";
 
-export default EditProfileDrawer;
+export default EditProfileInputDrawer;

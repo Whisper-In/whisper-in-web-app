@@ -25,6 +25,7 @@ export default function SubscribeButton({
 
     return (
         <Button {...props}
+            aria-label="subscribe-button"
             variant="outlined"
             disabled={disabled}
             onClick={_onClick}

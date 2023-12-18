@@ -1,3 +1,5 @@
+import { ICreatePaymentSheetDto } from "@/dtos/payment/payment.dtos";
+import { faker } from "@faker-js/faker";
 import { StripeElements } from "@stripe/stripe-js";
 import { vi } from "vitest";
 
@@ -40,4 +42,12 @@ export const mockStripe = () => ({
     confirmCardSetup: vi.fn(),
     paymentRequest: vi.fn(),
     _registerWrapper: vi.fn()
-})  
+})
+
+export const mockPaymentSheet: ICreatePaymentSheetDto = {
+    paymentIntent: faker.string.alphanumeric(10),
+    ephemeralKey: faker.string.alphanumeric(10),
+    publishableKey: faker.string.alphanumeric(20),
+    customer: faker.string.alphanumeric(10),
+    subscriptionId: faker.string.alphanumeric(10)
+}

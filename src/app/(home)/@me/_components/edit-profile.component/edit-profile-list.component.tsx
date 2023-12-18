@@ -2,15 +2,15 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText, Switch, SxProps, Theme, Typography, useTheme } from "@mui/material";
-import { ProfileItemType } from "./profile-list-items";
+import { ProfileItemType } from "./edit-profile-list-items";
 import { useCallback, useEffect, useRef, useState } from "react";
-import EditProfileDrawer, { EditProfileDrawerElement } from "./edit-profile-drawer.component";
+import EditProfileInputDrawer, { EditProfileInputDrawerType } from "../edit-profile-input.component";
 import { ToastDuration, useToast } from "@/app/_components/toast.component";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { IUserProfileDto } from "@/dtos/user/user.dtos";
 import { updateUserProfile } from "@/store/services/user/user.service";
 
-export default function EditProfileInfo({
+export default function EditProfileList({
     me,
     profileListItems,
     subscriptionListItems,
@@ -21,7 +21,7 @@ export default function EditProfileInfo({
     subscriptionListItems: ProfileItemType[],
     onChange?: (data?: IUserProfileDto) => void
 }) {
-    const editProfileDrawerRef = useRef<EditProfileDrawerElement>(null);
+    const editProfileDrawerRef = useRef<EditProfileInputDrawerType>(null);
     const theme = useTheme();
     const { showToast } = useToast();
     const [isSubscriptionOn, setIsSubscriptionOn] = useState(me?.isSubscriptionOn);
@@ -118,7 +118,7 @@ export default function EditProfileInfo({
                     </Collapse>
                 }
             </List>
-            <EditProfileDrawer ref={editProfileDrawerRef} />
+            <EditProfileInputDrawer ref={editProfileDrawerRef} />
         </>
     )
 }

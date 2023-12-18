@@ -28,8 +28,8 @@ describe("Chat List Item Component", () => {
         expect(profileName).toBeInTheDocument();
     });
 
-    it("should show the last message", () => {
-        const lastMessage = screen.getByText(mockChat.lastMessage.message);
+    it("should show the last message", async () => {
+        const lastMessage = await screen.findByText(mockChat.lastMessage.message);
         expect(lastMessage).toBeInTheDocument();
     });
 
@@ -39,8 +39,8 @@ describe("Chat List Item Component", () => {
         expect(lastMessageDateEl).toBeInTheDocument();
     });
 
-    it("should have a link to the chat page", () => {
-        const lastMessage = screen.getByText(mockChat.lastMessage.message);
+    it("should have a link to the chat page", async () => {
+        const lastMessage = await screen.findByText(mockChat.lastMessage.message);
         const parent = lastMessage.parentElement;
 
         expect(parent).toHaveAttribute("href", `/chat/${mockChat.chatId}`);

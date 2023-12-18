@@ -60,7 +60,7 @@ export default function SettingsMenu({ className }
 
     const logout = () => {
         showSpinner(true);
-        authClientService.logout(dispatch)
+        authClientService.logout()
             .then(() => {
                 router.refresh();
             })

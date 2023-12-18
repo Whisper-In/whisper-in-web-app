@@ -23,6 +23,9 @@ export default function ChatInputBar({ onChange, onSend }
     return (
         <div className="flex px-2 py-3 pb-sab-pr-14 gap-3 items-end">
             <Input inputRef={textAreaRef}
+                inputProps={{
+                    "aria-label": "chat-input"
+                }}
                 fullWidth={true}
                 multiline={true}
                 minRows={1}
@@ -36,7 +39,7 @@ export default function ChatInputBar({ onChange, onSend }
                 }}
             />
 
-            <button onClick={_onSend} className="rounded-full aspect-square min-w-[40px] h-[40px]" style={{
+            <button aria-label="send-button" onClick={_onSend} className="rounded-full aspect-square min-w-[40px] h-[40px]" style={{
                 backgroundColor: theme.palette.primary.main
             }}>
                 <FontAwesomeIcon style={{ color: theme.palette.primary.contrastText }} icon={faArrowUp} />

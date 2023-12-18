@@ -36,7 +36,7 @@ export function MessageBubbleTyping({ isUser }: { isUser?: boolean }) {
 
     return (
         <MessageBubbleWrapper isPrimary={isUser}>
-            <svg width={width} height={height} fill="grey">
+            <svg width={width} height={height} fill="grey" aria-label="typing">
                 {
                     [...Array.from(Array(dotCount).keys())].map((idx) =>
                         <animated.circle

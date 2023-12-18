@@ -1,6 +1,6 @@
 import { UserProfile } from "@/store/types/user.types"
 import { IPriceTierDto } from "@/dtos/user/user.dtos"
-import { EditInputProps } from "./edit-profile-drawer.component"
+import { TextInputProps } from "../edit-profile-input.component"
 import { Dispatch, ThunkDispatch } from "@reduxjs/toolkit"
 import { updateUserProfile, updateUserVoice } from "@/store/thunks/user.thunks"
 import { useAppDispatch } from "@/store/hooks"
@@ -12,7 +12,7 @@ export type ProfileItemType = {
     placeholder?: string,
     disableEdit?: boolean,
     onSave?: (value?: string) => void,
-} & EditInputProps
+} & TextInputProps
 
 
 export const GetProfileListItems = ({ me, dispatch }: { me?: UserProfile, dispatch: AppDispatch }): ProfileItemType[] =>

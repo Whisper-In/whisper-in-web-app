@@ -53,7 +53,7 @@ export default function PostList({
 
                         {
                             isValidating &&
-                            <CircularProgress sx={{ alignSelf: "center" }} size={30} />
+                            <CircularProgress sx={{ alignSelf: "center" }} size={30} aria-busy={true} />
                         }
                     </>
                     :
