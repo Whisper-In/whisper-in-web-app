@@ -2,11 +2,11 @@
 
 A social media platform where users can create an AI chatbot for their profile with ChatGPT to reply their messages.
 
-#### Link
-[Whisper In](https://whisperin.edwinlee.dev)
-
 #### Frameworks & Libraries
 Next.js, React, React Redux, Express.js, MongoDB, ChatGPT API, Stripe API
+
+#### Link
+[Whisper In](https://whisperin.edwinlee.dev)
 
 #### Screenshots
 ![Whisper In Screenshots 1](https://www.edwinlee.dev/projects/whisperin/whisperin-1.png)
