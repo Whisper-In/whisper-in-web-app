@@ -2,6 +2,8 @@
 
 A social media platform where users can create an AI chatbot for their profile with ChatGPT to reply their messages.
 
+*This project is meant to be a Progressive Web App (PWA) and is the reason the application's resolutions is restricted to mobile resolutions.
+
 #### Frameworks & Libraries
 Next.js, React, React Redux, Express.js, MongoDB, ChatGPT API, Stripe API
 
